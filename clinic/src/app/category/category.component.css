@@ -1,0 +1,97 @@
+.hero {
+    width: 100%;
+    flex-shrink: 0; 
+    padding-top: 60px;
+    padding-left: 146px;
+    padding-bottom: 246px;  
+}
+
+.category {
+    width: 1460px;
+    height: 644px;
+    background-color: #fff;
+    border-radius: 1px;
+    display: grid;
+    gap: 43px;
+}
+
+.category h1 {
+    color: #18A4E1;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin: 0px;
+}
+.table thead tr {
+    width: 100%;
+    height: 48px;
+}
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    background: #F0FAFF;
+}
+
+th {
+    padding-left: 34px;
+}
+
+ td {
+    padding-left: 34px;
+ }
+
+ td .picture {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 50%;
+ }
+tbody tr td {
+    vertical-align: 0px;
+    color: #053354;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+
+.table-container {
+    max-height: 100%; /* Adjust the height as needed */
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 30px 0px rgba(5, 51, 84, 0.05);
+    /* position: relative; */
+}
+
+.table-container::-webkit-scrollbar {
+    width: 12px; /* Width of the vertical scrollbar */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background-color: #053354;; /* Color of the thumb */
+    border-radius: 6px; /* Rounded corners for the thumb */
+}
+
+.circle {
+    width: 42px;
+    height: 42px;
+    background-color: #DAFAEE;
+    border-radius: 50%;
+    padding: 6px;
+}
+
+.circle1 {
+    width: 42px;
+    height: 42px;
+    background-color: #FF93A6;
+    border-radius: 50%;
+    padding: 6px;
+}
+
+.edit-delete {
+    display: flex;
+    gap: 20px;
+}

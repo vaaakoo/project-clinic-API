@@ -1,0 +1,85 @@
+<div class="registration-form" >
+    <h2>რეგისტრაცია</h2>
+    
+    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+      <div class="form-group">
+        <label for="firstName">სახელი</label>
+        <input type="text" id="firstName" name="firstName" placeholder="( მინიმუმ 5 სიმბოლო )" [(ngModel)]="authserviceService.doctor.firstName" required>
+      </div>
+  
+      
+      <div class="form-group email-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="authserviceService.doctor.email" required class="email-input">
+        <img class="right-arrow-img" src="../../assets/mail-right-arrow.png" alt="Right Arrow">
+      </div>
+      
+      <div class="form-group">
+        <label for="idNumber">პირადი</label>
+        <input type="text" id="idNumber" name="idNumber" placeholder="00000000000" [(ngModel)]="authserviceService.doctor.idNumber" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="lastName">გვარი</label>
+        <input type="text" id="lastName" name="lastName" [(ngModel)]="authserviceService.doctor.lastName" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="password">პაროლი</label>
+        <input type="password" id="password" name="password" placeholder="( მინიმუმ 8 სიმბოლო : @ 7 , )" [(ngModel)]="authserviceService.doctor.password" required>
+      </div>
+
+      <!-- registration.component.html -->
+
+      <div class="form-group">
+        <label for="selectedCategory">კატეგორია</label>
+        <div class="custom-select-wrapper">
+          <select class="category-default" id="selectedCategory" name="selectedCategory" [(ngModel)]="authserviceService.doctor.category">
+            <option value="" disabled selected hidden>ანესთეზიოლოგი / თერაპევტი ან სხვა...</option>
+            <option *ngFor="let category of categoryList" [value]="category">{{ category }}</option>
+          </select>
+          <div class="custom-select-arrow"></div>
+        </div>
+      </div>
+
+      <!-- image -->
+      <div class="form-group form-group1">
+        <label for="image">სურათი</label>
+        <div class="custom">
+          <input type="file" id="image" name="image"  (change)="onImageChange($event)">
+          <label for="image" class="custom-label">
+            <img src="../../assets/photo-outline.png" alt="Choose file">
+          </label>
+        </div>
+       
+      </div>
+      <div class="form-group form-group1">
+        <img *ngIf="userimage" [src]="userimage" class="img-responsive img-thumbnail" style="height: 150px;width: 150px;" alt="">
+       
+      </div>
+     
+
+    <!-- CV Upload -->
+      <!-- <div class="form-group">
+          <label for="cv">CV</label>
+          <input type="file" id="cv" name="cv" (change)="onCVChange($event)" >
+      </div> -->
+
+      <!-- <div class="form-group form-group1">
+        <label for="cv">CV</label>
+        <div class="custom">
+          <input type="file" id="cv" name="cv" (change)="onCVChange($event)">
+          <label for="cv" class="custom-label">
+            <img src="../../assets/document-new.png" alt="Choose file">
+          </label>
+        </div>
+      </div> -->
+
+      <!-- <div class="form-group3"> -->
+        <div class="form-group3">
+          <button [disabled]="isbuttondsiabed" type="submit">რეგისტრაცია</button>
+        </div>
+      <!-- </div> -->
+    </form>
+  </div>
+  

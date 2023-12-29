@@ -1,0 +1,54 @@
+
+<div class="hero">
+    <div class="category">
+        <h1>კატეგორიები</h1>
+        <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">სახელი</th>
+                    <th scope="col">კატეგორია</th>
+                    <th scope="col">ფოტოსურათი</th>
+                    <th scope="col">რეიტინგი</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let doctor of alldoctor">
+                <!-- Add your dynamic data rows here -->
+                <tr>
+                    <td>{{doctor.firstName}} {{doctor.lastName}}</td>
+                    <td>{{doctor.category}}</td>
+                    <td>
+                        <img class="picture" [src]="doctor.imageUrl" alt="Doctor Photo" width="50">
+                    </td>
+                    <td><div class="stars">
+                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                    </div></td>
+                    <td class="edit-delete">
+                         <img class="circle" src="../../assets/edit.png" alt="" (click)="editDoctor(doctor)">
+                        <img class="circle1" src="../../assets/delete.png" alt="" (click)="deleteDoctor(doctor.id)">
+                    </td>
+                </tr>
+
+
+                <!-- <tr >
+                    <td>{{item.firstName}}</td>
+                    <td>{{item.category}}</td>
+                    <td><img [src]="item.imageUrl" alt="Doctor Photo" width="50"></td>
+                    <td><div class="stars">
+                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                    </div></td>
+                    <td class="edit-delete"><img class="circle" src="../../assets/edit.png" alt="">
+                    <img class="circle1" src="../../assets/delete.png" alt=""></td>
+                </tr> -->
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>

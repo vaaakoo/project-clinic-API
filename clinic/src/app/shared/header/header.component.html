@@ -1,0 +1,122 @@
+<!-- header.component.html -->
+<div class="header">
+    <div class="first-section">
+      <div class="nav-bar-1">
+        <a routerLink="/home" class="logo-link">
+          <img src="../../../assets/logo1.png" alt="Logo">
+          <span class="logo-text">კლინიკა</span>
+        </a>
+
+        <ul class="nav-bar">
+          <li>ექიმები</li>
+          <li>კლინიკები</li>
+          <li>ანოტაციები</li>
+          <li>აქციები</li>
+          <li>სერვისები</li>
+          <li>მედიკამენტები</li>
+          <li>კონტაქტი</li>
+        </ul>
+
+        <div [ngClass]="{'navbar-button': !isLoggedIn, 'navbar-button2': isLoggedIn || isAdministrator}">
+          <button class="button-reg-aut" *ngIf="!isLoggedIn && !isAdministrator && !isDoctor">
+            <span class="button-registartion" (click)="navigateToRegistration()">რეგისტრაცია</span>
+            <span class="button-aut" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"> / ავტორიზაცია</span>
+          </button>
+        
+          <button class="button-reg-aut2" (click)="navigateClient()" *ngIf="isLoggedIn && !isAdministrator">
+            <img src="../../../assets/Ellipse20.png" alt="">
+            <span class="button-registartion">{{ this.client.firstName }} {{ this.client.lastName }}</span>
+          </button>
+          <button class="button-reg-aut2" (click)="navigateDoctor()" *ngIf="isDoctor">
+            <img src="../../../assets/Ellipse20.png" alt="">
+            <span class="button-registartion">{{ this.doctor.firstName }} {{ this.doctor.lastName }}</span>
+          </button>
+        
+          <button class="button-reg-aut2" (click)="navigateAdmin()" *ngIf="isAdministrator">
+            <img src="../../../assets/Ellipse-222(1).png" alt="">
+            <span class="button-registartion">ადმინისტრატორი</span>
+          </button>
+  
+          <button class="button-eng">
+            <span>ENG</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="second-section">
+      <div class="header-elements">
+        <div class="header-element1">
+          <div class="header-element-1">
+            <div class="img-color">
+              <img src="../../../assets/call.png" alt="Logo">
+            </div>
+            <p>032 2 100 100</p>
+          </div>
+          <div class="header-element-1">
+            <div class="img-color">
+              <img src="../../../assets/location.png" alt="Logo">
+            </div>
+            <p>იაკობ ნიკოლაძე №10</p>
+          </div>
+        </div>
+        <div class="header-element2">
+          <div class="header-element-2">
+            <input type="text" placeholder="მოძებნე ექიმი სახელით">
+          </div>
+          <div class="header-element-2">
+            <input class="grey-elem" type="text" placeholder="მოძებნე სპეციალობით">
+          </div>
+          <div class=" img-back">
+            <img src="../../../assets/search.png" alt="Logo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">ავტორიზაცია</h5>
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> -->
+        </div>
+        <!-- <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <input type="text" class="form-control" [(ngModel)]="authservice.logindata.email" name="email" id="recipient-email" placeholder="ელ.ფოსტა/ ტელეფონის ნომერი">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="authservice.logindata.password" name="password" class="form-control form-password" id="recipient-name" placeholder="პაროლი">
+              <span class="forget-password"><p>პაროლის აღდგენა</p></span>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="navigatetoregisteration()" >შესვლა</button>
+        </div> -->
+
+        <div class="modal-body">
+          <form (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <input type="text" class="form-control" [(ngModel)]="authservice.logindata.email" name="email" id="recipient-email" placeholder="ელ.ფოსტა/ ტელეფონის ნომერი">
+            </div>
+            <div class="form-group">
+              <input type="text" [(ngModel)]="authservice.logindata.password" name="password" class="form-control form-password" id="recipient-name" placeholder="პაროლი">
+              <span class="forget-password"><p>პაროლის აღდგენა</p></span>
+            </div>
+          
+            <div class="modal-footer">
+              <button type="submit" *ngIf="submissionSuccess" data-dismiss="modal">close</button>
+              <button type="submit" *ngIf="!submissionSuccess">შესვლა</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

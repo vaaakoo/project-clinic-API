@@ -1,0 +1,139 @@
+
+/* registration.component.css */
+.registration-form {
+    width: 1530px;
+    height: auto;
+    margin-top: 60px;
+    margin-left: 150px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    margin-bottom: 125px;
+  }
+  h2 {
+    color: #18A4E1;
+    font-family: 'FiraGO';
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  label {
+    padding-left: 20px;
+    margin-bottom: 4px;
+    color: #053354;
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .activeMesStyle {
+    display: flex;
+    flex: 0 0 100%;
+    justify-content: space-between;
+  }
+
+
+  .labels .vada {
+    padding-right: 20px;
+    color: rgba(5, 51, 84, 0.30);
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  input:focus {
+    border-color: #18A4E1 !important;
+    color: #18A4E1;
+  }
+
+  /* email */
+  .email-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .email-input {
+    border-radius: 50px;
+    border: 1px solid #ECF2F8;
+    height: 50px;
+    padding-left: 20px;
+  }
+  
+  .right-arrow-img {
+    position: absolute;
+    top: 100%; /* Center vertically */
+    right: 14px; /* Adjust the right spacing as needed */
+    transform: translateY(-50%); /* Center vertically */
+    width: 20px; /* Adjust the width as needed */
+    height: auto;
+  }
+  
+  .form-group {
+    display: grid;
+    width: 480px;
+    height: 50px;
+    transition: border-color 0.3s, color 0.3s;
+    margin-bottom: 30px;
+  }
+
+  .form-group input {
+    border-radius: 50px;
+    border: 1px solid #ECF2F8;
+    padding-left: 20px;
+    height: 50px;
+  }
+
+  .labels {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .activation {
+    display: grid;
+    gap: 10px;
+  }
+
+  .activation span {
+    padding-left: 20px;
+    color: #FF2C52;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .button {
+    margin-top: 13px;
+    margin-left: auto; /* Move the button to the right */
+  }
+  button {
+    width: 180px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    background: #053354;
+    cursor: pointer;
+    color: #FFF;
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+  
+  button:hover {
+    background-color: #0d5b93;
+  }
+  

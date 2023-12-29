@@ -1,0 +1,339 @@
+/* home.component.css */
+.home-hero {
+    display: flex;
+    flex-direction: column;
+}
+/* pictures section */
+.main-content {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the left */
+    height: 600px; /* Set a fixed height for the container */
+    background-image: url("../../assets/Rectangle30.png");
+    background-size: cover; /* Ensure the background image covers the container */
+  }
+  
+  .rectangle {
+    width: 1087px;
+    height: 600px;
+    border-radius: 0px 50px 50px 0px;
+    background: rgba(5, 51, 84, 0.25);
+    backdrop-filter: blur(2px);
+  }
+
+  .rectangle-child {
+    display: flex;
+    flex-direction: column;
+    margin: 184px 150px;
+    gap: 52px;
+    
+}
+.rectangle-child p {
+    color: #FFF;
+    font-family: 'FiraGO';
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0px;
+}
+
+.rectangle-child button {
+    width: 370px;
+    height: 65px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50px;
+    background: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #053354;
+    font-family: 'FiraGO';
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+}
+
+.rectangle-child img {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.categories {
+    display: flex;
+    margin: 73px 150px;
+    margin-right: auto;
+    gap: 60px;
+}
+
+.category {
+    width: 350px;
+    height: 800px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #FFF;
+    box-shadow: 0px 4px 50px 0px rgba(5, 51, 84, 0.05);
+}
+
+ .category-all {
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .category-name {
+    text-align: center;
+  }
+
+ .category-name p {
+    display: grid;
+    text-align: center;
+    color: #053354;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.category-list {
+    width: 100%;
+    margin-bottom: 33px;
+  }
+  
+  .category-components {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+  }
+  
+  .category-components li {
+    display: flex;
+    width: 100%;
+    padding: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  li .num {
+    width: 30%;
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+    padding-left: 40px; /* Adjust spacing between divs as needed */
+    color: rgba(5, 51, 84, 0.30);
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  
+  li .text {
+    width: 40%;
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+    color: #053354;
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  li img {
+    margin-left: 40px;
+    box-sizing: border-box;
+    visibility: hidden;
+  }
+  .category-components li:hover {
+    background: rgba(236, 242, 248, 0.50);
+    color: #18A4E1;
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .category-components li:hover .num {
+    color: #18A4E1; /* Blue color on hover */
+  }
+
+  .category-components li:hover .li-img {
+    visibility: visible;
+  }
+
+  .category-bottom {
+    text-align: center;
+    margin-top: 0px;
+  }
+
+.category-last {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.category-last p {
+    color: #18A4E1;
+    font-family: 'FiraGO';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 0px;
+    margin: 0px;
+}
+.category-last img {
+    width: 16px;
+    height: 16px;
+}
+
+
+.doctors {
+  width: 1211px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* home.component.css */
+.square-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Adjust the gap between squares as needed */
+  }
+
+  .category {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .square {
+    width: 390px;
+    height: 390px;
+    border-radius: 10px;
+    border: 1px solid rgba(24, 164, 225, 0.30);
+    background: #FFF;
+    box-shadow: 0px 4px 30px 0px rgba(5, 51, 84, 0.05);
+  }
+
+  .upper .viewers {
+    display: flex;
+    width: 107px;
+    height: 30px;
+    flex-shrink: 0;
+    align-content: center;
+    padding: 5px 10px;
+    border-radius: 50px;
+    background: rgba(236, 242, 248, 0.50);
+  }
+
+  .viewers p {
+    color: rgba(5, 51, 84, 0.50);
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1.12px;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .upper img {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+  }
+
+  .upper {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+  }
+
+  .middle {
+    display: flex;
+    flex-direction: column;
+    margin-top: -27px;
+    align-items: center;
+    justify-content: center;
+  }
+ 
+  .middle .picture {
+    width: 157px;
+    height: 157px;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-bottom: 15px;
+    border-radius: 50%;
+  }
+
+  .middle .card-name {
+    color: #053354;
+    font-family: 'FiraGO';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 9px;
+    padding-bottom: 0px;
+  }
+
+  .middle .stars img {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0; 
+    margin-bottom: 22px;   
+  }
+
+  .middle button {
+    background-color: #FFF;
+    width: 200px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 25px;
+    border: 1px solid #18A4E1;
+    color: #18A4E1;
+    font-family: FiraGO;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .middle .card-category {
+    color: rgba(5, 51, 84, 0.30);
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 6px;
+  }
+
+ .read-more {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-left: auto;
+}
+.read-more p {
+  padding-right: 18px;
+  color: #053354;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.read-more img {
+  margin-left: auto;
+}

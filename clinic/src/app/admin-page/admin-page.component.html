@@ -1,0 +1,142 @@
+<div class="hero">
+    <div class="hero-hero">
+        <div class="first-section">
+            <div class="headers">
+                <div class="rectangle">
+                    <span class=" rectangle-1"></span>
+                    <span class=" rectangle-2"></span>
+                    <span class=" rectangle-3"></span>
+                </div>
+                <div class="headers-p">
+                    <p [class.active]="activeTab === 'registration'" (click)="setActiveTab('registration')">რეგისტრაცია</p>
+                    <p [class.active]="activeTab === 'categories'" (click)="setActiveTab('categories')">კატეგორიები</p>
+                    <p [class.active]="activeTab === 'doctors'" (click)="setActiveTab('doctors')">ექიმები</p>
+                </div>
+            </div>
+            <div class="headers2">
+                <button [class.active]="activeRole === 'doctor'" (click)="setActiveRole('doctor')">ექიმი</button>
+                <button [class.active]="activeRole === 'user'" (click)="setActiveRole('user')">მომხმარებელი</button>
+                <button [class.active]="activeRole === 'admin'" (click)="setActiveRole('admin')">ადმინისტრატორი</button>
+            </div>
+            
+        </div>
+<!-- second-section -->
+        <div class="second-section">
+            <div class="left-section">
+                <div class="user">
+                    <div class="card-columns">
+                        <div class="middle">
+                            <img class="picture" src="../../assets/Ellipse5.png" alt="">
+                            <p class="card-name">გიორგი ხორავა</p>
+                            <p class="roll">ექიმი</p>
+                            <p class="card-category">კარდიოლოგი / არითმოლოგი</p>
+                            <div class="stars">
+                                <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
+                            </div>
+                        </div>
+                        <div class="card-middle">
+                            <div class="card-middle-grid">
+                                <span><img src="../../assets/edit-svgrepo-com2-dark.png" alt=""></span>
+                                <div class="write-changes">
+                                    <h3>პირადი ნომერი</h3>
+                                    <p>00000000000</p>
+                                </div>
+                            </div>
+                            <div class="card-middle-grid">
+                                <span><img src="../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
+                                <div class="write-changes">
+                                    <h3>Email</h3>
+                                    <p>clinic@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="card-middle-grid">
+                                <span><img src="../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
+                                <div class="write-changes">
+                                    <h3>პაროლის შეცვლა</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-middle-grid">
+                                <span><img src="../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
+                                <div class="write-changes">
+                                    <h3>დაჯავშნილია :</h3>
+                                    <p>( 20 )</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  ცვლილებების ღილაკები -->
+                
+                <div class="change-sect">
+                    <button class="adding">
+                        <p>+ დამატება</p>
+                    </button>
+                    <button class="redact">
+                        <span><img src="../../assets/edit-svgrepo-com 2.png" alt=""></span>
+                        <p>რედაქტირება</p>
+                    </button>
+                    <button class="delete">
+                        <span><img src="../../assets/delete-file-svgrepo-com 3.png" alt=""></span>
+                        <p>წაშლა</p>
+                    </button>
+                </div>
+            </div>
+
+                <!-- ცხრილი -->
+            <div class="calendar">
+                <div class="time">
+                    <span class="year">2023</span>
+                    <div class="buttons-click">
+                        <span class="arrow arrow-left "><img src="../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
+                        <button class="action-button">აპრილი</button>
+                        <span class="arrow arrow-right"><img src="../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
+                    </div>
+                </div>
+               
+                <!-- calendar -->
+                <div class="custom-table">
+                    <table>     
+                            <thead class="header">
+                                <tr >
+                                  <th class="days-botton">
+                                    <span class="img-2"><img src="../../assets/right-arrow_271228.png" style="width: 12px; height: 12px;" alt=""></span>
+                                    <span><img src="../../assets/right-arrow_271228.png" style="width: 12px; height: 12px;" alt=""></span>
+                                  </th> 
+                                  <th *ngFor="let num of tableHeaders; let i = index"  >
+                                    <div class="days"><p class="day-number">{{ num.num }}</p> <p >({{ num.day }})</p></div>
+                                    
+                                  </th>
+                                </tr>
+                              </thead>     
+                              <tbody>
+                                <ng-container *ngFor="let row of tableData; let i = index">
+                                  <tr>
+                                    <td>{{ getTimeRange(i) }}</td> <!-- Display time range in the first column -->
+                                    <ng-container *ngFor="let col of row.cols; let j = index">
+                                      <td
+                                        [class.activated]="col.activated"
+                                        (click)="toggleCellActivation(i, j)"
+                                      >
+                                      <span *ngIf="col.activated" class="activated-text"><p>My <br /> Booking</p> 
+                                        <span class="delete-button" (click)="deleteCell(i, j)">
+                                        <img src="../../assets/Group 3.png" alt=""></span>
+                                    </span>
+                                    <span *ngIf="!col.activated && j < 5">დაჯავშნა</span>
+                                      </td>
+                                    </ng-container>
+                                  </tr>
+                                </ng-container>
+                              </tbody>
+                    </table>
+                </div>              
+            </div>
+        </div>
+    </div>
+</div>
+

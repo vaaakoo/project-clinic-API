@@ -1,0 +1,188 @@
+
+/* registration.component.css */
+.registration-form {
+    width: 1530px;
+    height: auto;
+    margin-top: 60px;
+    margin-left: 150px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    margin-bottom: 125px;
+  }
+  h2 {
+    color: #18A4E1;
+    font-family: 'FiraGO';
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  label {
+    padding-left: 20px;
+    margin-bottom: 4px;
+    color: #053354;
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+
+  .labels .vada {
+    padding-right: 20px;
+    color: rgba(5, 51, 84, 0.30);
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+  input:focus {
+    border-color: #18A4E1 !important;
+    color: #18A4E1;
+  }
+
+  /* email */
+  .email-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .email-input {
+    border-radius: 50px;
+    border: 1px solid #ECF2F8;
+    height: 50px;
+    padding-left: 20px;
+  }
+  
+  .right-arrow-img {
+    position: absolute;
+    top: 100%; /* Center vertically */
+    right: 14px; /* Adjust the right spacing as needed */
+    transform: translateY(-50%); /* Center vertically */
+    width: 20px; /* Adjust the width as needed */
+    height: auto;
+  }
+  
+  .form-group {
+    display: grid;
+    width: 480px;
+    height: 50px;
+    transition: border-color 0.3s, color 0.3s;
+    margin-bottom: 30px;
+  }
+
+  .form-group input {
+    border-radius: 50px;
+    border: 1px solid #ECF2F8;
+    padding-left: 20px;
+    height: 50px;
+  }
+
+  .labels {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .button {
+    display: flex;
+  }
+
+  button {
+    width: 180px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    background: #053354;
+    cursor: pointer;
+    color: #FFF;
+    font-family: 'FiraGO';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+  
+  button:hover {
+    background-color: #0d5b93;
+  }
+  
+  .form-group3 {
+    display: grid;
+    width: 480px;
+    height: 50px;
+    margin-top: 20px;
+    justify-content: flex-end;
+    
+  }
+    /* category */
+
+
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.form-group select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  height: 50px;
+  border-radius: 50px;
+  border: 1px solid #ECF2F8;
+  padding-left: 20px;
+  padding-right: 30px; /* Adjust this based on the width of the custom arrow */
+}
+
+.form-group select:focus {
+  outline: none;
+}
+
+.category-default {
+  color: rgba(5, 51, 84, 0.30);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* image & doc */
+.form-group1 input,
+.custom-file-input {
+  display: none;
+}
+
+.custom {
+  position: relative;
+  width: 100%;
+  border-radius: 50px;
+  border: 1px solid #ECF2F8;
+  padding-left: 20px;
+  height: 50px;
+}
+
+.custom-label {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+.custom-label img {
+  width: 20px; /* Adjust the width of the image as needed */
+  margin-right: 13px; /* Add margin to separate the image from text */
+}
