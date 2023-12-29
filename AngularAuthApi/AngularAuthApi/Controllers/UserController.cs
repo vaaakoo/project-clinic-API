@@ -36,15 +36,15 @@ namespace AngularAuthYtAPI.Controllers
         {
             var initialDoctors = new List<User>
         {
-            new User { FirstName = "გიორგი", LastName = "ხორავა", Password = "123456", Category = "ანდროლოგი", Email = "1@gmail.com", Role = "doctor", ImageUrl = "/assets/image1.jpg", IsAdmin = false},
-            new User { FirstName = "ნატალია", LastName = "გოგოხია", Password = "123456", Category = "ანესთეზიოლოგი", Email = "2@gmail.com", Role = "doctor", ImageUrl = "/assets/image2.jpg", IsAdmin = false },
-            new User { FirstName = "ანა", LastName = "დვლაი",Password = "123456", Category = "კარდიოლოგი", Email = "3@gmail.com", Role = "doctor", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
-            new User { FirstName = "გიორგი", LastName = "გაბიტაშვილი", Password = "123456", Category = "კოსმეტოლოგი", Email = "4@gmail.com", Role = "doctor", ImageUrl = "/assets/image4.jpg", IsAdmin = false },
-            new User { FirstName = "ბარბარე", LastName = "ქორთუა", Password = "123456", Category = "ლაბორანტი", Email = "5@gmail.com", Role = "doctor", ImageUrl = "/assets/image5.jpg", IsAdmin = false },
-            new User { FirstName = "გიორგი", LastName = "ხორავა", Password = "123456", Category = "პედიატრი", Email = "6@gmail.com", Role = "doctor", ImageUrl = "/assets/image6.jpg", IsAdmin = false },
-            new User { FirstName = "ნატალია", LastName = "გაბიტაშვილი", Password = "123456", Category = "ოჯახის ექიმი", Email = "7@gmail.com", Role = "doctor", ImageUrl = "/assets/image7.jpg", IsAdmin = false },
-            new User { FirstName = "გიორგი", LastName = "დვალი", Password = "123456", Category = "ტოქსიკოლოგი", Email = "8@gmail.com", Role = "doctor", ImageUrl = "/assets/image8.jpg", IsAdmin = false },
-            new User { FirstName = "ანა", LastName = "გაბიტაშვილი", Password = "123456", Category = "ტრანსფუზილოგი", Email = "9@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
+            new User { FirstName = "giorgi", LastName = "xorava", Password = "123456", Category = "ანდროლოგი", Email = "1@gmail.com", Role = "doctor", ImageUrl = "/assets/image1.jpg", IsAdmin = false},
+            new User { FirstName = "natalia", LastName = "gogoxia", Password = "123456", Category = "ანესთეზიოლოგი", Email = "2@gmail.com", Role = "doctor", ImageUrl = "/assets/image2.jpg", IsAdmin = false },
+            new User { FirstName = "ana", LastName = "dvali",Password = "123456", Category = "კარდიოლოგი", Email = "3@gmail.com", Role = "doctor", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
+            new User { FirstName = "giorgi", LastName = "gabitashvili", Password = "123456", Category = "კოსმეტოლოგი", Email = "4@gmail.com", Role = "doctor", ImageUrl = "/assets/image4.jpg", IsAdmin = false },
+            new User { FirstName = "barbare", LastName = "qorTua", Password = "123456", Category = "ლაბორანტი", Email = "5@gmail.com", Role = "doctor", ImageUrl = "/assets/image5.jpg", IsAdmin = false },
+            new User { FirstName = "giorgi", LastName = "xaranauli", Password = "123456", Category = "პედიატრი", Email = "6@gmail.com", Role = "doctor", ImageUrl = "/assets/image6.jpg", IsAdmin = false },
+            new User { FirstName = "natia", LastName = "gvilia", Password = "123456", Category = "ოჯახის ექიმი", Email = "7@gmail.com", Role = "doctor", ImageUrl = "/assets/image7.jpg", IsAdmin = false },
+            new User { FirstName = "daviT", LastName = "dvali", Password = "123456", Category = "ტოქსიკოლოგი", Email = "8@gmail.com", Role = "doctor", ImageUrl = "/assets/image8.jpg", IsAdmin = false },
+            new User { FirstName = "mariam", LastName = "gobejiani", Password = "123456", Category = "ტრანსფუზილოგი", Email = "9@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
         };
 
             _authContext.Users.AddRange(initialDoctors);
