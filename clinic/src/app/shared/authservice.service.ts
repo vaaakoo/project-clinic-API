@@ -31,6 +31,10 @@ export class AuthserviceService {
     return this.http.post<any>(`${this.apiUrl}/register`, user);
   }
 
+  sendResetCode(email: string): Observable<any> {
+    const apiUrl = `${this.apiUrl}/send-reset-code/${email}`;
+    return this.http.get(apiUrl);
+  }
 
   AuthenticateUser(user: Useregisteration): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/AuthenticateUser`, user);
@@ -69,7 +73,6 @@ export class AuthserviceService {
     // Adjust the path based on your API endpoint for removing appointments
     return this.http.post<any>(`${this.bookUrl}/ClientRemoveAppointment`, formData);
   }
-
 
   updateDoctor(doctor: doctorregisteration): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/updateDoctor/${doctor.id}`, doctor);

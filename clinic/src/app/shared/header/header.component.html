@@ -91,7 +91,7 @@
             </div>
             <div class="form-group">
               <input type="text" [(ngModel)]="authservice.logindata.password" name="password" class="form-control form-password" id="recipient-name" placeholder="პაროლი">
-              <span class="forget-password"><p>პაროლის აღდგენა</p></span>
+              <span class="forget-password" (click)="sendResetCode()"><p>პაროლის აღდგენა</p></span>
             </div>
           
             <div class="modal-footer">

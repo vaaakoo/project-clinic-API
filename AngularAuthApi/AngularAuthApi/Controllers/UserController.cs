@@ -19,17 +19,22 @@ namespace AngularAuthYtAPI.Controllers
     {
         private readonly AppDbContext _authContext;
         private static string globalActivationCode = string.Empty;
+        private static string globalResetCode = string.Empty;
         private readonly IActivationCodeService _activationCodeService;
+        private readonly IPasswordResetService _passwordResetService;
 
-        public UserController(AppDbContext context, IActivationCodeService activationCodeService)
+
+        public UserController(AppDbContext context, IActivationCodeService activationCodeService, IPasswordResetService passwordResetService)
         {
             _authContext = context;
             _activationCodeService = activationCodeService;
+            _passwordResetService = passwordResetService;
 
             if (!_authContext.Users.Any(user => user.Category != null))
             {
                 SeedInitialData();
             }
+            
         }
 
         /* if it empty saved this static */
@@ -372,6 +377,44 @@ namespace AngularAuthYtAPI.Controllers
         }
 
 
+        [HttpGet("send-reset-code/{email}")]
+        public async Task<IActionResult> SendResetCode(string email)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(email))
+                {
+                    var resetCode = await _passwordResetService.GenerateResetCodeAsync();
+
+                    // Update the user's password in the database without hashing
+                    var user = _authContext.Users.FirstOrDefault(u => u.Email == email);
+                    if (user != null)
+                    {
+                        user.Password = resetCode; // Assuming resetCode is the new password
+                        _authContext.SaveChanges();
+                    }
+
+                    // Customize the email subject and body as needed
+                    var subject = "Password Reset";
+                    var body = $"Your new password is: {resetCode}";
+
+                    await _passwordResetService.SendResetCodeAsync(email, resetCode, body, subject);
+
+                    // Return the reset code to the client if needed
+                    return Ok(new { Message = "Password reset code sent successfully", ResetCode = resetCode });
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it based on your application's error handling strategy
+                Console.Error.WriteLine(ex);
+                return StatusCode(500, new { Message = "Error sending password reset code", Error = ex.Message });
+            }
+        }
 
     }
 

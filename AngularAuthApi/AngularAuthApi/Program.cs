@@ -19,6 +19,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IActivationCodeService, ActivationCodeService>();
+builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+
 builder.Services.AddCors(options => options.AddPolicy(name: "NgOrigins",
     policy =>
     {

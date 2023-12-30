@@ -109,4 +109,20 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit(): void {}
 
+  sendResetCode() {
+    if (this.authservice.logindata.email !== '') {
+      this.authservice.sendResetCode(this.authservice.logindata.email).subscribe(
+        (response) => {
+          console.log(response);
+          alert('Reset code sent successfully to ' + this.authservice.logindata.email);
+        },
+        (error) => {
+          console.error(error);
+          alert('Error sending reset code');
+        }
+      );
+    } else {
+      alert('Please provide a valid email address.');
+    }
+  }
 }

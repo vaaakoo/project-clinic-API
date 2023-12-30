@@ -30,5 +30,11 @@ namespace AngularAuthYtAPI.Models
         [NotMapped]
         public string? activationcode { get; set; }
 
+        [NotMapped]
+        public string? ResetCode { get; set; }
+
+        [NotMapped]
+        public string? NewPassword { get; set; }
+
     }
 }
