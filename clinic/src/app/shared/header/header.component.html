@@ -1,5 +1,6 @@
 <!-- header.component.html -->
 <div class="header">
+  <!-- first-section -->
     <div class="first-section">
       <div class="nav-bar-1">
         <a routerLink="/home" class="logo-link">
@@ -17,6 +18,7 @@
           <li>კონტაქტი</li>
         </ul>
 
+        <!-- button section -->
         <div [ngClass]="{'navbar-button': !isLoggedIn, 'navbar-button2': isLoggedIn || isAdministrator}">
           <button class="button-reg-aut" *ngIf="!isLoggedIn && !isAdministrator && !isDoctor">
             <span class="button-registartion" (click)="navigateToRegistration()">რეგისტრაცია</span>
@@ -76,31 +78,12 @@
   </div>
   
   <!-- modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">ავტორიზაცია</h5>
-          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button> -->
         </div>
-        <!-- <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <input type="text" class="form-control" [(ngModel)]="authservice.logindata.email" name="email" id="recipient-email" placeholder="ელ.ფოსტა/ ტელეფონის ნომერი">
-            </div>
-            <div class="form-group">
-              <input type="text" [(ngModel)]="authservice.logindata.password" name="password" class="form-control form-password" id="recipient-name" placeholder="პაროლი">
-              <span class="forget-password"><p>პაროლის აღდგენა</p></span>
-            </div>
-
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" (click)="navigatetoregisteration()" >შესვლა</button>
-        </div> -->
-
         <div class="modal-body">
           <form (ngSubmit)="onSubmit()">
             <div class="form-group">
