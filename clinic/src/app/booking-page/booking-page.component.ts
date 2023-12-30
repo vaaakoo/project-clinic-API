@@ -2,6 +2,7 @@ import { Component , OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthserviceService } from '../shared/authservice.service';
 import { doctorregisteration } from '../useregisteration';
+import { data } from 'jquery';
 declare var $: any;
 
 @Component({
@@ -10,9 +11,9 @@ declare var $: any;
   styleUrls: ['./booking-page.component.css']
 })
 export class BookingPageComponent implements OnInit{
-  activeTab: string = 'doctors';
-  activeRole: string = 'doctor';
+
   tableData: { cols: { value: string; activated: boolean }[] }[] = [];
+ 
   tableHeaders: { num: number; day: string }[] = [
     { num: 17, day: 'mon' },
     { num: 18, day: 'tue' },
@@ -22,10 +23,13 @@ export class BookingPageComponent implements OnInit{
     { num: 22, day: 'sat' },
     { num: 23, day: 'sun' },
   ];
+
+
   unauthorizedMessageShown: boolean = false;
   messageToDoctor: boolean = false;
   doctor?: doctorregisteration ;
-  doctorId: number | undefined; // Variable to store the doctor ID
+  doctorId: number | undefined; 
+  patientFirstName: string = '';
   
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
@@ -34,11 +38,14 @@ export class BookingPageComponent implements OnInit{
     this.route.params.subscribe(params => {
       this.doctorId = +params['id'];
       console.log('Doctor ID from route parameters:', this.doctorId);
+      
 
       this.authservice.getDoctorById(this.doctorId).subscribe(
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
-          loadData(); // Call loadData after fetching the doctor's information
+          console.log(this.doctor);
+          this.patientFirstName = this.authservice.loginusername;
+          loadData();
         },
         (error) => {
           console.error('Error fetching doctor data:', error);
@@ -51,9 +58,12 @@ export class BookingPageComponent implements OnInit{
       $('.tdclick').on('click', (event: any) => {
         debugger;
         var clickedTd = $(event.target);
+        console.log(clickedTd);
         var tdId = clickedTd.attr('id');
-        var patientName=$('#patientname').text();
+        console.log(tdId);
+        var patientName=this.patientFirstName;
         console.log(patientName);
+
         if(patientName!=""){
           debugger;
           this.unauthorizedMessageShown = false;
@@ -62,107 +72,106 @@ export class BookingPageComponent implements OnInit{
           const htmlContent = `
             <span class="activated-text">
                 <p>My <br />Booking </p>
-                <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%; padding: 10px;"></span>
+                <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
+                <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
             </span>
             `;
           clickedTd.html(htmlContent);
           var formData = {
-            DoctorName: this.doctor?.firstName ||'Doctor',
+            DoctorName: this.doctor?.firstName,
+            IdNumber: this.doctor?.idNumber ||'Doctor',
             UniqueNumber: tdId,
             PatientName:patientName,
             Status: 'available',
           };
   
-          $.ajax({
-            type: 'POST',
-            url: 'http://localhost:5100/api/Booking/ClientBookAppointment',
-            contentType: 'application/json',
-            data: JSON.stringify(formData),
-            success: function () {
+          this.authservice.clientBookAppointment(formData).subscribe(
+            () => {
               alert('Appointment Booked successfully!');
             },
-            error: function () {},
-          });
-          $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
-        }else{
-          alert("First Login Yourself To Book Appointment");
-          this.unauthorizedMessageShown = true;
-        }
-      });
-      $('.tdclick').on('click', '.deletebutton', function (event: any) {
-        debugger;
-        const clickedDeleteButton = $(event.target);
-        var tdId = clickedDeleteButton.closest('td').attr('id');
-        var patientName=$('#patientname').text();
-        const parentTdClick = clickedDeleteButton.closest('.tdclick');
-        parentTdClick.removeClass('activated');
-        parentTdClick.empty();
-        var formData = {
-          DoctorName: 'Doctor',
-          UniqueNumber: tdId,
-          PatientName:patientName,
-          Status: 'Booked',
-        };
+            (error) => {
+              console.error('Error booking appointment:', error);
+            }
+          );
 
-        $.ajax({
-          type: 'POST',
-          url: 'http://localhost:5100/api/Booking/ClientRemoveAppointment',
-          contentType: 'application/json',
-          data: JSON.stringify(formData),
-          success: function () {
+            $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
+            }else{
+              alert("First Login Yourself To Book Appointment");
+              this.unauthorizedMessageShown = true;
+            }
+            });
+            $('.tdclick').on('click', '.deletebutton',  (event: any) => {
+              debugger;
+              const clickedDeleteButton = $(event.target);
+              var tdId = clickedDeleteButton.closest('td').attr('id');
+              var patientName=this.patientFirstName;
+              const parentTdClick = clickedDeleteButton.closest('.tdclick');
+              parentTdClick.removeClass('activated');
+              parentTdClick.empty();
+
+              var formData = {
+                DoctorName: this.doctor?.firstName,
+                IdNumber: this.doctor?.idNumber ||'Doctor',
+                UniqueNumber: tdId,
+                PatientName:patientName,
+                Status: 'Booked',
+              };
+
+          this.authservice.clientRemoveAppointment(formData).subscribe(
+          () => {
             alert('Appointment Removed successfully!');
           },
-          error: function () {},
-        });
+          (error) => {
+            console.error('Error removing appointment:', error);
+          }
+        );
       });
       
     });
 
     const loadData = () => {
-     var doctorName = this.doctor?.firstName || 'Doctor';
-      ;
-      debugger;
-      $.ajax({
-        type: 'GET',
-        url:
-          'http://localhost:5100/api/Booking/getclient?Client=' +
-          doctorName,
-        contentType: 'application/json',
-        success: function (data: any) {
-          // debugger;
-          var Patientname=$('#patientname').text();
+      const IdNumber = this.doctor?.idNumber || 'Doctor';
+    
+      this.authservice.getAppointmentData(IdNumber).subscribe(
+        (data: any) => {
+          const patientName = this.patientFirstName;
+    
           if (data.length > 0) {
-            $.each(data, function (index: any, appointment: any) {
-              if(appointment.status=="Unavailable" || appointment.patientName!=Patientname){
-                $('#'+appointment.uniqueNumber).addClass('disactivated');
+            data.forEach((appointment: any) => {
+              const element = $('#' + appointment.uniqueNumber);
+    
+              if (appointment.status === 'Unavailable' || appointment.patientName !== patientName) {
+                element.addClass('disactivated');
                 const htmlContent = `
-                <span class="activated-text">
+                    <span class="activated-text">
                     <p>Not <br /> Available</p>
-                </span>
+                    </span>
                 `;
-                $('#'+appointment.uniqueNumber).html(htmlContent);
+                element.html(htmlContent);
                 $('.tdclick.disactivated').prop('disabled', true);
-              }else if(appointment.patientName==Patientname){
-                $('#'+appointment.uniqueNumber).addClass('activated');
+              } else if (appointment.patientName === patientName) {
+                element.addClass('activated');
                 const htmlContent = `
-                <span class="activated-text">
-                    <p>My <br /> Booking</p>
-                    <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%; padding: 10px;"></span>
-                </span>
+                  <span class="activated-text">
+                    <p>My <br />Booking </p>
+                    <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
+                    <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
+                  </span>
                 `;
-                $('#'+appointment.uniqueNumber).html(htmlContent);
+                element.html(htmlContent);
               }
-             
-              
             });
+    
             $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
           }
         },
-        error: function () {
-          
-        },
-      });
-    }
+        (error) => {
+          console.error('Error fetching appointment data:', error);
+        }
+      );
+    };
+    
+
     for (let i = 1; i <= 9; i++) {
       const row = { cols: [] as { value: string; activated: boolean }[] };
       for (let j = 1; j <= 7; j++) {

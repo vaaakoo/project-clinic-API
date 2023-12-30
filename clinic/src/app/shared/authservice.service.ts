@@ -52,6 +52,25 @@ export class AuthserviceService {
     return this.http.get<any>(`${this.bookUrl}/getclient?Client=${doctorName}`);
   }
 
+  getDoctorDataByIdNumber(idNumber: string): Observable<any> {
+    return this.http.get<any>(`${this.bookUrl}/getclient?IdNumber=${idNumber}`);
+  }
+
+  clientBookAppointment(formData: any): Observable<any> {
+    // Adjust the path based on your API endpoint for booking appointments
+    return this.http.post<any>(`${this.bookUrl}/ClientBookAppointment`, formData);
+  }
+
+  getAppointmentData(idNumber: string): Observable<any> {
+    return this.http.get<any>(`${this.bookUrl}/getclient?IdNumber=${idNumber}`);
+  }
+
+  clientRemoveAppointment(formData: any): Observable<any> {
+    // Adjust the path based on your API endpoint for removing appointments
+    return this.http.post<any>(`${this.bookUrl}/ClientRemoveAppointment`, formData);
+  }
+
+
   updateDoctor(doctor: doctorregisteration): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/updateDoctor/${doctor.id}`, doctor);
   }

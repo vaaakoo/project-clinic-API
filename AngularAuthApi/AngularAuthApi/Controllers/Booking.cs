@@ -15,7 +15,7 @@ namespace AngularAuthApi.Controllers
         {
             db = context;
         }
-        [HttpGet("getdata")]
+        /*[HttpGet("getdata")]
         public IActionResult getBookAppointments(string DoctorName)
         {
             var data = db.tblAppointment.Where(x => x.DoctorName.Equals(DoctorName)).ToList();
@@ -23,6 +23,16 @@ namespace AngularAuthApi.Controllers
                 return NotFound(new { message = "No Data Found" });
             return Ok(data);
 
+        }*/
+
+        [HttpGet("getdata")]
+        public IActionResult GetBookAppointments(string IdNumber)
+        {
+            var data = db.tblAppointment.Where(x => x.IdNumber.Equals(IdNumber)).ToList();
+            if (data == null || data.Count == 0)
+                return NotFound(new { message = "No Data Found" });
+
+            return Ok(data);
         }
 
         [HttpPost("BookAppointment")]
@@ -45,7 +55,7 @@ namespace AngularAuthApi.Controllers
         {
             if (appointment != null)
             {
-                var data = db.tblAppointment.Where(x => x.DoctorName == appointment.DoctorName && x.UniqueNumber==appointment.UniqueNumber).FirstOrDefault();
+                var data = db.tblAppointment.Where(x => x.IdNumber == appointment.IdNumber && x.UniqueNumber==appointment.UniqueNumber).FirstOrDefault();
                 db.Remove(data);
                 db.SaveChanges();
                 return Ok();
@@ -56,9 +66,9 @@ namespace AngularAuthApi.Controllers
 
 
         [HttpGet("getclient")]
-        public IActionResult getClientAppointments(string Client)
+        public IActionResult getClientAppointments(string IdNumber)
         {
-            var data = db.tblAppointment.Where(x => x.DoctorName.Equals(Client)).ToList();
+            var data = db.tblAppointment.Where(x => x.IdNumber.Equals(IdNumber)).ToList();
             if (data == null)
                 return NotFound(new { message = "No Data Found" });
             return Ok(data);
@@ -85,7 +95,7 @@ namespace AngularAuthApi.Controllers
         {
             if (appointment != null)
             {
-                var data = db.tblAppointment.Where(x => x.DoctorName == appointment.DoctorName && x.UniqueNumber == appointment.UniqueNumber && x.PatientName==appointment.PatientName).FirstOrDefault();
+                var data = db.tblAppointment.Where(x => x.IdNumber == appointment.IdNumber && x.UniqueNumber == appointment.UniqueNumber && x.PatientName==appointment.PatientName).FirstOrDefault();
                 db.Remove(data);
                 db.SaveChanges();
                 return Ok();

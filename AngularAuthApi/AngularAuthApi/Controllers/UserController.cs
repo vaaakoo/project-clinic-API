@@ -26,7 +26,7 @@ namespace AngularAuthYtAPI.Controllers
             _authContext = context;
             _activationCodeService = activationCodeService;
 
-            if (!_authContext.Users.Any())
+            if (!_authContext.Users.Any(user => user.Category != null))
             {
                 SeedInitialData();
             }
