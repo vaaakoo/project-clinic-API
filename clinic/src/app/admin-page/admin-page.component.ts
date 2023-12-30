@@ -130,6 +130,7 @@ export class AdminPageComponent {
       
     });
 
+    // load all data
     const loadData = () => {
       const IdNumber = this.doctor?.idNumber || 'Doctor';
     
