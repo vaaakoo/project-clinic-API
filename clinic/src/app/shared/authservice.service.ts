@@ -52,16 +52,20 @@ export class AuthserviceService {
     return this.http.get<doctorregisteration>(`${this.apiUrl}/getDoctor/${id}`);
   }
 
-  getDoctorDataByName(doctorName: string): Observable<any> {
-    return this.http.get<any>(`${this.bookUrl}/getclient?Client=${doctorName}`);
+  getUserById(id: number): Observable<Useregisteration> {
+    return this.http.get<Useregisteration>(`${this.apiUrl}/getUser/${id}`);
   }
+
 
   getDoctorDataByIdNumber(idNumber: string): Observable<any> {
     return this.http.get<any>(`${this.bookUrl}/getclient?IdNumber=${idNumber}`);
   }
 
+  getClientDataByIdNumber(clientidNumber: string): Observable<any> {
+    return this.http.get<any>(`${this.bookUrl}/getdata?ClientIdNumber=${clientidNumber}`);
+  }
+
   clientBookAppointment(formData: any): Observable<any> {
-    // Adjust the path based on your API endpoint for booking appointments
     return this.http.post<any>(`${this.bookUrl}/ClientBookAppointment`, formData);
   }
 
@@ -70,7 +74,6 @@ export class AuthserviceService {
   }
 
   clientRemoveAppointment(formData: any): Observable<any> {
-    // Adjust the path based on your API endpoint for removing appointments
     return this.http.post<any>(`${this.bookUrl}/ClientRemoveAppointment`, formData);
   }
 

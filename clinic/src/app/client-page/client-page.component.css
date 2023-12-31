@@ -252,6 +252,16 @@ gap: 31px;
 
 }
 
+.custom-table tbody td.activated {
+  background-color: #DAFAEE;
+  border-radius: 5px;
+
+}
+.custom-table tbody td.disactivated {
+  background-color: #FF93A6;
+  border-radius: 5px;
+}
+
 .my-book {
 display: flex;
 gap: 7px;

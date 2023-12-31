@@ -136,8 +136,8 @@ export class BookingPageComponent implements OnInit{
         (data: any) => {
           const patientName = this.patientFirstName;
     
-          if (data.length > 0) {
-            data.forEach((appointment: any) => {
+          if (data.data.length > 0) {
+            data.data.forEach((appointment: any) => {
               const element = $('#' + appointment.uniqueNumber);
     
               if (appointment.status === 'Unavailable' || appointment.patientName !== patientName) {

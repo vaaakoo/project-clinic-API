@@ -96,31 +96,25 @@
         <div class="hero-doctor">
             <div class="upper">
                 <img class="main-image" src="../../assets/Ellipse14.png" alt="">
-                <h4>გიორგი ხორავა</h4>
+                <h4>{{this.client?.firstName}} {{this.client?.lastName}}</h4>
                 <h6>ექიმი</h6>
-                <p>კარდიოლოგი / არითმოლოგი</p>
-                <div class="doctors-stars">
-                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                </div>
             </div>
             <div class="middle-first">
                 <h4>პირადი ნომერი</h4>
-                <p>00000000000</p>
+                <p>{{this.client?.idNumber}}</p>
             </div>
 
             <div class="middle-second">
                 <div class="middle-first">
                     <h4>Email :</h4>
-                    <p>clinic@gmail.com</p>
+                    <p>{{ this.client?.email}}</p>
                 </div>
                 <h4>პაროლის შეცვლა</h4>
             </div>
 
             <div class="middle-first">
                 <h4>დაჯავშნილია :</h4>
-                <p>( 20 )</p>
+                <p>( {{ this.appointmentCount }} )</p>
             </div>
         </div>
         
@@ -129,7 +123,7 @@
     <div class="calendar">
       <div class="my-book">
         <p>ჩემი ჯავშანი</p>
-        <p>( 2 )</p>
+        <p>( {{ this.appointmentCount }} )</p>
       </div>
       <div class="time">
         <span class="year">2023</span>
@@ -139,56 +133,60 @@
             <span class="arrow arrow-right"><img src="../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
         </div>
     </div>
-      <!-- calendar -->
-      <div class="custom-table">
-        <table>     
-          <thead class="header">
-                    <tr >
-                      <th class="days-botton">
-                        <span class="img-2"><img src="../../assets/right-arrow_271228.png" style="width: 12px; height: 12px;" alt=""></span>
-                        <span><img src="../../assets/right-arrow_271228.png" style="width: 12px; height: 12px;" alt=""></span>
-                      </th> 
-                      <th *ngFor="let num of tableHeaders; let i = index"  >
-                        <div class="days"><p class="day-number">{{ num.num }}</p> <p >({{ num.day }})</p></div>
-                        
-                      </th>
-                    </tr>
-                  </thead>     
-                  <tbody>
-                    <ng-container *ngFor="let row of tableData; let i = index">
-                      <tr>
-                        <td>{{ getTimeRange(i) }}</td> <!-- Display time range in the first column -->
-                        <ng-container *ngFor="let col of row.cols; let j = index">
-                          <td
-                            [class.activated]="col.activated"
-                            (click)="toggleCellActivation(i, j)"
-                          >
-                          <span *ngIf="col.activated" class="activated-text"><p>My <br /> Booking</p> 
-                            <span class="delete-button" (click)="deleteCell(i, j)">
-                            <img src="../../assets/Group 3.png" alt=""></span>
-                        </span>
-                          
-                          </td>
-                        </ng-container>
-                      </tr>
-                    </ng-container>
-                  </tbody>
-        </table>
-    </div>  
+      <div class="time-and-table">
+        <div class="custom-table">
+          <table>
+            <thead class="header">
+              <tr>
+                <th class="days-botton">
+                  <span class="img-2"
+                    ><img
+                      src="../../assets/right-arrow_271228.png"
+                      style="width: 12px; height: 12px"
+                      alt=""
+                  /></span>
+                  <span
+                    ><img
+                      src="../../assets/right-arrow_271228.png"
+                      style="width: 12px; height: 12px"
+                      alt=""
+                  /></span>
+                </th>
+                <th *ngFor="let num of tableHeaders; let i = index">
+                  <div class="days">
+                    <p class="day-number">{{ num.num }}</p>
+                    <p>({{ num.day }})</p>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let row of tableData; let i = index">
+                <tr>
+                  <td class="rowhead">{{ getTimeRange(i) }}</td>
+                  <!-- Display time range in the first column -->
+                  <ng-container *ngFor="let col of row.cols; let j = index">
+                    <td class="tdclick" [id]="'td_' + i + '_' + j">
+                      <!-- <span *ngIf="!col.activated && j < 5">დაჯავშნა</span> -->
+                    </td>
+
+                  </ng-container>
+                </tr>
+              </ng-container>                      
+            </tbody>
+          </table>
+        </div>
+    
       <div class="change-sect">
-        <div class="redacted-button">
           <button class="redact">
               <span><img src="../../assets/edit-svgrepo-com 2.png" alt=""></span>
               <p>რედაქტირება</p>
           </button>
-          <p class="comment-redact">*აღწერის ცვლილება</p>
-        </div>
         <button class="delete">
             <span><img src="../../assets/delete-file-svgrepo-com 3.png" alt=""></span>
             <p>წაშლა</p>
         </button>
     </div>
-      
-      
+</div> 
   </div>
 </div>

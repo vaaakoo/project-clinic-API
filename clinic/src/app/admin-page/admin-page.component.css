@@ -493,3 +493,12 @@ td:nth-last-child(2) {
   background: #FFFFF5;
 
 }
+.custom-table tbody td.activated {
+  background-color: #DAFAEE;
+  border-radius: 5px;
+
+}
+.custom-table tbody td.disactivated {
+  background-color: #FF93A6;
+  border-radius: 5px;
+}

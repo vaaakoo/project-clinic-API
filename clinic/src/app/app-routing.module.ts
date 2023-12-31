@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'doctor-page/:id', component: DoctorPageComponent},
   {path: 'booking/:id', component: BookingPageComponent},
   {path: 'admin-page', component: AdminPageComponent},
-  {path: 'client-page', component: ClientPageComponent},
+  {path: 'client-page/:id', component: ClientPageComponent},
   { path: 'home', component: HomeComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {path:'booking',component:BookingPageComponent}

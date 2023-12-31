@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/admin-page']);
   }
   navigateClient() {
-    this.router.navigate(['/client-page']);
+    this.router.navigate(['/client-page', this.client.id]);
   }
   navigateDoctor() {
     this.router.navigate(['/doctor-page', this.doctor.id]);
@@ -86,10 +86,13 @@ export class HeaderComponent implements OnInit {
             this.router.navigate(['/doctor-page', this.doctor.id]);
           } else {
             this.isLoggedIn = true;
+            this.client.id = response.user.id
             this.client.firstName = response.user.firstName;
+            this.client.lastName = response.user.lastName;
             this.authservice.setAuthenticationStatus(true);
           }
           console.log(this.doctor.firstName);
+          console.log(this.client.firstName + "id" + this.client.id);
           console.log("isAdministrator" + ":" + this.isAdministrator);
           console.log("isLoggedIn" + ":" + this.isLoggedIn);
           alert("You are authenticated successfully");
@@ -109,6 +112,7 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit(): void {}
 
+  // reset code option
   sendResetCode() {
     if (this.authservice.logindata.email !== '') {
       this.authservice.sendResetCode(this.authservice.logindata.email).subscribe(

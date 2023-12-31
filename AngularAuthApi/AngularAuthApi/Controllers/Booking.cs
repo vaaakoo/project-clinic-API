@@ -26,13 +26,15 @@ namespace AngularAuthApi.Controllers
         }*/
 
         [HttpGet("getdata")]
-        public IActionResult GetBookAppointments(string IdNumber)
+        public IActionResult GetBookAppointments(string ClientIdNumber)
         {
-            var data = db.tblAppointment.Where(x => x.IdNumber.Equals(IdNumber)).ToList();
+            var data = db.tblAppointment.Where(x => x.ClientIdNumber.Equals(ClientIdNumber)).ToList();
             if (data == null || data.Count == 0)
                 return NotFound(new { message = "No Data Found" });
 
-            return Ok(data);
+            var count = data.Count;
+
+            return Ok(new { data, Count = count });
         }
 
         [HttpPost("BookAppointment")]
@@ -71,7 +73,11 @@ namespace AngularAuthApi.Controllers
             var data = db.tblAppointment.Where(x => x.IdNumber.Equals(IdNumber)).ToList();
             if (data == null)
                 return NotFound(new { message = "No Data Found" });
-            return Ok(data);
+
+
+            var count = data.Count;
+
+            return Ok(new { data, Count = count });
 
         }
 

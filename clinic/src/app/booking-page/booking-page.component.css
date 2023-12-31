@@ -13,10 +13,13 @@
     gap: 62px;
 }
 .custom-table tbody td.activated {
-  background-color: #b0f6dc;
+  background-color: #DAFAEE;
+  border-radius: 5px;
+
 }
 .custom-table tbody td.disactivated {
-  background-color: #f33760;
+  background-color: #FF93A6;
+  border-radius: 5px;
 }
 .tdclick{
   cursor: pointer;
@@ -576,7 +579,8 @@ td:nth-last-child(2) {
     font-weight: 500;
     line-height: normal;
   }
-  
+
+
   .change-sect .delete {
     display: flex;
     align-items: center;

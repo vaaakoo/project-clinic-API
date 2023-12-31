@@ -315,6 +315,27 @@ namespace AngularAuthYtAPI.Controllers
             }
         }
 
+        [HttpGet("getUser/{id}")]
+        public IActionResult GetUserById(int id)
+        {
+            try
+            {
+                var user = _authContext.Users.FirstOrDefault(u => u.Id == id);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                return StatusCode(500, new { Message = "Internal Server Error" });
+            }
+        }
+
         [HttpPost("upload"), DisableRequestSizeLimit]
         public IActionResult Upload()
         {
@@ -396,7 +417,12 @@ namespace AngularAuthYtAPI.Controllers
 
                     // Customize the email subject and body as needed
                     var subject = "Password Reset";
-                    var body = $"Your new password is: {resetCode}";
+                    var body = $@"<html>
+                <body>
+                    <p>შენი ახალი პაროლია: <strong>{resetCode}</strong></p>
+                    <p>გთხოვთ გადადით გვერდზე და გაიარეთ ავტორიზაცია. 😊😊😊</p>
+                </body>
+              </html>";
 
                     await _passwordResetService.SendResetCodeAsync(email, resetCode, body, subject);
 
