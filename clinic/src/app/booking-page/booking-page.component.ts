@@ -1,7 +1,7 @@
 import { Component , OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthserviceService } from '../shared/authservice.service';
-import { doctorregisteration } from '../useregisteration';
+import { Useregisteration, doctorregisteration } from '../useregisteration';
 import { data } from 'jquery';
 declare var $: any;
 
@@ -30,6 +30,7 @@ export class BookingPageComponent implements OnInit{
   doctor?: doctorregisteration ;
   doctorId: number | undefined; 
   patientFirstName: string = '';
+  patient?: Useregisteration;
   
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
@@ -44,7 +45,10 @@ export class BookingPageComponent implements OnInit{
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
           console.log(this.doctor);
+          this.patient = this.authservice.loginUser;
+          console.log(this.patient);
           this.patientFirstName = this.authservice.loginusername;
+          console.log(this.patientFirstName)
           loadData();
         },
         (error) => {
@@ -62,7 +66,6 @@ export class BookingPageComponent implements OnInit{
         var tdId = clickedTd.attr('id');
         console.log(tdId);
         var patientName=this.patientFirstName;
-        console.log(patientName);
 
         if(patientName!=""){
           debugger;
@@ -71,7 +74,7 @@ export class BookingPageComponent implements OnInit{
           clickedTd.addClass('activated');
           const htmlContent = `
             <span class="activated-text">
-                <p>My <br />Booking </p>
+                <p>ჩემი <br />ჯავშანი </p>
                 <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                 <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
             </span>
@@ -132,18 +135,19 @@ export class BookingPageComponent implements OnInit{
     const loadData = () => {
       debugger;
       const IdNumber = this.doctor?.idNumber || 'Doctor';
+      const clientIdNumber = this.patient?.idNumber || 'DefaultClientId';
     
       this.authservice.getAppointmentData(IdNumber).subscribe(
         (data: any) => {
           debugger;
-          const patientName = this.patientFirstName;
-          console.log(patientName)
+          const patientIdNumber = clientIdNumber;
+          // console.log(patientIdNumber)
     
           if (data.data.length > 0) {
             data.data.forEach((appointment: any) => {
               const element = $('#' + appointment.uniqueNumber);
     
-              if (appointment.status === 'Unavailable' || appointment.patientName !== patientName) {
+              if (appointment.status === 'Unavailable' || appointment.clientIdNumber !== patientIdNumber) {
                 element.addClass('disactivated');
                 const htmlContent = `
                     <span class="activated-text">
@@ -152,11 +156,11 @@ export class BookingPageComponent implements OnInit{
                 `;
                 element.html(htmlContent);
                 $('.tdclick.disactivated').prop('disabled', true);
-              } else if (appointment.patientName === patientName) {
+              } else if (appointment.clientIdNumber === patientIdNumber) {
                 element.addClass('activated');
                 const htmlContent = `
                   <span class="activated-text">
-                    <p>My <br />Booking </p>
+                    <p>ჩემი <br />ჯავშანი </p>
                     <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                     <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>

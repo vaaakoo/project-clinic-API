@@ -130,14 +130,17 @@ export class DoctorPageComponent implements OnInit{
     });
 
     const loadData = () => {
+      debugger;
       const IdNumber = this.doctor?.idNumber || 'Doctor';
     
       this.authservice.getAppointmentData(IdNumber).subscribe(
         (data: any) => {
+          debugger;
           const patientName = this.patientFirstName;
+          console.log(patientName)
     
-          if (data.length > 0) {
-            data.forEach((appointment: any) => {
+          if (data.data.length > 0) {
+            data.data.forEach((appointment: any) => {
               const element = $('#' + appointment.uniqueNumber);
     
               if (appointment.status === 'Unavailable' || appointment.patientName !== patientName) {

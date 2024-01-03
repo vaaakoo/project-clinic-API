@@ -52,9 +52,9 @@ export class HeaderComponent implements OnInit {
       this.authservice.AuthenticateUser(this.authservice.logindata).subscribe(
         (response) => {
           // debugger;
-         console.log(response)
+         console.log(response);
+         this.authservice.loginUser = response.user;
           this.authservice.loginusername = response.user.firstName;
-          console.log(this.authservice.loginusername);
           // this.router.navigate(['/registration']);
           alert("you are authenticated sucessfull");
         },
@@ -70,8 +70,10 @@ export class HeaderComponent implements OnInit {
     if (this.authservice.logindata.email !== '' && this.authservice.logindata.password !== null) {
       this.authservice.AuthenticateUser(this.authservice.logindata).subscribe(
         (response) => {
-          console.log(response);
+          // console.log(response);
           this.authservice.loginusername = response.user.firstName;
+          this.authservice.loginUser = response.user;
+          console.log(this.authservice.loginUser);
 
           
           if ( response.user.isAdmin) {

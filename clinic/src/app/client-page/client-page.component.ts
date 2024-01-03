@@ -30,6 +30,7 @@ export class ClientPageComponent implements OnInit{
   client?: Useregisteration;
   clientId: number | undefined; 
   patientFirstName: string = '';
+  patientIdNumber: string = '';
   appointmentCount: number = 0;
 
 
@@ -61,7 +62,8 @@ export class ClientPageComponent implements OnInit{
         (client: Useregisteration) => {
           this.client = client;
           console.log(this.client);
-          this.patientFirstName = this.authservice.loginusername;
+          this.patientFirstName = client.firstName;
+          this.patientIdNumber =client.idNumber;
           loadData();
         },
         (error) => {
@@ -86,7 +88,7 @@ export class ClientPageComponent implements OnInit{
           clickedTd.addClass('activated');
           const htmlContent = `
             <span class="activated-text">
-                <p>My <br />Booking </p>
+                <p>ჩემი <br />ჯავშანი </p>
                 <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                 <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
             </span>
@@ -145,9 +147,9 @@ export class ClientPageComponent implements OnInit{
 
     const loadData = () => {
       debugger;
-      const clientidNumber = this.client?.idNumber || 'Client';
+      const patientidNumber = this.patientIdNumber || 'Client';
     
-      this.authservice.getClientDataByIdNumber(clientidNumber).subscribe(
+      this.authservice.getClientDataByIdNumber(patientidNumber).subscribe(
         (data: any) => {
           const patientName = this.patientFirstName;
           console.log(data);
@@ -171,7 +173,7 @@ export class ClientPageComponent implements OnInit{
                 element.addClass('activated');
                 const htmlContent = `
                   <span class="activated-text">
-                    <p>My <br />Booking </p>
+                    <p>ჩემი <br />ჯავშანი </p>
                     <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                     <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>

@@ -17,6 +17,7 @@ export class AuthserviceService {
   doctor:doctorregisteration=new doctorregisteration();
   logindata:Useregisteration=new Useregisteration();
   loginusername:any="";
+  loginUser: any="";
 
 
   get isAuthenticated(): Observable<boolean> {
