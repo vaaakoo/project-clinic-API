@@ -26,5 +26,7 @@ namespace AngularAuthApi.Models
 
         public string ClientIdNumber { get; set; }
 
+        public string MessageToDoctor { get; set; } 
+
     }
 }

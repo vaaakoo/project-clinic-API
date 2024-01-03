@@ -130,11 +130,14 @@ export class BookingPageComponent implements OnInit{
     });
 
     const loadData = () => {
+      debugger;
       const IdNumber = this.doctor?.idNumber || 'Doctor';
     
       this.authservice.getAppointmentData(IdNumber).subscribe(
         (data: any) => {
+          debugger;
           const patientName = this.patientFirstName;
+          console.log(patientName)
     
           if (data.data.length > 0) {
             data.data.forEach((appointment: any) => {
