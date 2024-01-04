@@ -156,13 +156,18 @@ export class DoctorPageComponent implements OnInit{
                 `;
                 element.html(htmlContent);
                 $('.tdclick.disactivated').prop('disabled', true);
-              } else if (appointment.idNumber !== doctorIdNumber) {
+              } else if (appointment.idNumber === doctorIdNumber) {
                 element.addClass('activated');
                 const htmlContent = `
                   <span class="activated-text">
-                    <p> დაჯავშნილია </p>
-                    <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                    <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
+                    <p style="font-weight: bold;
+                    color: #3ACF99;
+                    text-align: center;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    word-wrap: break-word;"> დაჯავშნილია </p>
                   </span>
                 `;
                 element.html(htmlContent);

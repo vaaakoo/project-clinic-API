@@ -24,6 +24,8 @@ export class BookingPageComponent implements OnInit{
     { num: 23, day: 'sun' },
   ];
 
+  visitConfirmation: string = '';
+  textToDoctor: string='';
 
   unauthorizedMessageShown: boolean = false;
   messageToDoctor: boolean = false;
@@ -36,6 +38,10 @@ export class BookingPageComponent implements OnInit{
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
   
+  submitForm() {
+    console.log('Form submitted with:', this.visitConfirmation);
+  }
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.doctorId = +params['id'];
@@ -70,10 +76,10 @@ export class BookingPageComponent implements OnInit{
         var patientName=this.patientFirstName;
         var patientIdNum = this.patientIdNum;
 
-        if(patientIdNum!=""){
+        if(patientIdNum!="" && patientName !=""){
           debugger;
           this.unauthorizedMessageShown = false;
-          this.messageToDoctor = false;
+          this.messageToDoctor = true;
           clickedTd.addClass('activated');
           const htmlContent = `
             <span class="activated-text">
@@ -101,7 +107,7 @@ export class BookingPageComponent implements OnInit{
               console.error('Error booking appointment:', error);
             }
           );
-
+            debugger;
             $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
             }else{
               alert("First Login Yourself To Book Appointment");

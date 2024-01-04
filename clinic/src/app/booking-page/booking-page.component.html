@@ -177,10 +177,11 @@
 
                     <div *ngIf="messageToDoctor" class="booking-message">
                       <div class="booking-message-box">
-                        <p>გსურთ ვიზიტის დაჯავნშნა ?</p>
-                        <p class="last-child">შეგიძლიათ მიუთუთოთ თქვენი პორბლემა</p>
-                        <textarea placeholder="აღწერა..." rows="5"></textarea>
-                        <button class="adding">დაჯავშნა</button>
+                        <form (submit)="submitForm()">
+                          <label for="visitConfirmation">გსურთ ვიზიტის დაჯავნშნა ?</label>
+                          <textarea id="visitConfirmation" placeholder="აღწერა..." rows="5" [(ngModel)]="visitConfirmation"></textarea>
+                          <button type="submit" class="adding">დაჯავშნა</button>
+                        </form>
                       </div>
                     </div>
                   </table>
