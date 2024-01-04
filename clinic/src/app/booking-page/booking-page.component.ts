@@ -31,6 +31,7 @@ export class BookingPageComponent implements OnInit{
   doctorId: number | undefined; 
   patientFirstName: string = '';
   patient?: Useregisteration;
+  patientIdNum?: string='';
   
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
@@ -48,7 +49,8 @@ export class BookingPageComponent implements OnInit{
           this.patient = this.authservice.loginUser;
           console.log(this.patient);
           this.patientFirstName = this.authservice.loginusername;
-          console.log(this.patientFirstName)
+          console.log(this.patientFirstName);
+          this.patientIdNum = this.patient?.idNumber
           loadData();
         },
         (error) => {
@@ -66,8 +68,9 @@ export class BookingPageComponent implements OnInit{
         var tdId = clickedTd.attr('id');
         console.log(tdId);
         var patientName=this.patientFirstName;
+        var patientIdNum = this.patientIdNum;
 
-        if(patientName!=""){
+        if(patientIdNum!=""){
           debugger;
           this.unauthorizedMessageShown = false;
           this.messageToDoctor = false;
@@ -85,6 +88,8 @@ export class BookingPageComponent implements OnInit{
             IdNumber: this.doctor?.idNumber ||'Doctor',
             UniqueNumber: tdId,
             PatientName:patientName,
+            ClientIdNumber: patientIdNum,
+            MessageToDoctor: 'თავის ტკივილი',
             Status: 'available',
           };
   
@@ -108,6 +113,7 @@ export class BookingPageComponent implements OnInit{
               const clickedDeleteButton = $(event.target);
               var tdId = clickedDeleteButton.closest('td').attr('id');
               var patientName=this.patientFirstName;
+              var patientIdNum = this.patientIdNum;
               const parentTdClick = clickedDeleteButton.closest('.tdclick');
               parentTdClick.removeClass('activated');
               parentTdClick.empty();
@@ -117,6 +123,7 @@ export class BookingPageComponent implements OnInit{
                 IdNumber: this.doctor?.idNumber ||'Doctor',
                 UniqueNumber: tdId,
                 PatientName:patientName,
+                ClientIdNumber: patientIdNum,
                 Status: 'Booked',
               };
 

@@ -82,8 +82,9 @@ export class ClientPageComponent implements OnInit{
         console.log(tdId);
         var patientName=this.patientFirstName;
         console.log(patientName);
+        var patientIdNum =this.patientIdNumber;
 
-        if(patientName!=""){
+        if(patientIdNum!=""){
           debugger;
           clickedTd.addClass('activated');
           const htmlContent = `
@@ -99,6 +100,8 @@ export class ClientPageComponent implements OnInit{
             IdNumber: this.doctor?.idNumber ||'Doctor',
             UniqueNumber: tdId,
             PatientName:patientName,
+            ClientIdNumber: patientIdNum,
+            MessageToDoctor: 'თავის ტკივილი',
             Status: 'available',
           };
   
@@ -121,6 +124,7 @@ export class ClientPageComponent implements OnInit{
               const clickedDeleteButton = $(event.target);
               var tdId = clickedDeleteButton.closest('td').attr('id');
               var patientName=this.patientFirstName;
+              var patientIdNum =this.patientIdNumber;
               const parentTdClick = clickedDeleteButton.closest('.tdclick');
               parentTdClick.removeClass('activated');
               parentTdClick.empty();
@@ -130,6 +134,8 @@ export class ClientPageComponent implements OnInit{
                 IdNumber: this.doctor?.idNumber ||'Doctor',
                 UniqueNumber: tdId,
                 PatientName:patientName,
+                ClientIdNumber: patientIdNum,
+                MessageToDoctor: 'თავის ტკივილი',
                 Status: 'Booked',
               };
 
@@ -152,6 +158,7 @@ export class ClientPageComponent implements OnInit{
       this.authservice.getClientDataByIdNumber(patientidNumber).subscribe(
         (data: any) => {
           const patientName = this.patientFirstName;
+          const patientIdNumber = this.patientIdNumber;
           console.log(data);
           this.appointmentCount = data.count || 0;
           console.log(data.count)
@@ -160,7 +167,7 @@ export class ClientPageComponent implements OnInit{
             data.data.forEach((appointment: any) => {
               const element = $('#' + appointment.uniqueNumber);
     
-              if (appointment.status === 'Unavailable' || appointment.patientName !== patientName) {
+              if (appointment.status === 'Unavailable' || appointment.clientIdNumber !== patientIdNumber) {
                 element.addClass('disactivated');
                 const htmlContent = `
                     <span class="activated-text">
@@ -169,7 +176,7 @@ export class ClientPageComponent implements OnInit{
                 `;
                 element.html(htmlContent);
                 $('.tdclick.disactivated').prop('disabled', true);
-              } else if (appointment.patientName === patientName) {
+              } else if (appointment.clientIdNumber === patientIdNumber) {
                 element.addClass('activated');
                 const htmlContent = `
                   <span class="activated-text">

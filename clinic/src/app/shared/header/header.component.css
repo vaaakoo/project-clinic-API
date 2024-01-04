@@ -80,6 +80,13 @@
   background: #F0FAFF;
 }
 
+.button-reg-aut2 img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 
 
 .button-reg-aut2 {

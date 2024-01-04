@@ -30,6 +30,8 @@ export class DoctorPageComponent implements OnInit{
   doctor?: doctorregisteration ;
   doctorId: number | undefined; 
   patientFirstName: string = '';
+  patientIdNumber: string = '';
+  appointmentCount: number = 0;
   
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
@@ -137,13 +139,15 @@ export class DoctorPageComponent implements OnInit{
         (data: any) => {
           debugger;
           const patientName = this.patientFirstName;
-          console.log(patientName)
+          console.log(patientName);
+          this.appointmentCount = data.count || 0;
+          const doctorIdNumber = IdNumber;
     
           if (data.data.length > 0) {
             data.data.forEach((appointment: any) => {
+              
               const element = $('#' + appointment.uniqueNumber);
-    
-              if (appointment.status === 'Unavailable' || appointment.patientName !== patientName) {
+              if (appointment.status === 'Unavailable' || appointment.idNumber !== doctorIdNumber) {
                 element.addClass('disactivated');
                 const htmlContent = `
                     <span class="activated-text">
@@ -152,11 +156,11 @@ export class DoctorPageComponent implements OnInit{
                 `;
                 element.html(htmlContent);
                 $('.tdclick.disactivated').prop('disabled', true);
-              } else if (appointment.patientName === patientName) {
+              } else if (appointment.idNumber !== doctorIdNumber) {
                 element.addClass('activated');
                 const htmlContent = `
                   <span class="activated-text">
-                    <p>My <br />Booking </p>
+                    <p> დაჯავშნილია </p>
                     <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                     <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>

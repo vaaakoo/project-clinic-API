@@ -163,6 +163,10 @@
 }
 
 .upper .main-image {
+    width: 157px;
+    height: 157px;
+    border-radius: 50%;
+    object-fit: cover;
     margin-bottom: 10px;
 }
 

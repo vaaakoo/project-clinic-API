@@ -163,6 +163,10 @@ gap: 10px;
 }
 
 .upper .main-image {
+  width: 157px;
+  height: 157px;
+  object-fit: cover;
+  border-radius: 50%;
   margin-bottom: 10px;
 }
 
