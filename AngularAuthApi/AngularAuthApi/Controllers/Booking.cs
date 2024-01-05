@@ -15,15 +15,7 @@ namespace AngularAuthApi.Controllers
         {
             db = context;
         }
-        /*[HttpGet("getdata")]
-        public IActionResult getBookAppointments(string DoctorName)
-        {
-            var data = db.tblAppointment.Where(x => x.DoctorName.Equals(DoctorName)).ToList();
-            if (data == null)
-                return NotFound(new { message = "No Data Found" });
-            return Ok(data);
-
-        }*/
+       
 
         [HttpGet("getdata")]
         public IActionResult GetBookAppointments(string ClientIdNumber)

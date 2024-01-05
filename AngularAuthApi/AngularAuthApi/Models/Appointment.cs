@@ -22,7 +22,7 @@ namespace AngularAuthApi.Models
         public string UniqueNumber { get; set; } 
         public string? Status { get; set; }
 
-        public string IdNumber { get; set; } // Added IdNumber property
+        public string IdNumber { get; set; } 
 
         public string ClientIdNumber { get; set; }
 
