@@ -17,9 +17,9 @@ namespace AngularAuthYtAPI.Models
         public string? LastName { get; set; }
         public string? IdNumber { get; set; }
 
-
-
         public string? Category { get; set; }
+
+        public int starNum { get; set; }
 
         public string? ImageUrl {  get; set; }
 
