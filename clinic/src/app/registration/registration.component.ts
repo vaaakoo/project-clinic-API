@@ -27,9 +27,7 @@ export class RegistrationComponent {
   }
 
   showDropdown() {
-    // Simulate an API call with setTimeout
     setTimeout(() => {
-      // Replace this with your actual API call to fetch categories
       this.categoryList = [
       'ანდროლოგი',
       'ანესთეზიოლოგი',
@@ -45,7 +43,7 @@ export class RegistrationComponent {
       'ენდოკრინოლოგი',
       'გასტროენტეროლოგი',
       'თერაპევტი'];
-    }, 1000); // Simulate a delay of 1 second
+    }, 1000); 
   }
 
   onSubmit() {
@@ -71,6 +69,7 @@ export class RegistrationComponent {
         }
       );
   }
+
 
   onImageChange(event: any): void {
     const file = event.target.files[0];

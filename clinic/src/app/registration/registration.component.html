@@ -53,18 +53,8 @@
         </div>
        
       </div>
-      <div class="form-group form-group1">
-        <img *ngIf="userimage" [src]="userimage" class="img-responsive img-thumbnail" style="height: 150px;width: 150px;" alt="">
-       
-      </div>
-     
 
-    <!-- CV Upload -->
-      <!-- <div class="form-group">
-          <label for="cv">CV</label>
-          <input type="file" id="cv" name="cv" (change)="onCVChange($event)" >
-      </div> -->
-
+      <!-- CV Upload -->
       <!-- <div class="form-group form-group1">
         <label for="cv">CV</label>
         <div class="custom">
@@ -74,6 +64,17 @@
           </label>
         </div>
       </div> -->
+
+      <div class="form-group">
+        <label for="starNum">შეფასება (1-5)</label>
+        <div class="custom-select-wrapper">
+          <select id="starNum" name="starNum" [(ngModel)]="authserviceService.doctor.starNum">
+            <option value="" disabled selected hidden>შეაფასე...</option>
+            <option *ngFor="let num of [1, 2, 3, 4, 5]" [value]="num">{{ num }}</option>
+          </select>
+          <div class="custom-select-arrow"></div>
+        </div>
+      </div>
 
       <!-- <div class="form-group3"> -->
         <div class="form-group3">
