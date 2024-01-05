@@ -9,20 +9,9 @@
   bottom: 0;
 }
 
-
 .main-column img {
   width: 98%;
 }
-
-
-.container {
-  width: 100%;
-  background-color: #053354;
-  color: white;
-  bottom: 0;
-}
-
-
 
 .logo-link {
   display: flex;
@@ -96,7 +85,7 @@
   height: 0px;
   flex-shrink: 0;
   margin-top: 80px;
-  margin-left: 440px;
+  margin-left: 420px;
 }
 .vector-line  img {
   width: 100%;
