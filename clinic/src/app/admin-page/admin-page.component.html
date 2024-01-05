@@ -30,13 +30,7 @@
                             <p class="card-name">{{this.doctor?.firstName}} {{ this.doctor?.lastName }}</p>
                             <p class="roll">ექიმი</p>
                             <p class="card-category">{{this.doctor?.category}}</p>
-                            <!-- <div class="stars">
-                                <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                            </div> -->
+       
                             <div class="doctors-stars" *ngIf="this.doctor">
                                 <ng-container *ngFor="let star of getStarArray(this.doctor?.starNum || 0)">
                                   <img src="../../assets/material-symbols_star-rounded.png" alt="Star">

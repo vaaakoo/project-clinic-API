@@ -37,23 +37,7 @@ export class ClientPageComponent implements OnInit{
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
   
   ngOnInit() {
-    // doctor
-    // this.route.params.subscribe(params => {
-    //   this.doctorId = +params['id'];
-    //   console.log('Doctor ID from route parameters:', this.doctorId);
-    //   this.authservice.getDoctorById(this.doctorId).subscribe(
-    //     (doctor: doctorregisteration) => {
-    //       this.doctor = doctor;
-    //       console.log(this.doctor);
-    //       this.patientFirstName = this.authservice.loginusername;
-    //       loadData();
-    //     },
-    //     (error) => {
-    //       console.error('Error fetching doctor data:', error);
-    //     }
-    //   );
-    // });
-    // client
+
     this.route.params.subscribe(params => {
       this.clientId = +params['id'];
       console.log('Client ID from route parameters:', this.clientId);
