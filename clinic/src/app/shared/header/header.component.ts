@@ -83,6 +83,7 @@ export class HeaderComponent implements OnInit {
             this.doctor.id = response.user.id;
             this.doctor.firstName = response.user.firstName;
             this.doctor.lastName = response.user.lastName;
+            this.doctor.imageUrl = response.user.imageUrl;
 
 
             this.router.navigate(['/doctor-page', this.doctor.id]);

@@ -13,6 +13,8 @@ export class CategoryComponent implements OnInit {
 
   alldoctor: doctorregisteration[] = [];
   selectedDoctor: doctorregisteration | null = null;
+  doctor?: doctorregisteration ;
+
 
   ngOnInit() {
     this.loadDoctorData();
@@ -74,5 +76,9 @@ export class CategoryComponent implements OnInit {
         }
       );
     }
+  }
+
+  getStarArray(starNum: number): number[] {
+    return Array.from({ length: starNum }, (_, index) => index);
   }
 }

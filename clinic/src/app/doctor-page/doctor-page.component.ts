@@ -29,9 +29,9 @@ export class DoctorPageComponent implements OnInit{
   messageToDoctor: boolean = false;
   doctor?: doctorregisteration ;
   doctorId: number | undefined; 
-  patientFirstName: string = '';
-  patientIdNumber: string = '';
   appointmentCount: number = 0;
+  doctorFirstName: string='';
+  doctorIdNumber: string='';
   
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
@@ -46,7 +46,8 @@ export class DoctorPageComponent implements OnInit{
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
           console.log(this.doctor);
-          this.patientFirstName = this.authservice.loginusername;
+          this.doctorFirstName = this.authservice.loginusername;
+          this.doctorIdNumber = this.authservice.loginUser;
           loadData();
         },
         (error) => {
@@ -63,50 +64,23 @@ export class DoctorPageComponent implements OnInit{
         console.log(clickedTd);
         var tdId = clickedTd.attr('id');
         console.log(tdId);
-        var patientName=this.patientFirstName;
-        console.log(patientName);
+        var doctorName=this.doctorFirstName;
+        var doctorIdNumber = this.doctorIdNumber;
+        console.log(doctorName);
 
-        if(patientName!=""){
+        if(doctorName!=""){
           debugger;
-          this.unauthorizedMessageShown = false;
-          this.messageToDoctor = false;
-          clickedTd.addClass('activated');
-          const htmlContent = `
-            <span class="activated-text">
-                <p>My <br />Booking </p>
-                <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
-            </span>
-            `;
-          clickedTd.html(htmlContent);
-          var formData = {
-            DoctorName: this.doctor?.firstName,
-            IdNumber: this.doctor?.idNumber ||'Doctor',
-            UniqueNumber: tdId,
-            PatientName:patientName,
-            Status: 'available',
-          };
+          console.log("here is doctor:" + doctorName);
   
-          this.authservice.clientBookAppointment(formData).subscribe(
-            () => {
-              alert('Appointment Booked successfully!');
-            },
-            (error) => {
-              console.error('Error booking appointment:', error);
-            }
-          );
-
             $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
             }else{
-              alert("First Login Yourself To Book Appointment");
-              this.unauthorizedMessageShown = true;
+              alert("You cann't book with you visit! : )");
             }
             });
             $('.tdclick').on('click', '.deletebutton',  (event: any) => {
               debugger;
               const clickedDeleteButton = $(event.target);
               var tdId = clickedDeleteButton.closest('td').attr('id');
-              var patientName=this.patientFirstName;
               const parentTdClick = clickedDeleteButton.closest('.tdclick');
               parentTdClick.removeClass('activated');
               parentTdClick.empty();
@@ -115,7 +89,6 @@ export class DoctorPageComponent implements OnInit{
                 DoctorName: this.doctor?.firstName,
                 IdNumber: this.doctor?.idNumber ||'Doctor',
                 UniqueNumber: tdId,
-                PatientName:patientName,
                 Status: 'Booked',
               };
 
@@ -138,8 +111,6 @@ export class DoctorPageComponent implements OnInit{
       this.authservice.getAppointmentData(IdNumber).subscribe(
         (data: any) => {
           debugger;
-          const patientName = this.patientFirstName;
-          console.log(patientName);
           this.appointmentCount = data.count || 0;
           const doctorIdNumber = IdNumber;
     
@@ -168,6 +139,8 @@ export class DoctorPageComponent implements OnInit{
                     font-weight: 400;
                     line-height: normal;
                     word-wrap: break-word;"> დაჯავშნილია </p>
+                    <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
+                    <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>
                 `;
                 element.html(htmlContent);
@@ -202,6 +175,10 @@ export class DoctorPageComponent implements OnInit{
     const endHour = startHour + timeSlot;
 
     return `${startHour}:00 - ${endHour}:00`;
+  }
+
+  getStarArray(starNum: number): number[] {
+    return Array.from({ length: starNum }, (_, index) => index);
   }
 
 }

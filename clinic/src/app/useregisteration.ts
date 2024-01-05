@@ -17,6 +17,7 @@ export class Useregisteration {
     idNumber: string = '';
     password: string = '';
     category:string='';
+    starNum: number = 0;
     imageUrl:string='';
   }
   

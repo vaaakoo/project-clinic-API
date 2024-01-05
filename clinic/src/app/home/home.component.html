@@ -114,13 +114,12 @@
                             <img class="picture" [src]="doctor.imageUrl" alt="">
                             <p class="card-name">{{ doctor.firstName }}  {{ doctor.lastName}}</p>
                             <p class="card-category">{{doctor.category}}</p>
+                           
                             <div class="stars">
-                                <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                                    <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                            </div>
+                              <ng-container *ngFor="let star of getStarArray(doctor.starNum)">
+                                  <img src="../../assets/material-symbols_star-rounded.png" alt="Star">
+                                </ng-container>
+                          </div>
                             <button (click)="onBookingClick(doctor)">მიღებაზე ჩაწერა</button>
                         </div>
                     </div>

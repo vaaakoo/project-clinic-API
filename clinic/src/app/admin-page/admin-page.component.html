@@ -26,31 +26,37 @@
                 <div class="user">
                     <div class="card-columns">
                         <div class="middle">
-                            <img class="picture" src="../../assets/Ellipse5.png" alt="">
-                            <p class="card-name">გიორგი ხორავა</p>
+                            <img class="picture" [src]="this.doctor?.imageUrl" alt="">
+                            <p class="card-name">{{this.doctor?.firstName}} {{ this.doctor?.lastName }}</p>
                             <p class="roll">ექიმი</p>
-                            <p class="card-category">კარდიოლოგი / არითმოლოგი</p>
-                            <div class="stars">
+                            <p class="card-category">{{this.doctor?.category}}</p>
+                            <!-- <div class="stars">
                                 <img src="../../assets/material-symbols_star-rounded.png" alt="">
                                     <img src="../../assets/material-symbols_star-rounded.png" alt="">
                                     <img src="../../assets/material-symbols_star-rounded.png" alt="">
                                     <img src="../../assets/material-symbols_star-rounded.png" alt="">
                                     <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                            </div>
+                            </div> -->
+                            <div class="doctors-stars" *ngIf="this.doctor">
+                                <ng-container *ngFor="let star of getStarArray(this.doctor?.starNum || 0)">
+                                  <img src="../../assets/material-symbols_star-rounded.png" alt="Star">
+                                </ng-container>
+                              </div>
+
                         </div>
                         <div class="card-middle">
                             <div class="card-middle-grid">
                                 <span><img src="../../assets/edit-svgrepo-com2-dark.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>პირადი ნომერი</h3>
-                                    <p>00000000000</p>
+                                    <p>{{this.doctor?.idNumber}}</p>
                                 </div>
                             </div>
                             <div class="card-middle-grid">
                                 <span><img src="../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>Email</h3>
-                                    <p>clinic@gmail.com</p>
+                                    <p>{{this.doctor?.email}}</p>
                                 </div>
                             </div>
                             <div class="card-middle-grid">
@@ -65,7 +71,7 @@
                                 <span><img src="../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>დაჯავშნილია :</h3>
-                                    <p>( 20 )</p>
+                                    <p>( {{this.appointmentCount}} )</p>
                                 </div>
                             </div>
                         </div>

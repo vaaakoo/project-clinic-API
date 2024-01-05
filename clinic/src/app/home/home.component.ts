@@ -54,4 +54,7 @@ toggleSeeMore() {
   this.maxVisibleDoctors += 3; 
 }
 
+getStarArray(starNum: number): number[] {
+  return Array.from({ length: starNum }, (_, index) => index);
+}
 }

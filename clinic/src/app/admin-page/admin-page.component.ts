@@ -25,34 +25,56 @@ export class AdminPageComponent {
     { num: 23, day: 'sun' },
   ];
 
-
+  randomDoctor: doctorregisteration | undefined;
   unauthorizedMessageShown: boolean = false;
   messageToDoctor: boolean = false;
   doctor?: doctorregisteration ;
   doctorId: number | undefined; 
-  patientFirstName: string = '';
-  
+  appointmentCount: number = 0;
+  doctorFirstName: string='';
+  doctorIdNumber: string='';
+  starIcons: string[] | undefined;
+
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
   
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.doctorId = +params['id'];
-      console.log('Doctor ID from route parameters:', this.doctorId);
+    // this.route.params.subscribe(params => {
+    //   this.doctorId = +params['id'];
+    //   console.log('Doctor ID from route parameters:', this.doctorId);
       
 
-      this.authservice.getDoctorById(this.doctorId).subscribe(
-        (doctor: doctorregisteration) => {
-          this.doctor = doctor;
+    //   this.authservice.getDoctorById(this.doctorId).subscribe(
+    //     (doctor: doctorregisteration) => {
+    //       this.doctor = doctor;
+    //       console.log(this.doctor);
+    //       this.doctorFirstName = this.authservice.loginusername;
+    //       this.doctorIdNumber = this.authservice.loginUser;
+    //       loadData();
+    //     },
+    //     (error) => {
+    //       console.error('Error fetching doctor data:', error);
+    //     }
+    //   );
+    // });
+
+    this.authservice.getalldoc().subscribe(
+      (doctors: doctorregisteration[]) => {
+        // Pick a random doctor from the list
+        const randomIndex = Math.floor(Math.random() * doctors.length);
+        this.randomDoctor = doctors[randomIndex];
+        console.log('Random Doctor:', this.randomDoctor);
+        this.doctor = this.randomDoctor;
+
           console.log(this.doctor);
-          this.patientFirstName = this.authservice.loginusername;
+          this.doctorFirstName = this.doctor.firstName;
+          this.doctorIdNumber = this.doctor.idNumber;
           loadData();
-        },
-        (error) => {
-          console.error('Error fetching doctor data:', error);
-        }
-      );
-    });
+      },
+      (error) => {
+        console.error('Error fetching doctors:', error);
+      }
+    );
 
     $(document).ready( () => {
      
@@ -62,50 +84,23 @@ export class AdminPageComponent {
         console.log(clickedTd);
         var tdId = clickedTd.attr('id');
         console.log(tdId);
-        var patientName=this.patientFirstName;
-        console.log(patientName);
+        var doctorName=this.doctorFirstName;
+        var doctorIdNumber = this.doctorIdNumber;
+        console.log(doctorName);
 
-        if(patientName!=""){
+        if(doctorName!=""){
           debugger;
-          this.unauthorizedMessageShown = false;
-          this.messageToDoctor = false;
-          clickedTd.addClass('activated');
-          const htmlContent = `
-            <span class="activated-text">
-                <p>My <br />Booking </p>
-                <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
-            </span>
-            `;
-          clickedTd.html(htmlContent);
-          var formData = {
-            DoctorName: this.doctor?.firstName,
-            IdNumber: this.doctor?.idNumber ||'Doctor',
-            UniqueNumber: tdId,
-            PatientName:patientName,
-            Status: 'available',
-          };
+          console.log("here is doctor:" + doctorName);
   
-          this.authservice.clientBookAppointment(formData).subscribe(
-            () => {
-              alert('Appointment Booked successfully!');
-            },
-            (error) => {
-              console.error('Error booking appointment:', error);
-            }
-          );
-
             $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
             }else{
-              alert("First Login Yourself To Book Appointment");
-              this.unauthorizedMessageShown = true;
+              alert("You cann't book with you visit! : )");
             }
             });
             $('.tdclick').on('click', '.deletebutton',  (event: any) => {
               debugger;
               const clickedDeleteButton = $(event.target);
               var tdId = clickedDeleteButton.closest('td').attr('id');
-              var patientName=this.patientFirstName;
               const parentTdClick = clickedDeleteButton.closest('.tdclick');
               parentTdClick.removeClass('activated');
               parentTdClick.empty();
@@ -114,7 +109,6 @@ export class AdminPageComponent {
                 DoctorName: this.doctor?.firstName,
                 IdNumber: this.doctor?.idNumber ||'Doctor',
                 UniqueNumber: tdId,
-                PatientName:patientName,
                 Status: 'Booked',
               };
 
@@ -130,19 +124,21 @@ export class AdminPageComponent {
       
     });
 
-    // load all data
     const loadData = () => {
+      debugger;
       const IdNumber = this.doctor?.idNumber || 'Doctor';
     
       this.authservice.getAppointmentData(IdNumber).subscribe(
         (data: any) => {
-          const patientName = this.patientFirstName;
+          debugger;
+          this.appointmentCount = data.count || 0;
+          const doctorIdNumber = IdNumber;
     
-          if (data.length > 0) {
-            data.forEach((appointment: any) => {
+          if (data.data.length > 0) {
+            data.data.forEach((appointment: any) => {
+              
               const element = $('#' + appointment.uniqueNumber);
-    
-              if (appointment.status === 'Unavailable' || appointment.patientName !== patientName) {
+              if (appointment.status === 'Unavailable' || appointment.idNumber !== doctorIdNumber) {
                 element.addClass('disactivated');
                 const htmlContent = `
                     <span class="activated-text">
@@ -151,11 +147,18 @@ export class AdminPageComponent {
                 `;
                 element.html(htmlContent);
                 $('.tdclick.disactivated').prop('disabled', true);
-              } else if (appointment.patientName === patientName) {
+              } else if (appointment.idNumber === doctorIdNumber) {
                 element.addClass('activated');
                 const htmlContent = `
                   <span class="activated-text">
-                    <p>My <br />Booking </p>
+                    <p style="font-weight: bold;
+                    color: #3ACF99;
+                    text-align: center;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    word-wrap: break-word;"> დაჯავშნილია </p>
                     <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                     <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>
@@ -204,6 +207,11 @@ export class AdminPageComponent {
     }
 
   }
+
+  getStarArray(starNum: number): number[] {
+    return Array.from({ length: starNum }, (_, index) => index);
+  }
+
 
   setActiveRole(role: string) {
     this.activeRole = role;

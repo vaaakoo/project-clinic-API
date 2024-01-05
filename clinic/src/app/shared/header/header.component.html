@@ -30,7 +30,7 @@
             <span class="button-registartion">{{ this.client.firstName }} {{ this.client.lastName }}</span>
           </button>
           <button class="button-reg-aut2" (click)="navigateDoctor()" *ngIf="isDoctor">
-            <img src="../../../assets/Ellipse20.png" alt="">
+            <img [src]="this.doctor.imageUrl" alt="">
             <span class="button-registartion">{{ this.doctor.firstName }} {{ this.doctor.lastName }}</span>
           </button>
         

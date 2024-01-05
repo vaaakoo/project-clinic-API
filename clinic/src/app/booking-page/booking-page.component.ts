@@ -71,15 +71,22 @@ export class BookingPageComponent implements OnInit{
         debugger;
         var clickedTd = $(event.target);
         console.log(clickedTd);
+
+        if (clickedTd.hasClass('disactivated')) {
+          // Handle the case when the td is disactivated
+          alert('This time slot is not available.');
+          return;
+        }
         var tdId = clickedTd.attr('id');
         console.log(tdId);
         var patientName=this.patientFirstName;
         var patientIdNum = this.patientIdNum;
+       
 
         if(patientIdNum!="" && patientName !=""){
           debugger;
           this.unauthorizedMessageShown = false;
-          this.messageToDoctor = true;
+          // this.messageToDoctor = true;
           clickedTd.addClass('activated');
           const htmlContent = `
             <span class="activated-text">
@@ -95,13 +102,14 @@ export class BookingPageComponent implements OnInit{
             UniqueNumber: tdId,
             PatientName:patientName,
             ClientIdNumber: patientIdNum,
-            MessageToDoctor: 'თავის ტკივილი',
+            MessageToDoctor: "text",
             Status: 'available',
           };
   
           this.authservice.clientBookAppointment(formData).subscribe(
             () => {
               alert('Appointment Booked successfully!');
+              this.messageToDoctor = false;
             },
             (error) => {
               console.error('Error booking appointment:', error);
@@ -114,7 +122,7 @@ export class BookingPageComponent implements OnInit{
               this.unauthorizedMessageShown = true;
             }
             });
-            $('.tdclick').on('click', '.deletebutton',  (event: any) => {
+      $('.tdclick').on('click', '.deletebutton',  (event: any) => {
               debugger;
               const clickedDeleteButton = $(event.target);
               var tdId = clickedDeleteButton.closest('td').attr('id');
@@ -131,7 +139,7 @@ export class BookingPageComponent implements OnInit{
                 PatientName:patientName,
                 ClientIdNumber: patientIdNum,
                 Status: 'Booked',
-              };
+              };      
 
           this.authservice.clientRemoveAppointment(formData).subscribe(
           () => {
@@ -154,7 +162,6 @@ export class BookingPageComponent implements OnInit{
         (data: any) => {
           debugger;
           const patientIdNumber = clientIdNumber;
-          // console.log(patientIdNumber)
     
           if (data.data.length > 0) {
             data.data.forEach((appointment: any) => {
@@ -164,7 +171,7 @@ export class BookingPageComponent implements OnInit{
                 element.addClass('disactivated');
                 const htmlContent = `
                     <span class="activated-text">
-                    <p>Not <br /> Available</p>
+                    
                     </span>
                 `;
                 element.html(htmlContent);
@@ -212,4 +219,7 @@ export class BookingPageComponent implements OnInit{
     return `${startHour}:00 - ${endHour}:00`;
   }
 
+  getStarArray(starNum: number): number[] {
+    return Array.from({ length: starNum }, (_, index) => index);
+  }
 }

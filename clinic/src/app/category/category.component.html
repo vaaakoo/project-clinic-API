@@ -21,12 +21,14 @@
                     <td>
                         <img class="picture" [src]="doctor.imageUrl" alt="Doctor Photo" width="50">
                     </td>
-                    <td><div class="stars">
-                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                        <img src="../../assets/material-symbols_star-rounded.png" alt="">
-                    </div></td>
+                    <td>
+                    
+                    <div class="stars">
+                        <ng-container *ngFor="let star of getStarArray(doctor.starNum)">
+                            <img src="../../assets/material-symbols_star-rounded.png" alt="Star">
+                          </ng-container>
+                    </div>
+                </td>
                     <td class="edit-delete">
                          <img class="circle" src="../../assets/edit.png" alt="" (click)="editDoctor(doctor)">
                         <img class="circle1" src="../../assets/delete.png" alt="" (click)="deleteDoctor(doctor.id)">
