@@ -29,7 +29,6 @@ ngOnInit() {
   this.authservice.getalldoc().subscribe(
     (data: doctorregisteration[]) => {
       this.alldoctor = data;
-      // console.log('Received data:', this.alldoctor);
     },
     (error) => {
       console.error('Error fetching doctor data:', error);
@@ -39,13 +38,10 @@ ngOnInit() {
   // Move this part inside ngOnInit
   this.route.params.subscribe(params => {
     const doctorId = params['id'];
-    // console.log('Doctor ID from route parameters:', doctorId);
   });
 }
 
 onBookingClick(doctor: doctorregisteration) {
-  // console.log('Clicked on booking button. Doctor data:', doctor);
-
   this.router.navigate(['/booking', doctor.id]);
 }
 

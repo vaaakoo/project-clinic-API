@@ -45,10 +45,10 @@ export class AdminPageComponent {
         // Pick a random doctor from the list
         const randomIndex = Math.floor(Math.random() * doctors.length);
         this.randomDoctor = doctors[randomIndex];
-        console.log('Random Doctor:', this.randomDoctor);
+        // console.log('Random Doctor:', this.randomDoctor);
         this.doctor = this.randomDoctor;
 
-          console.log(this.doctor);
+          // console.log(this.doctor);
           this.doctorFirstName = this.doctor.firstName;
           this.doctorIdNumber = this.doctor.idNumber;
           loadData();
@@ -186,6 +186,9 @@ export class AdminPageComponent {
     }
     if (tab === 'categories') {
       this.router.navigate(['/admin-page/category']);
+    }
+    if (tab === 'doctors') {
+      this.ngOnInit();
     }
 
   }

@@ -189,38 +189,37 @@
   gap: 20px;
 }
 
-.change-sect .adding {
-  width: 170px;
+.change-sect button {
   height: 50px;
   border: none;
   border-radius: 50px;
-  background: #3ACF99;
-}
-.adding p {
-  color: #FFF;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  cursor: pointer;
 }
+
+.change-sect .adding {
+  width: 170px;
+  background: #3ACF99;
+}
+
+.change-sect .adding p {
+  color: #FFF;
+}
+
 .change-sect .redact {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   width: 230px;
-  height: 50px;
-  border: none;
-  border-radius: 50px;
   background: #ECF2F8;
 }
 
-.redact p {
+.change-sect .redact p {
   color: #18A4E1;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
 }
 
 .change-sect .delete {
@@ -229,19 +228,19 @@
   justify-content: center;
   gap: 10px;
   width: 170px;
-  height: 50px;
-  border: none;
-  border-radius: 50px;
   background: #FF93A6;
 }
 
-.delete p {
+.change-sect .delete p {
   color: #FFF;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
 }
+
+
+.change-sect button:hover,
+.change-sect button:active {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Adjust the values for the shadow effect */
+}
+
 
 .card-middle {
   display: flex;

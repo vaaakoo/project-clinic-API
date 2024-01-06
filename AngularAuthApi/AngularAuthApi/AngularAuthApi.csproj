@@ -28,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Context\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
 </Project>
