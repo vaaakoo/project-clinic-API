@@ -40,12 +40,12 @@ export class ClientPageComponent implements OnInit{
 
     this.route.params.subscribe(params => {
       this.clientId = +params['id'];
-      console.log('Client ID from route parameters:', this.clientId);
+      // console.log('Client ID from route parameters:', this.clientId);
 
       this.authservice.getUserById(this.clientId).subscribe(
         (client: Useregisteration) => {
           this.client = client;
-          console.log(this.client);
+          // console.log(this.client);
           this.patientFirstName = client.firstName;
           this.patientIdNumber =client.idNumber;
           loadData();
@@ -61,11 +61,8 @@ export class ClientPageComponent implements OnInit{
       $('.tdclick').on('click', (event: any) => {
         debugger;
         var clickedTd = $(event.target);
-        console.log(clickedTd);
         var tdId = clickedTd.attr('id');
-        console.log(tdId);
         var patientName=this.patientFirstName;
-        console.log(patientName);
         var patientIdNum =this.patientIdNumber;
 
         if(patientIdNum!=""){
@@ -143,9 +140,7 @@ export class ClientPageComponent implements OnInit{
         (data: any) => {
           const patientName = this.patientFirstName;
           const patientIdNumber = this.patientIdNumber;
-          console.log(data);
           this.appointmentCount = data.count || 0;
-          console.log(data.count)
     
           if (data.data.length > 0) {
             data.data.forEach((appointment: any) => {

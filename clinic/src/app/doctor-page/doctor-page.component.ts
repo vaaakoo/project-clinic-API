@@ -39,13 +39,13 @@ export class DoctorPageComponent implements OnInit{
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.doctorId = +params['id'];
-      console.log('Doctor ID from route parameters:', this.doctorId);
+      // console.log('Doctor ID from route parameters:', this.doctorId);
       
 
       this.authservice.getDoctorById(this.doctorId).subscribe(
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
-          console.log(this.doctor);
+          // console.log(this.doctor);
           this.doctorFirstName = this.authservice.loginusername;
           this.doctorIdNumber = this.authservice.loginUser;
           loadData();
@@ -61,16 +61,14 @@ export class DoctorPageComponent implements OnInit{
       $('.tdclick').on('click', (event: any) => {
         debugger;
         var clickedTd = $(event.target);
-        console.log(clickedTd);
         var tdId = clickedTd.attr('id');
-        console.log(tdId);
         var doctorName=this.doctorFirstName;
         var doctorIdNumber = this.doctorIdNumber;
-        console.log(doctorName);
+        // console.log(doctorName);
 
         if(doctorName!=""){
           debugger;
-          console.log("here is doctor:" + doctorName);
+          // console.log("here is doctor:" + doctorName);
   
             $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
             }else{

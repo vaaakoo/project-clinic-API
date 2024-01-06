@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
       this.authservice.AuthenticateUser(this.authservice.logindata).subscribe(
         (response) => {
           // debugger;
-         console.log(response);
+        //  console.log(response);
          this.authservice.loginUser = response.user;
           this.authservice.loginusername = response.user.firstName;
           // this.router.navigate(['/registration']);
@@ -73,7 +73,7 @@ export class HeaderComponent implements OnInit {
           // console.log(response);
           this.authservice.loginusername = response.user.firstName;
           this.authservice.loginUser = response.user;
-          console.log(this.authservice.loginUser);
+          // console.log(this.authservice.loginUser);
 
           
           if ( response.user.isAdmin) {
@@ -94,10 +94,10 @@ export class HeaderComponent implements OnInit {
             this.client.lastName = response.user.lastName;
             this.authservice.setAuthenticationStatus(true);
           }
-          console.log(this.doctor.firstName);
-          console.log(this.client.firstName + "id" + this.client.id);
-          console.log("isAdministrator" + ":" + this.isAdministrator);
-          console.log("isLoggedIn" + ":" + this.isLoggedIn);
+          // console.log(this.doctor.firstName);
+          // console.log(this.client.firstName + "id" + this.client.id);
+          // console.log("isAdministrator" + ":" + this.isAdministrator);
+          // console.log("isLoggedIn" + ":" + this.isLoggedIn);
           alert("You are authenticated successfully");
           
           // Set submissionSuccess to true if needed
@@ -120,7 +120,7 @@ export class HeaderComponent implements OnInit {
     if (this.authservice.logindata.email !== '') {
       this.authservice.sendResetCode(this.authservice.logindata.email).subscribe(
         (response) => {
-          console.log(response);
+          // console.log(response);
           alert('Reset code sent successfully to ' + this.authservice.logindata.email);
         },
         (error) => {

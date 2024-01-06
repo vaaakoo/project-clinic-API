@@ -22,7 +22,7 @@ export class CategoryComponent implements OnInit {
     // Move this part inside ngOnInit
     this.route.params.subscribe(params => {
       const doctorId = params['id'];
-      console.log('Doctor ID from route parameters:', doctorId);
+      // console.log('Doctor ID from route parameters:', doctorId);
     });
   }
 
@@ -30,7 +30,7 @@ export class CategoryComponent implements OnInit {
     this.authservice.getalldoc().subscribe(
       (data: doctorregisteration[]) => {
         this.alldoctor = data;
-        console.log('Received data:', this.alldoctor);
+        // console.log('Received data:', this.alldoctor);
       },
       (error) => {
         console.error('Error fetching doctor data:', error);
@@ -66,7 +66,7 @@ export class CategoryComponent implements OnInit {
       // Save changes to the server or update the list directly
       this.authservice.updateDoctor(doctor).subscribe(
         (result) => {
-          console.log('Doctor updated successfully:', result);
+          // console.log('Doctor updated successfully:', result);
           // Update the list of doctors after editing
           this.loadDoctorData();
         },

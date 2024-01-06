@@ -39,23 +39,23 @@ export class BookingPageComponent implements OnInit{
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
   
   submitForm() {
-    console.log('Form submitted with:', this.visitConfirmation);
+    // console.log('Form submitted with:', this.visitConfirmation);
   }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.doctorId = +params['id'];
-      console.log('Doctor ID from route parameters:', this.doctorId);
+      // console.log('Doctor ID from route parameters:', this.doctorId);
       
 
       this.authservice.getDoctorById(this.doctorId).subscribe(
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
-          console.log(this.doctor);
+          // console.log(this.doctor);
           this.patient = this.authservice.loginUser;
-          console.log(this.patient);
+          // console.log(this.patient);
           this.patientFirstName = this.authservice.loginusername;
-          console.log(this.patientFirstName);
+          // console.log(this.patientFirstName);
           this.patientIdNum = this.patient?.idNumber
           loadData();
         },
@@ -70,7 +70,6 @@ export class BookingPageComponent implements OnInit{
       $('.tdclick').on('click', (event: any) => {
         debugger;
         var clickedTd = $(event.target);
-        console.log(clickedTd);
 
         if (clickedTd.hasClass('disactivated')) {
           // Handle the case when the td is disactivated
@@ -78,7 +77,6 @@ export class BookingPageComponent implements OnInit{
           return;
         }
         var tdId = clickedTd.attr('id');
-        console.log(tdId);
         var patientName=this.patientFirstName;
         var patientIdNum = this.patientIdNum;
        
