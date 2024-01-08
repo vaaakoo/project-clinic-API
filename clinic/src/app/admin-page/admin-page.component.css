@@ -1,7 +1,6 @@
 .hero {
     display: flex;
     flex-direction: column;
-
 }
 
 .rectangle {
@@ -39,13 +38,27 @@
     flex-direction: column;
     gap: 63px;
     margin-top: 45px;
-    margin-left: 148px;
     margin-bottom: 171px;
 }
 .first-section {
     display: flex;
     gap: 15px;
+}
 
+@media (max-width: 1622px) {
+  .hero-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 150px;
+  }
+  .first-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .headers {
@@ -119,6 +132,20 @@
   min-width: 750px;
   min-height: 426px;
   gap: 61px;
+}
+
+@media (max-width: 1622px) {
+  .headers2 {
+    display: flex;
+    margin-top: 40px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .left-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 .user {
     margin-top: 70px;
@@ -289,6 +316,13 @@
     gap: 41px;
 }
 
+@media (max-width: 1622px) {
+  .second-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
 
 /* calendar */
 
@@ -361,6 +395,49 @@ span .year {
   border-radius: 10px;
   background: #FFF;
   box-shadow: 0px 4px 30px 0px rgba(5, 51, 84, 0.05);
+  }
+
+  @media (max-width: 1622px) {
+    .calendar {
+      width: 500px;
+      align-items: center;
+    }
+    .custom-table {
+      width: 800px;
+    }
+
+    .tdclick {
+      width: 50px;
+     } 
+    
+  }
+
+  @media (max-width: 880px) {
+    .custom-table {
+      width: 500px;
+    }
+    .tdclick {
+      width: 30px;
+    }
+
+    .rowhead {
+      width: 60px;
+     }
+
+     .card-columns {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+     }
+
+     .left-section {
+      width: 400px;
+      align-items: center;
+    }
+
+     .change-sect {
+      display: none;
+     }
   }
   
   .header {
@@ -438,6 +515,11 @@ td {
   height: 60px;
   width: 100px;
   position: relative;
+}
+
+@media (max-width: 1622px) {
+  /* Style the first .td element inside each table cell */
+ 
 }
 
 .activated-text {

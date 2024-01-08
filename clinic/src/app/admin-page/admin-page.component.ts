@@ -61,7 +61,7 @@ export class AdminPageComponent {
     $(document).ready( () => {
      
       $('.tdclick').on('click', (event: any) => {
-        debugger;
+        // debugger;
         var clickedTd = $(event.target);
         console.log(clickedTd);
         var tdId = clickedTd.attr('id');
@@ -71,7 +71,7 @@ export class AdminPageComponent {
         console.log(doctorName);
 
         if(doctorName!=""){
-          debugger;
+          // debugger;
           console.log("here is doctor:" + doctorName);
   
             $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
@@ -80,7 +80,7 @@ export class AdminPageComponent {
             }
             });
             $('.tdclick').on('click', '.deletebutton',  (event: any) => {
-              debugger;
+              // debugger;
               const clickedDeleteButton = $(event.target);
               var tdId = clickedDeleteButton.closest('td').attr('id');
               const parentTdClick = clickedDeleteButton.closest('.tdclick');
@@ -107,12 +107,12 @@ export class AdminPageComponent {
     });
 
     const loadData = () => {
-      debugger;
+      // debugger;
       const IdNumber = this.doctor?.idNumber || 'Doctor';
     
       this.authservice.getAppointmentData(IdNumber).subscribe(
         (data: any) => {
-          debugger;
+          // debugger;
           this.appointmentCount = data.count || 0;
           const doctorIdNumber = IdNumber;
     

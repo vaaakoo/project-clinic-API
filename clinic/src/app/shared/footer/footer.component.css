@@ -5,13 +5,11 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center; 
+  height: 300px;
   color: white;
   bottom: 0;
 }
 
-.main-column img {
-  width: 98%;
-}
 
 .logo-link {
   display: flex;
@@ -38,12 +36,10 @@
 
 .main-column {
   background-color: #053354;
-  height: 300px;
   display: flex;
   gap: 136px;
   max-width: 1621px;
   padding-top: 55px;
-  /* justify-content: space-between; */
 }
 .col {
   width: 100%;
@@ -59,6 +55,10 @@
 .col3 {
   min-width: 200px;
   /* margin-right: 134px; */
+}
+
+.ul1 {
+  text-wrap: nowrap;
 }
 
 .col h5 {
@@ -94,21 +94,110 @@
 .footer-logo {
   margin-right: 112px;
 }
-  .second-section {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    height: 35px;
-    width: 100%;
-    justify-content: space-between;
+/* footer-second */
+.btn.btn-social-icon{
+  width: 50px;
+  height: 50px;
+  padding: 0;
+}
+.template-demo > .btn{
+  margin-right: 0.5rem !important;
+}
+.template-demo {
+  display: flex;
+  gap: 15px;
+  text-align: center;
+}
+
+.btn.btn-rounded {
+  border-radius: 50px;
+}
+
+.btn-facebook {
+  background: #3b579d;
+  color: #ffffff;
+}
+
+.btn-youtube {
+  background: #e52d27;
+  color: #ffffff;
+}
+
+.btn-linkedin {
+  background: #0177b5;
+  color: #ffffff;
+}
+.btn-instagram {
+  background: #dc4a38;
+  color: #ffffff;
+}
+
+.social-media {
+  text-align: center;
+  color: #aad0ec;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.98px;
+}
+/* second-section */
+
+.second-section {
+  max-width: 1621px;
+  margin: 0 auto;
+  height: 35px;
+  background-color: white;
+  margin-top: 8px;
+}
+.second-section-1 {
+  display: flex;
+  text-align: left;
   }
   
   .second-section p {
-    color: #053354;
+    color: #2b79b1;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     letter-spacing: 0.98px;
-    padding-left: 150px;
   }
+
+  @media (min-width: 576px) {
+    .footer > :not(.template-demo, .social-media) {
+      display: none; /* Hide all immediate children except those with .template-demo or .social-media */
+    }
+    .footer {
+      display: flex;
+      gap: 20px;
+      flex-direction: column; /* Adjust for vertical layout on smaller screens */
+      justify-content: center;
+    }
+    .footer .template-demo,
+    .footer .social-media {
+      display: flex;
+    }
+    .second-section-1 {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+  
+  @media (min-width: 1622px) {
+    .footer > :not(.template-demo, .social-media) {
+      display: flex;
+    }
+    .footer .template-demo {
+      display: none; /* Show elements with .template-demo on small screens */
+    }
+    .footer .social-media {
+      display: none;
+    }
+    .second-section-1 {
+      justify-content: left;
+      text-align: left;
+    }
+  }
+  

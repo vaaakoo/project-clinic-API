@@ -239,6 +239,7 @@
   color: #fff;
 }
 
+
 /* modal */
 
 .modal-content {
@@ -333,4 +334,41 @@ form p {
   color: #FFF;
   border-radius: 50px;
 
+}
+
+
+@media (min-width: 576px) {
+  .second-section {
+    display: none;
+  }
+  .nav-bar {
+    display: none;
+  }
+  .nav-bar-1 {
+    display: flex;
+    justify-content: space-between;
+  }
+  .first-section {
+    padding: 5px 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  }
+  .button-eng {
+    display: none;
+  }
+}
+
+@media (min-width: 1622px) {
+  .container {
+    max-width: 1621px; /* Adjust the width for screens wider than 1200px */
+  }
+
+  .second-section {
+    display: flex;
+  }
+  .nav-bar {
+    display: flex;
+  }
+  .button-eng {
+    display: block;
+  }
 }

@@ -16,12 +16,18 @@
   }
 
 body {
-  max-width: 1920px;
-  margin-left: auto;
-  margin-right: auto;
+  /* max-width: 1920px; */
+  margin: 0;
+  padding: 0;
   font-family: 'FiraGO';
   padding: 0px;
 }
+
+.container {
+    margin: 0 auto;
+    padding: 0px;
+    max-width: 100%; 
+  }
 
 p {
   padding: 0px;
@@ -33,3 +39,15 @@ body .modal-open {
   padding-right: 0px !important; /* Override the default padding-right */
 }
 
+/* Media query for larger screens */
+@media (min-width: 576px) {
+  .container {
+    max-width: 100%; 
+  }
+}
+
+@media (min-width: 1622px) {
+  .container {
+    max-width: 1621px; /* Adjust the width for screens wider than 1200px */
+  }
+}
