@@ -22,6 +22,11 @@
 ```
 only admin can register doctor  
 ```
+
+```
+If there is Empty Data - has defoult registered doctors and users
+```
+
 ```
 working...
 ```
