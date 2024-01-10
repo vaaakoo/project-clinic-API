@@ -3,6 +3,7 @@
   display: flex;
   background-color: #053354;
   align-items: center; 
+  justify-content: center;
   color: white;
   position: relative;
 }
