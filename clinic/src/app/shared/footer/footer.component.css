@@ -4,6 +4,7 @@
   background-color: #053354;
   align-items: center; 
   color: white;
+  position: relative;
 }
 
 
@@ -31,6 +32,7 @@
 }
 
 .main-column {
+  position: relative;
   background-color: #053354;
   display: flex;
   gap: 136px;
@@ -38,7 +40,6 @@
   margin-top: 55px;
 }
 .col ul li{
-  /* width: 100%; */
   margin-bottom: 8px;
 }
 
@@ -47,7 +48,7 @@
 }
 
 .col2 {
-  margin-right: 40px;
+  margin-right: 55px;
 }
 .col3 {
   min-width: auto;
@@ -65,6 +66,8 @@
   font-weight: 500;
   line-height: normal;
   letter-spacing: 1.12px;
+  margin-bottom: 40px;
+  position: relative;
 }
 
 .list-text {
@@ -78,22 +81,25 @@
 
 .vector-line {
   position: absolute;
-  width: 1210px;
+  max-width: 1210px;
   height: 1px;
   flex-shrink: 0;
-  margin-top: -39px;
-  margin-left: 440px;
+  margin-left: 420px;
+  top: 94px;
   stroke-width: 1px;
   stroke: rgba(236, 242, 248, 0.30);
 }
 
 .vector-line  img {
-  width: 100%;
+  z-index: 10;
+  width: 1210px;
 }
 
 .footer-logo {
-  margin-right: 112px;
+  margin-right: 100px;
 }
+
+
 /* footer-second */
 .btn.btn-social-icon{
   width: 50px;
