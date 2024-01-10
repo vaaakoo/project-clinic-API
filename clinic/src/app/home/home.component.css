@@ -249,6 +249,26 @@
   .square-container {
     grid-template-columns: repeat(1, 6fr); /* 6 columns for screens up to 765px */
   }
+
+  .user-card {
+    width: 300px;
+  }
+  .square {
+    max-width: 100%;
+  }
+  .rectangle {
+    display: none;
+  }
+
+  .main-content {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the left */
+    height: 250px; /* Set a fixed height for the container */
+    background-image: url("../../assets/Rectangle30.png");
+    background-size: cover; /* Ensure the background image covers the container */
+  }
 }
 
 

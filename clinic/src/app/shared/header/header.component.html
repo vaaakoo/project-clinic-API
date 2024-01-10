@@ -45,6 +45,49 @@
         </div>
       </div>
     </div>
+    <div class="mobile-navbar">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+        <a routerLink="/home" class="logo-link">
+          <img src="../../../assets/logo1.png" alt="Logo">
+          <span class="logo-text">კლინიკა</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="true" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="navbar-collapse collapse" id="navbarsExample01">
+          <ul class="navbar-nav mr-auto">
+            <li>ექიმები</li>
+            <li>კლინიკები</li>
+            <li>მედიკამენტები</li>
+            <li>კონტაქტი</li>
+            <li class="nav-item">
+              <div [ngClass]="{'navbar-button': !isLoggedIn, 'navbar-button2': isLoggedIn || isAdministrator}">
+                <button class="button-reg-aut" *ngIf="!isLoggedIn && !isAdministrator && !isDoctor">
+                  <span class="button-registartion" (click)="navigateToRegistration()">რეგისტრაცია</span>
+                  <span class="button-aut" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ავტორიზაცია</span>
+                </button>
+              
+                <button class="button-reg-aut2" (click)="navigateClient()" *ngIf="isLoggedIn && !isAdministrator">
+                  <img src="../../../assets/default-image.png" alt="">
+                  <span class="button-registartion">{{ this.client.firstName }} {{ this.client.lastName }}</span>
+                </button>
+                <button class="button-reg-aut2" (click)="navigateDoctor()" *ngIf="isDoctor">
+                  <img [src]="this.doctor.imageUrl" alt="">
+                  <span class="button-registartion">{{ this.doctor.firstName }} {{ this.doctor.lastName }}</span>
+                </button>
+              
+                <button class="button-reg-aut2" (click)="navigateAdmin()" *ngIf="isAdministrator">
+                  <img src="../../../assets/Ellipse-222(1).png" alt="">
+                  <span class="button-registartion">ადმინისტრატორი</span>
+                </button>
+
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
 
     <div class="second-section">
       <div class="header-elements">

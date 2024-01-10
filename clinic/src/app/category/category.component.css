@@ -65,6 +65,21 @@ tbody tr td {
     /* position: relative; */
 }
 
+@media (max-width: 1622px) {
+    .hero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+     }
+    .category {
+        width: 90%;
+    }
+
+    tr td {
+        padding: 2px;
+    }
+  }
+
 .table-container::-webkit-scrollbar {
     width: 12px; /* Width of the vertical scrollbar */
 }
