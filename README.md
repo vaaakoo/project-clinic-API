@@ -1,4 +1,7 @@
 ﻿# project-clinic-API
+ ``
+  Download Updated Version Only - Last Commit :))
+ ``
 
 ### Built with
 
@@ -7,6 +10,7 @@
 - Angular - JS library
 - CSS custom properties
 - Bootstrap
+- JQuery
 
 ### The challenge
 
@@ -18,6 +22,11 @@
 ```
 only admin can register doctor  
 ```
+
+```
+If there is Empty Data - has defoult registered doctors and users
+```
+
 ```
 working...
 ```
