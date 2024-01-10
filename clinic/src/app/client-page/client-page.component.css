@@ -8,7 +8,6 @@
 .categories {
   display: flex;
   margin-top: 41px;
-  margin-left: 150px;
   margin-bottom: 191px;
   gap: 42px;
 }
