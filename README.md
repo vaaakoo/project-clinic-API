@@ -10,6 +10,7 @@
 - Angular - JS library
 - CSS custom properties
 - Bootstrap
+- JQuery
 
 ### The challenge
 
