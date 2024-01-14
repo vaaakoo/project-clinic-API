@@ -8,15 +8,39 @@
           <span class="logo-text">კლინიკა</span>
         </a>
 
-        <ul class="nav-bar">
-          <li>ექიმები</li>
-          <li>კლინიკები</li>
-          <li>ანოტაციები</li>
-          <li>აქციები</li>
-          <li>სერვისები</li>
-          <li>მედიკამენტები</li>
-          <li>კონტაქტი</li>
-        </ul>
+        <div class="nav-bar-flex-col">
+          <ul class="nav-bar">
+            <li>
+              ექიმები
+              <div class="vector-line-hover"></div>
+            </li>
+            <li>
+              კლინიკები
+              <div class="vector-line-hover"></div>
+            </li>
+            <li>
+              ანოტაციები
+              <div class="vector-line-hover"></div>
+            </li>
+            <li>
+              აქციები
+              <div class="vector-line-hover"></div>
+            </li>
+            <li>
+              სერვისები
+              <div class="vector-line-hover"></div>
+            </li>
+            <li>
+              მედიკამენტები
+              <div class="vector-line-hover"></div>
+            </li>
+            <li>
+              კონტაქტი
+              <div class="vector-line-hover"></div>
+            </li>
+          </ul>
+        </div>
+        
 
         <!-- button section -->
         <div [ngClass]="{'navbar-button': !isLoggedIn, 'navbar-button2': isLoggedIn || isAdministrator}">

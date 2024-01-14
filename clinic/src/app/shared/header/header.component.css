@@ -7,6 +7,7 @@
 .first-section {
   background-color: #fff;
   max-height: 110px;
+  padding-bottom: 27px;
 }
 
 .nav-bar-1 {
@@ -40,15 +41,31 @@
   margin-left: -26px;
 }
 
-.nav-bar {
-  list-style: none; 
-  padding: 0; 
-  margin: 0; 
+.nav-bar-flex-col {
+  display: flex;
+  flex-direction: column;
   margin-left: 150px;
-  display: flex; 
-  gap: 32px;
 }
 
+.nav-bar {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 32px;
+  position: relative; /* Added to make positioning children relative to ul */
+}
+
+.nav-bar:before {
+  content: ''; /* Create a pseudo-element for the grey underline */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ECF2F8; /* Grey color */
+  top: 41px;
+}
 
 .nav-bar li {
   color: #053354;
@@ -56,8 +73,26 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
- 
+  position: relative;
 }
+
+.nav-bar li:hover .vector-line-hover {
+  width: 80px;
+  background-color: #3498db; /* Blue color on hover */
+}
+
+.vector-line-hover {
+  height: 2px;
+  flex-shrink: 0;
+  margin-top: 20px;
+  position: absolute;
+  left: 50%; /* Center the vector under the li item */
+  transform: translateX(-50%);
+  width: 0; /* Initial width is 0 */
+  background-color: #3498db; /* Blue color */
+  transition: width 0.3s ease; /* Add smooth transition effect */
+}
+
 
 .navbar-button {
   margin-left: 47px;    
@@ -110,7 +145,6 @@
 
 .button-registartion {
   color: #18A4E1;
-  font-family: 'FiraGO';
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -119,7 +153,6 @@
 
 .button-aut {
   color: #053354;
-  font-family: 'FiraGO';
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -175,7 +208,6 @@
     display: flex;
     flex-direction: column;
     color: #18A4E1;
-    font-family: 'FiraGO';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -184,7 +216,6 @@
   
   .button-aut {
     color: #053354;
-    font-family: 'FiraGO';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -207,7 +238,6 @@
 
 .button-eng span {
   color: #053354;
-  font-family: 'FiraGO';
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -369,7 +399,6 @@
 
 .modal-header h5 {
   color: #18A4E1;
-  font-family: 'FiraGO';
   font-size: 26px;
   font-style: normal;
   font-weight: 500;
@@ -405,7 +434,6 @@ form p {
 
 .form-group input {
   color: rgba(5, 51, 84, 0.30);
-  font-family: 'FiraGO';
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -419,7 +447,6 @@ form p {
 
 .forget-password {
   color: #053354;
-  font-family: 'FiraGO';
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

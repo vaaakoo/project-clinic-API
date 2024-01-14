@@ -31,7 +31,6 @@
 }
 .rectangle-child p {
     color: #FFF;
-    font-family: 'FiraGO';
     font-size: 48px;
     font-style: normal;
     font-weight: 600;
@@ -51,7 +50,6 @@
     justify-content: center;
     gap: 12px;
     color: #053354;
-    font-family: 'FiraGO';
     font-size: 22px;
     font-style: normal;
     font-weight: 400;
@@ -143,7 +141,6 @@
     box-sizing: border-box; /* Include padding and border in the width calculation */
     padding-left: 40px; /* Adjust spacing between divs as needed */
     color: rgba(5, 51, 84, 0.30);
-    font-family: 'FiraGO';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -154,7 +151,6 @@
     width: 40%;
     box-sizing: border-box; /* Include padding and border in the width calculation */
     color: #053354;
-    font-family: 'FiraGO';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -169,7 +165,6 @@
   .category-components li:hover {
     background: rgba(236, 242, 248, 0.50);
     color: #18A4E1;
-    font-family: 'FiraGO';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -198,7 +193,6 @@
 
 .category-last p {
     color: #18A4E1;
-    font-family: 'FiraGO';
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -299,7 +293,6 @@
 
   .viewers p {
     color: rgba(5, 51, 84, 0.50);
-    font-family: 'FiraGO';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -340,7 +333,6 @@
 
   .middle .card-name {
     color: #053354;
-    font-family: 'FiraGO';
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -400,7 +392,6 @@
 
   .middle .card-category {
     color: rgba(5, 51, 84, 0.30);
-    font-family: 'FiraGO';
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
