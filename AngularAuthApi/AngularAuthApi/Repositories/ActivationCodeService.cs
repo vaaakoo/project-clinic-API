@@ -32,7 +32,7 @@ namespace AngularAuthApi.Repositories
                 From = new MailAddress("vaktonik@gmail.com"),
                 Subject = subject,
                 Body = body,
-                IsBodyHtml = false,
+                IsBodyHtml = true,
             };
 
             mailMessage.To.Add(email);

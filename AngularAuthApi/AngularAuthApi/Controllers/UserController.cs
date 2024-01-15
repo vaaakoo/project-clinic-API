@@ -10,6 +10,8 @@ using System.Net.Http.Headers;
 using AngularAuthApi.Repositories.Interfaces;
 using AngularAuthApi.Repositories;
 using AngularAuthApi.Migrations;
+using System.Net.Mail;
+
 
 namespace AngularAuthYtAPI.Controllers
 {
@@ -347,8 +349,22 @@ namespace AngularAuthYtAPI.Controllers
                     globalActivationCode = activationCode;
 
                     // Customize the email subject and body as needed
-                    var subject = "Activation Code";
-                    var body = $"Your Activation Code is: {activationCode}";
+                    var subject = "აქტივაციის კოდი";
+                    var body = $@"
+                            <html>
+                                <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333;'>
+                                    <div style='max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
+                                        <h1 style='color: #3498db;'>{subject}</h1>
+                                        <p>ძვირფასო მომხმარებელო,</p>
+                                        <p>მადლობას გიხდით ჩვენი კომპანიის სერვისით სარგებლობისთვის</p>
+                                        <p>თქვენი აქტივაციის კოდი არის:</p>
+                                        <div style='background-color: #3498db; color: #fff; padding: 10px; border-radius: 5px; font-size: 18px; font-weight: bold;'>{activationCode}</div>
+                                        <p>გთხოვთ ფრთხილად იყავით, თქვენი კოდი არ გაუზიაროთ სხვას.</p>
+                                        <p>წარმატებებს გისურვებთ ვლადიმერი!</p>
+                                    </div>
+                                </body>
+                            </html>
+                        ";
 
                     await _activationCodeService.SendActivationCodeAsync(email, activationCode, body, subject);
 
@@ -385,11 +401,22 @@ namespace AngularAuthYtAPI.Controllers
                     }
 
                     // Customize the email subject and body as needed
-                    var subject = "Password Reset";
+                    var name = user?.FirstName;
+                    var subject = "პაროლის აღდგენა";
                     var body = $@"<html>
-                <body>
-                    <p>შენი ახალი პაროლია: <strong>{resetCode}</strong></p>
-                    <p>გთხოვთ გადადით გვერდზე და გაიარეთ ავტორიზაცია. 😊😊😊</p>
+               <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333;'>
+                                    <div style='max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
+                                        <h1 style='color: #3498db;'>{subject}</h1>
+                                        <p>ძვირფასო <strong>{name}</strong>,</p>
+                                        <p>მადლობას გიხდით ჩვენი კომპანიის სერვისით სარგებლობისთვის</p>
+                                        <p>თქვენი ახალი პაროლი არის:</p>
+                                        <div style='background-color: #3498db; color: #fff; padding: 10px; border-radius: 5px; font-size: 18px; font-weight: bold;'>{resetCode}</div>
+                                        <p>თქვენი კოდი არ გაუზიაროთ სხვას.</p> <hr>
+                                        <h4>გთხოვთ გადადით გვერდზე და გაიარეთ ავტორიზაცია. 😊😊😊</h4>
+                                        <hr>
+                                        <h5>წარმატებებს გისურვებთ ვლადიმერი!</h5>
+                                    </div>
+
                 </body>
               </html>";
 
