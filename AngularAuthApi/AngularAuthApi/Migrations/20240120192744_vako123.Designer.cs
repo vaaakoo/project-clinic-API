@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AngularAuthApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231231130517_getclient+count")]
-    partial class getclientcount
+    [Migration("20240120192744_vako123")]
+    partial class vako123
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,10 @@ namespace AngularAuthApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageToDoctor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -98,6 +102,9 @@ namespace AngularAuthApi.Migrations
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("starNum")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
