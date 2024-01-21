@@ -131,9 +131,7 @@ namespace AngularAuthYtAPI.Controllers
             });
         }
 
-
-
-        [HttpPost("AuthenticateUser")]
+        /*[HttpPost("AuthenticateUser")]
         public IActionResult AuthenticateUser([FromBody] User userObj)
         {
             try
@@ -189,9 +187,10 @@ namespace AngularAuthYtAPI.Controllers
                 // Return an error response
                 return StatusCode(500, new { Message = "Internal Server Error" });
             }
-        }
+        }*/
 
         [HttpPost("doctor-register")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddDoctor([FromBody] User userObj)
         {
             if (userObj == null)
@@ -208,6 +207,7 @@ namespace AngularAuthYtAPI.Controllers
                 return BadRequest(new { Message = "Idnumber Already Exist" });
 
             userObj.Role = "doctor";
+            userObj.Password = BCrypt.Net.BCrypt.HashPassword(userObj.Password);
             await _authContext.AddAsync(userObj);
             await _authContext.SaveChangesAsync();
 
@@ -228,7 +228,6 @@ namespace AngularAuthYtAPI.Controllers
 
 
         [HttpGet("getDoctor")]
-        [Authorize(Roles = "admin")]
         public IActionResult GetDoctor()
         {
             try
@@ -268,6 +267,7 @@ namespace AngularAuthYtAPI.Controllers
 }
 
         [HttpPut("updateDoctor/{id}")]
+        [Authorize(Roles = "admin")]
         public IActionResult UpdateDoctor(int id, [FromBody] User updatedDoctor)
         {
             try
@@ -301,6 +301,8 @@ namespace AngularAuthYtAPI.Controllers
 
 
         [HttpDelete("deleteDoctor/{id}")]
+        [Authorize(Roles = "admin")]
+
         public IActionResult DeleteDoctor(int id)
         {
             try
@@ -323,7 +325,6 @@ namespace AngularAuthYtAPI.Controllers
                 return StatusCode(500, new { Message = "Internal Server Error" });
             }
         }
-
 
 
         [HttpGet("getUser")]
