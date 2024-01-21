@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Useregisteration, doctorregisteration } from '../useregisteration';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,12 @@ export class AuthserviceService {
 
 
   get isAuthenticated(): Observable<boolean> {
+    debugger;
+    const authent = this.isAuthenticatedSubject.asObservable()
+    console.log(authent);
     return this.isAuthenticatedSubject.asObservable();
+
+    
   }
 
   setAuthenticationToken(token: string): void {
@@ -48,10 +54,20 @@ export class AuthserviceService {
     // You can also perform additional logout logic if needed
   }
 
-  getToken(): string {
-    // You can retrieve the token from localStorage or any other storage mechanism
-    return this.authToken || localStorage.getItem('authToken') || '';
-  }
+  getToken(): { token: string, userInfo: any } {
+    const token = localStorage.getItem('authToken') || '';
+    let userInfo = {};
+
+    try {
+        userInfo = jwtDecode(token) || {};
+    } catch (error) {
+        console.error('Error decoding token:', error);
+    }
+
+    return { token, userInfo };
+}
+
+  
 
   sendactivationcode(email: string): Observable<any> {
     const apiUrl = `${this.apiUrl}/send-code/${email}`;
