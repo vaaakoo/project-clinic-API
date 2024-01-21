@@ -113,6 +113,13 @@ export class HeaderComponent implements OnInit {
       );
     }
   }
+
+  onLogoutClick(): void {
+    this.authservice.logout();
+    this.isLoggedIn = false;
+    this.isAdministrator = false;
+    this.isDoctor = false;
+  }
   ngOnInit(): void {}
 
   // reset code option

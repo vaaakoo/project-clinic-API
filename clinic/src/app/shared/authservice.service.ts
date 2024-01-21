@@ -35,6 +35,19 @@ export class AuthserviceService {
     this.isAuthenticatedSubject.next(true);
   }
 
+  clearAuthenticationToken(): void {
+    this.authToken = '';
+    console.log(this.authToken);
+    localStorage.removeItem('authToken');
+    this.isAuthenticatedSubject.next(false);
+  }
+
+  logout(): void {
+    // Call this method when you want to log the user out
+    this.clearAuthenticationToken();
+    // You can also perform additional logout logic if needed
+  }
+
   getToken(): string {
     // You can retrieve the token from localStorage or any other storage mechanism
     return this.authToken || localStorage.getItem('authToken') || '';
