@@ -57,15 +57,34 @@ export class AuthserviceService {
   getToken(): { token: string, userInfo: any } {
     const token = localStorage.getItem('authToken') || '';
     let userInfo = {};
-
+  
     try {
+      if (token) {
         userInfo = jwtDecode(token) || {};
+      }
     } catch (error) {
-        console.error('Error decoding token:', error);
+      console.error('Error decoding token:', error);
     }
-
+  
+    console.log(userInfo);
     return { token, userInfo };
-}
+  }
+
+  get isDoctor(): boolean {
+    const { userInfo } = this.getToken();
+    return userInfo && userInfo.role === 'doctor';
+  }
+
+  get isLoggedIn(): boolean {
+    const { userInfo } = this.getToken();
+    return userInfo && userInfo.role === 'client';
+  }
+
+  get isAdministrator(): boolean {
+    const { userInfo } = this.getToken();
+    return userInfo && userInfo.role === 'admin';
+  }
+
 
   
 

@@ -16,26 +16,46 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    
-  const { token, userInfo } = this.authService.getToken();
+      const tokenInfo = this.authService.getToken();
+      const role = tokenInfo.userInfo['role'];
 
-if (token) {
-    // Token is available
-    console.log('Token:', token);
-    console.log('User Info:', userInfo);
+      
+      if (this.authService.isLoggedIn) {
+        return true;
+      }
+      if (this.authService.isAdministrator) {
+        return true;
+      }
+      if (this.authService.isDoctor) {
+        return true;
+      }
+      
 
-    // You can access user roles like userInfo.role
-} else {
-    // Token is not available
-    console.log('No token available');
-}
-
-    if (localStorage.getItem("authToken")) {
-      return true;
-    } else {
-      // Redirect to the login page or handle unauthorized access
+    // Check the route and restrict access based on the user's role
+    if (state.url.startsWith('/admin-page') && role !== 'admin') {
       this.router.navigate(['/home']);
       return false;
     }
+
+    if (state.url.startsWith('admin-page/category') && role !== 'admin') {
+      this.router.navigate(['/home']);
+      return false;
+    }
+    if (state.url.startsWith('admin-page/registration') && role !== 'admin') {
+      this.router.navigate(['/home']);
+      return false;
+    }
+    if (state.url.startsWith('booking') && role !== 'client') {
+      this.router.navigate(['/home']);
+      return false;
+    }
+    if (state.url.startsWith('/doctor-page:id') && role !== 'doctor') {
+      this.router.navigate(['/home']);
+      return false;
+    }
+
+    this.router.navigate(['/home']);
+    return false;
+    }
+
   }
-}
