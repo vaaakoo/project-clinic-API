@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AngularAuthApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231224193736_add_table")]
-    partial class add_table
+    [Migration("20240120192744_vako123")]
+    partial class vako123
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,22 @@ namespace AngularAuthApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ClientIdNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DoctorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageToDoctor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
@@ -87,6 +102,9 @@ namespace AngularAuthApi.Migrations
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("starNum")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

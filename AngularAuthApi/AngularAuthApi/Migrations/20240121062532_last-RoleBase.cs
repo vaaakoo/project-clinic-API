@@ -5,7 +5,7 @@
 namespace AngularAuthApi.Migrations
 {
     /// <inheritdoc />
-    public partial class changes : Migration
+    public partial class lastRoleBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
