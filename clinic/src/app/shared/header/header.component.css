@@ -236,13 +236,13 @@
   padding: 0px;
 }
 
-.button-eng span {
-  color: #053354;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+.button-eng img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
+
+/* git  */
 
 /* section two */
 .second-section {

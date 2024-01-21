@@ -46,10 +46,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/booking']);
   }
   navigatetoregisteration() {
-    // debugger;
+    debugger;
     if (this.authservice.logindata.email != '' && this.authservice.logindata.password != null) {
 
-      this.authservice.AuthenticateUser(this.authservice.logindata).subscribe(
+      this.authservice.login(this.authservice.logindata).subscribe(
         (response) => {
           // debugger;
         //  console.log(response);
@@ -68,7 +68,7 @@ export class HeaderComponent implements OnInit {
   onSubmit() {
     // Perform your authentication logic here
     if (this.authservice.logindata.email !== '' && this.authservice.logindata.password !== null) {
-      this.authservice.AuthenticateUser(this.authservice.logindata).subscribe(
+      this.authservice.login(this.authservice.logindata).subscribe(
         (response) => {
           // console.log(response);
           this.authservice.loginusername = response.user.firstName;
@@ -112,6 +112,13 @@ export class HeaderComponent implements OnInit {
         }
       );
     }
+  }
+
+  onLogoutClick(): void {
+    this.authservice.logout();
+    this.isLoggedIn = false;
+    this.isAdministrator = false;
+    this.isDoctor = false;
   }
   ngOnInit(): void {}
 

@@ -14,8 +14,9 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ClientPageComponent } from './client-page/client-page.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { DoctorPageComponent } from './doctor-page/doctor-page.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BookingPageComponent } from './booking-page/booking-page.component';
+import { AuthInterceptor } from './shared/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,9 @@ import { BookingPageComponent } from './booking-page/booking-page.component';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
