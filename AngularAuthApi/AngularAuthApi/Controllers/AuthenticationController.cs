@@ -57,6 +57,7 @@ namespace AngularAuthApi.Controllers
 
             return Ok(new
             {
+                User = user,
                 Token = token,
                 ExpiresIn = _jwtExpirationDays * 24 * 60 * 60 // Token expiration time in seconds
             });
