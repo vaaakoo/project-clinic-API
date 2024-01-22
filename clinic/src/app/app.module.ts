@@ -18,6 +18,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BookingPageComponent } from './booking-page/booking-page.component';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { AuthGuard } from './auth.guard';
+import { AuthserviceService } from './shared/authservice.service';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AuthGuard } from './auth.guard';
     HttpClientModule
   ],
   providers: [
+    AuthserviceService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthGuard
   ],

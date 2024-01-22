@@ -14,48 +14,43 @@ export class AuthGuard implements CanActivate {
   
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    
-      const tokenInfo = this.authService.getToken();
-      const role = tokenInfo.userInfo['role'];
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    const tokenInfo = this.authService.getToken();
+    const role = tokenInfo.userInfo['role'];
 
-      
-      if (this.authService.isLoggedIn) {
-        return true;
-      }
-      if (this.authService.isAdministrator) {
-        return true;
-      }
-      if (this.authService.isDoctor) {
-        return true;
-      }
-      
-
+    if (this.authService.isLoggedIn || this.authService.isAdministrator || this.authService.isDoctor) {
+      return true;
+    }
+  
     // Check the route and restrict access based on the user's role
     if (state.url.startsWith('/admin-page') && role !== 'admin') {
       this.router.navigate(['/home']);
       return false;
     }
-
-    if (state.url.startsWith('admin-page/category') && role !== 'admin') {
+  
+    if (state.url.startsWith('/admin-page/category') && role !== 'admin') {
       this.router.navigate(['/home']);
       return false;
     }
-    if (state.url.startsWith('admin-page/registration') && role !== 'admin') {
+  
+    if (state.url.startsWith('/admin-page/registration') && role !== 'admin') {
       this.router.navigate(['/home']);
       return false;
     }
-    if (state.url.startsWith('booking') && role !== 'client') {
+  
+    if (state.url.startsWith('/booking' || '/booking:id') && role !== 'client') {
+      this.router.navigate(['/home']);
+      alert('You do not have permission to access this page, please login!.');
+      return false;
+    }
+  
+    if (state.url.startsWith('/doctor-page' || '/doctor-page:id') && role !== 'doctor') {
       this.router.navigate(['/home']);
       return false;
     }
-    if (state.url.startsWith('/doctor-page:id') && role !== 'doctor') {
-      this.router.navigate(['/home']);
-      return false;
-    }
-
-    this.router.navigate(['/home']);
-    return false;
-    }
+    return true;
+  }
+  
 
   }
