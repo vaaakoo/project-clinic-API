@@ -25,37 +25,45 @@ export class AuthserviceService {
 
 
   get isAuthenticated(): Observable<boolean> {
-    debugger;
-    const authent = this.isAuthenticatedSubject.asObservable()
-    console.log(authent);
     return this.isAuthenticatedSubject.asObservable();
-
-    
   }
 
   setAuthenticationToken(token: string): void {
     this.authToken = token;
-    console.log(this.authToken);
-    // You can also store the token in localStorage for persistence
+    // console.log(this.authToken);
     localStorage.setItem('authToken', token);
     this.isAuthenticatedSubject.next(true);
   }
 
   clearAuthenticationToken(): void {
     this.authToken = '';
-    console.log(this.authToken);
+    // console.log(this.authToken);
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userInfo');
     this.isAuthenticatedSubject.next(false);
   }
 
   logout(): void {
-    // Call this method when you want to log the user out
     this.clearAuthenticationToken();
-    // You can also perform additional logout logic if needed
+    alert("you can not logout, please login! ")
   }
 
-  getToken(): { token: string, userInfo: any } {
+  getToken(): { token: string, userInfo: any, userInfoForRole: any } {
     const token = localStorage.getItem('authToken') || '';
+    const userInfoForRole = this.getUserInfoForRole(token);
+
+    const userInfo = this.getUserInfo();
+    // console.log(userInfo['role']);
+    return { token, userInfo, userInfoForRole };
+  }
+
+  // 
+  setUserInfo(user: any): void {
+    // Store the user information in localStorage
+    localStorage.setItem('userInfo', JSON.stringify(user));
+  }
+  
+  getUserInfoForRole(token: string): any {
     let userInfo = {};
   
     try {
@@ -66,9 +74,29 @@ export class AuthserviceService {
       console.error('Error decoding token:', error);
     }
   
-    console.log(userInfo);
-    return { token, userInfo };
+    return userInfo;
   }
+
+  getUserInfo(): any {
+    // Retrieve user information from localStorage
+    const userInfoString = localStorage.getItem('userInfo');
+    return userInfoString ? JSON.parse(userInfoString) : null;
+  }
+  
+
+  // 
+  login(user: Useregisteration): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl1}/login`, user)
+      .pipe(
+        tap(response => {
+          // console.log('Login response:', response);
+          this.setAuthenticationToken(response.token);
+          const user = response.user;
+          this.setUserInfo(user);
+        })
+      );
+  }
+  
 
   get isDoctor(): boolean {
     const { userInfo } = this.getToken();
@@ -102,13 +130,7 @@ export class AuthserviceService {
     return this.http.get(apiUrl);
   }
 
-  login(user: Useregisteration): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl1}/login`, user)
-    .pipe(
-      // Assuming the token is in the "token" field of the response
-      tap(response => this.setAuthenticationToken(response.token))
-    );;
-  }
+  
 
   registerdoctor(user: doctorregisteration): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/doctor-register`, user);
