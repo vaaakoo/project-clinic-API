@@ -47,15 +47,15 @@ export class BookingPageComponent implements OnInit{
       this.doctorId = +params['id'];
       // console.log('Doctor ID from route parameters:', this.doctorId);
       
-
+debugger
       this.authservice.getDoctorById(this.doctorId).subscribe(
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
           // console.log(this.doctor);
-          this.patient = this.authservice.loginUser;
-          // console.log(this.patient);
-          this.patientFirstName = this.authservice.loginusername;
-          // console.log(this.patientFirstName);
+          this.patient = this.authservice.getToken().userInfo;
+          console.log(this.patient);
+          this.patientFirstName = this.authservice.getToken().userInfo.firstName;
+          console.log(this.patientFirstName);
           this.patientIdNum = this.patient?.idNumber
           loadData();
         },
@@ -88,7 +88,9 @@ export class BookingPageComponent implements OnInit{
           clickedTd.addClass('activated');
           const htmlContent = `
             <span class="activated-text">
-                <p>ჩემი <br />ჯავშანი </p>
+            <p class="activated-text-p" style="font-weight: bold; color: #3ACF99; text-align: center; font-size: 12px; font-style: normal; font-weight: 400; line-height: normal; word-wrap: break-word;">
+              ჩემი <br />ჯავშანი
+            </p>
                 <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                 <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
             </span>
@@ -103,7 +105,7 @@ export class BookingPageComponent implements OnInit{
             MessageToDoctor: "text",
             Status: 'available',
           };
-  
+          debugger;
           this.authservice.clientBookAppointment(formData).subscribe(
             () => {
               alert('Appointment Booked successfully!');
@@ -178,7 +180,9 @@ export class BookingPageComponent implements OnInit{
                 element.addClass('activated');
                 const htmlContent = `
                   <span class="activated-text">
-                    <p>ჩემი <br />ჯავშანი </p>
+                  <p class="activated-text-p" style="font-weight: bold; color: #3ACF99; text-align: center; font-size: 12px; font-style: normal; font-weight: 400; line-height: normal; word-wrap: break-word;">
+                  ჩემი <br />ჯავშანი
+                </p>
                     <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                     <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>

@@ -70,7 +70,9 @@ export class ClientPageComponent implements OnInit{
           clickedTd.addClass('activated');
           const htmlContent = `
             <span class="activated-text">
-                <p>ჩემი <br />ჯავშანი </p>
+            <p class="activated-text-p" style="font-weight: bold; color: #3ACF99; text-align: center; font-size: 12px; font-style: normal; font-weight: 400; line-height: normal; word-wrap: break-word;">
+            ჩემი <br />ჯავშანი
+          </p>
                 <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                 <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
             </span>
@@ -159,7 +161,9 @@ export class ClientPageComponent implements OnInit{
                 element.addClass('activated');
                 const htmlContent = `
                   <span class="activated-text">
-                    <p>ჩემი <br />ჯავშანი </p>
+                  <p class="activated-text-p" style="font-weight: bold; color: #3ACF99; text-align: center; font-size: 12px; font-style: normal; font-weight: 400; line-height: normal; word-wrap: break-word;">
+                  ჩემი <br />ჯავშანი
+                </p>
                     <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
                     <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>
