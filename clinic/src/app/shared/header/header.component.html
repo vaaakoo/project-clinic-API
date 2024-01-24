@@ -1,3 +1,4 @@
+
 <!-- header.component.html -->
 <div class="header">
   <!-- first-section -->
@@ -51,11 +52,11 @@
         
           <button class="button-reg-aut2" (click)="navigateClient()" *ngIf="isLoggedIn && !isAdministrator">
             <img src="../../../assets/default-image.png" alt="">
-            <span class="button-registartion">{{ this.client.firstName }} {{ this.client.lastName }}</span>
+            <span class="button-registartion">{{ this.authUser.firstName }} {{ this.authUser.lastName }}</span>
           </button>
           <button class="button-reg-aut2" (click)="navigateDoctor()" *ngIf="isDoctor">
-            <img [src]="this.doctor.imageUrl" alt="">
-            <span class="button-registartion">{{ this.doctor.firstName }} {{ this.doctor.lastName }}</span>
+            <img [src]="this.authUser.imageUrl" alt="">
+            <span class="button-registartion">{{ this.authUser.firstName }} {{ this.authUser.lastName }}</span>
           </button>
         
           <button class="button-reg-aut2" (click)="navigateAdmin()" *ngIf="isAdministrator">
@@ -95,11 +96,11 @@
               
                 <button class="button-reg-aut2" (click)="navigateClient()" *ngIf="isLoggedIn && !isAdministrator">
                   <img src="../../../assets/default-image.png" alt="">
-                  <span class="button-registartion">{{ this.client.firstName }} {{ this.client.lastName }}</span>
+                  <span class="button-registartion">{{ this.authUser.firstName }} {{ this.authUser.lastName }}</span>
                 </button>
                 <button class="button-reg-aut2" (click)="navigateDoctor()" *ngIf="isDoctor">
-                  <img [src]="this.doctor.imageUrl" alt="">
-                  <span class="button-registartion">{{ this.doctor.firstName }} {{ this.doctor.lastName }}</span>
+                  <img [src]="this.authUser.imageUrl" alt="">
+                  <span class="button-registartion">{{ this.authUser.firstName }} {{ this.authUser.lastName }}</span>
                 </button>
               
                 <button class="button-reg-aut2" (click)="navigateAdmin()" *ngIf="isAdministrator">
@@ -145,6 +146,8 @@
     </div>
   </div>
   
+
+
   <!-- modal -->
   <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

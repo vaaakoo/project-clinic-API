@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Useregisteration, doctorregisteration } from '../useregisteration';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -29,29 +30,91 @@ export class AuthserviceService {
 
   setAuthenticationToken(token: string): void {
     this.authToken = token;
-    console.log(this.authToken);
-    // You can also store the token in localStorage for persistence
+    // console.log(this.authToken);
     localStorage.setItem('authToken', token);
     this.isAuthenticatedSubject.next(true);
   }
 
   clearAuthenticationToken(): void {
     this.authToken = '';
-    console.log(this.authToken);
+    // console.log(this.authToken);
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userInfo');
     this.isAuthenticatedSubject.next(false);
   }
 
   logout(): void {
-    // Call this method when you want to log the user out
     this.clearAuthenticationToken();
-    // You can also perform additional logout logic if needed
+    alert("you can not logout, please login! ")
   }
 
-  getToken(): string {
-    // You can retrieve the token from localStorage or any other storage mechanism
-    return this.authToken || localStorage.getItem('authToken') || '';
+  getToken(): { token: string, userInfo: any, userInfoForRole: any } {
+    const token = localStorage.getItem('authToken') || '';
+    const userInfoForRole = this.getUserInfoForRole(token);
+
+    const userInfo = this.getUserInfo();
+    // console.log(userInfo['role']);
+    return { token, userInfo, userInfoForRole };
   }
+
+  // 
+  setUserInfo(user: any): void {
+    // Store the user information in localStorage
+    localStorage.setItem('userInfo', JSON.stringify(user));
+  }
+  
+  getUserInfoForRole(token: string): any {
+    let userInfo = {};
+  
+    try {
+      if (token) {
+        userInfo = jwtDecode(token) || {};
+      }
+    } catch (error) {
+      console.error('Error decoding token:', error);
+    }
+  
+    return userInfo;
+  }
+
+  getUserInfo(): any {
+    // Retrieve user information from localStorage
+    const userInfoString = localStorage.getItem('userInfo');
+    return userInfoString ? JSON.parse(userInfoString) : null;
+  }
+  
+
+  // 
+  login(user: Useregisteration): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl1}/login`, user)
+      .pipe(
+        tap(response => {
+          // console.log('Login response:', response);
+          this.setAuthenticationToken(response.token);
+          const user = response.user;
+          this.setUserInfo(user);
+        })
+      );
+  }
+  
+
+  get isDoctor(): boolean {
+    const { userInfo } = this.getToken();
+    return userInfo && userInfo.role === 'doctor';
+  }
+
+  get isLoggedIn(): boolean {
+    const { userInfo } = this.getToken();
+    return userInfo && userInfo.role === 'client';
+  }
+
+  get isAdministrator(): boolean {
+    const { userInfo } = this.getToken();
+    return userInfo && userInfo.role === 'admin';
+  }
+
+
+  
 
   sendactivationcode(email: string): Observable<any> {
     const apiUrl = `${this.apiUrl}/send-code/${email}`;
@@ -67,13 +130,7 @@ export class AuthserviceService {
     return this.http.get(apiUrl);
   }
 
-  login(user: Useregisteration): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl1}/login`, user)
-    .pipe(
-      // Assuming the token is in the "token" field of the response
-      tap(response => this.setAuthenticationToken(response.token))
-    );;
-  }
+  
 
   registerdoctor(user: doctorregisteration): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/doctor-register`, user);

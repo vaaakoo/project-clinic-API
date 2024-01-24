@@ -18,7 +18,7 @@ namespace AngularAuthApi.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly AppDbContext _authContext;
-        private readonly int _jwtExpirationDays = 7;
+        private readonly int _jwtExpirationDays = 1;
 
         public AuthenticationController(AppDbContext authContext)
         {
@@ -59,7 +59,7 @@ namespace AngularAuthApi.Controllers
             {
                 User = user,
                 Token = token,
-                ExpiresIn = _jwtExpirationDays * 24 * 60 * 60 // Token expiration time in seconds
+                ExpiresIn = _jwtExpirationDays * 60 * 60 // Token expiration time in seconds
             });
         }
 
@@ -70,9 +70,11 @@ namespace AngularAuthApi.Controllers
             var claims = new ClaimsIdentity(new[]
             {
             new Claim(ClaimTypes.Name, user.FirstName),
-            new Claim(ClaimTypes.NameIdentifier, user.IdNumber), // Use a standard claim type or create a custom one
+            new Claim(ClaimTypes.NameIdentifier, user.IdNumber),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role)
+            new Claim(ClaimTypes.Role, user.Role),
+            new Claim("UserId", user.Id.ToString())
+
 
     });
 

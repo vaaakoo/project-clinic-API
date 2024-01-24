@@ -418,6 +418,7 @@ namespace AngularAuthYtAPI.Controllers
             {
                 if (!string.IsNullOrEmpty(email))
                 {
+
                     var resetCode = await _passwordResetService.GenerateResetCodeAsync();
 
                     // Update the user's password in the database without hashing
@@ -427,6 +428,12 @@ namespace AngularAuthYtAPI.Controllers
                         user.Password = resetCode; // Assuming resetCode is the new password
                         _authContext.SaveChanges();
                     }
+
+                    if (user.Role == "admin")
+                    {
+                        return BadRequest(new { Message = "Admin password reset is not allowed" });
+                    }
+
 
                     // Customize the email subject and body as needed
                     var name = user?.FirstName;
