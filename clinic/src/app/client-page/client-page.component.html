@@ -109,8 +109,8 @@
                     <h4>Email :</h4>
                     <p>{{ this.client?.email}}</p>
                 </div>
-                <h4>პაროლის შეცვლა</h4>
-            </div>
+                <h4 *ngIf="client" (click)="changePassword(client)">პაროლის შეცვლა</h4>
+              </div>
 
             <div class="middle-first">
                 <h4>დაჯავშნილია :</h4>
@@ -166,7 +166,7 @@
                   <td class="rowhead">{{ getTimeRange(i) }}</td>
                   <!-- Display time range in the first column -->
                   <ng-container *ngFor="let col of row.cols; let j = index">
-                    <td class="tdclick" [id]="'td_' + i + '_' + j">
+                    <td class="tdclick" [id]="'td_' + i + '_' + j" (click)="handleCellClick(col)">
                       <!-- <span *ngIf="!col.activated && j < 5">დაჯავშნა</span> -->
                     </td>
 

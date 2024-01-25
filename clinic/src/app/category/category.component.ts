@@ -22,7 +22,6 @@ export class CategoryComponent implements OnInit {
     // Move this part inside ngOnInit
     this.route.params.subscribe(params => {
       const doctorId = params['id'];
-      // console.log('Doctor ID from route parameters:', doctorId);
     });
   }
 
@@ -42,7 +41,6 @@ export class CategoryComponent implements OnInit {
     if (confirm('Are you sure you want to delete this doctor?')) {
       this.authservice.deleteDoctor(doctorId).subscribe(
         () => {
-          // Update the list of doctors after deletion
           this.loadDoctorData();
         },
         (error) => {

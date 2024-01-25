@@ -61,7 +61,12 @@ export class HeaderComponent implements OnInit {
           window.location.reload();
         },
         (error) => {
-          console.log(error);
+          console.error(error);      
+          if (error.status === 401) {
+            alert("Authentication failed. Please check your credentials.");
+          } else {
+            alert("An error occurred during authentication. Please try again later.");
+          }
         }
       );
     }
@@ -98,7 +103,14 @@ export class HeaderComponent implements OnInit {
 
   // reset code option
   sendResetCode() {
+    debugger;
     if (this.authservice.logindata.email !== '') {
+      // Add a check to see if the email is "admin"
+      if (this.authservice.logindata.email.toLowerCase() === 'admin') {
+        alert('Error: Cannot send reset code for admin email.');
+        return;
+      }
+  
       this.authservice.sendResetCode(this.authservice.logindata.email).subscribe(
         (response) => {
           // console.log(response);
@@ -113,4 +125,5 @@ export class HeaderComponent implements OnInit {
       alert('Please provide a valid email address.');
     }
   }
+  
 }

@@ -175,6 +175,26 @@ export class DoctorPageComponent implements OnInit{
     return `${startHour}:00 - ${endHour}:00`;
   }
 
+  changePassword(doctor: doctorregisteration) {
+    debugger
+    const newPassword = window.prompt('Enter the new password:');
+    
+    if (newPassword !== null) {
+      // Update the user's password
+      doctor.password = newPassword;
+  
+      this.authservice.updateDoctor(doctor).subscribe(
+        (result) => {
+          alert('Password changed successfully');
+        },
+        (error) => {
+          console.error('Error updating user password:', error);
+        }
+      );
+    }
+  }
+  
+
   getStarArray(starNum: number): number[] {
     return Array.from({ length: starNum }, (_, index) => index);
   }

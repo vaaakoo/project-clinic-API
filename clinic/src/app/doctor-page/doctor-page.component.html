@@ -115,7 +115,7 @@
             <h4>Email :</h4>
             <p>{{ this.doctor?.email }}</p>
           </div>
-          <h4>პაროლის შეცვლა</h4>
+          <h4 *ngIf="doctor" (click)="changePassword(doctor)">პაროლის შეცვლა</h4>
         </div>
 
         <div class="middle-first">

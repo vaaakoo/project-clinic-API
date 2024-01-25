@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate {
     const role = userInfoForRole && userInfoForRole['role'];
     const userId = userInfoForRole['UserId'];
   
+    if (token) {
     if (this.authService.isLoggedIn || this.authService.isAdministrator || this.authService.isDoctor) {
   
       if ((state.url.startsWith('/admin-page') || state.url.startsWith('/admin-page/category') || state.url.startsWith('/admin-page/registration')) && role !== 'admin') {
@@ -46,6 +47,7 @@ export class AuthGuard implements CanActivate {
   
       return true;
     }
+  }
   
     alert('You do not have permission to access this page, please login!');
     this.router.navigate(['']);

@@ -112,9 +112,7 @@ export class AuthserviceService {
     const { userInfo } = this.getToken();
     return userInfo && userInfo.role === 'admin';
   }
-
-
-  
+ 
 
   sendactivationcode(email: string): Observable<any> {
     const apiUrl = `${this.apiUrl}/send-code/${email}`;
@@ -129,8 +127,6 @@ export class AuthserviceService {
     const apiUrl = `${this.apiUrl}/send-reset-code/${email}`;
     return this.http.get(apiUrl);
   }
-
-  
 
   registerdoctor(user: doctorregisteration): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/doctor-register`, user);
@@ -171,6 +167,10 @@ export class AuthserviceService {
 
   updateDoctor(doctor: doctorregisteration): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/updateDoctor/${doctor.id}`, doctor);
+  }
+
+  updateUser(user: Useregisteration): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/updateUser/${user.id}`, user);
   }
   deleteDoctor(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/deleteDoctor/${id}`);

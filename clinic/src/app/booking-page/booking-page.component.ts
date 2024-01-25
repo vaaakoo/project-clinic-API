@@ -51,11 +51,8 @@ debugger
       this.authservice.getDoctorById(this.doctorId).subscribe(
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
-          // console.log(this.doctor);
           this.patient = this.authservice.getToken().userInfo;
-          console.log(this.patient);
           this.patientFirstName = this.authservice.getToken().userInfo.firstName;
-          console.log(this.patientFirstName);
           this.patientIdNum = this.patient?.idNumber
           loadData();
         },

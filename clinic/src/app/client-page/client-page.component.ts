@@ -58,50 +58,7 @@ export class ClientPageComponent implements OnInit{
 
     $(document).ready( () => {
      
-      $('.tdclick').on('click', (event: any) => {
-        debugger;
-        var clickedTd = $(event.target);
-        var tdId = clickedTd.attr('id');
-        var patientName=this.patientFirstName;
-        var patientIdNum =this.patientIdNumber;
-
-        if(patientIdNum!=""){
-          debugger;
-          clickedTd.addClass('activated');
-          const htmlContent = `
-            <span class="activated-text">
-            <p class="activated-text-p" style="font-weight: bold; color: #3ACF99; text-align: center; font-size: 12px; font-style: normal; font-weight: 400; line-height: normal; word-wrap: break-word;">
-            ჩემი <br />ჯავშანი
-          </p>
-                <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
-            </span>
-            `;
-          clickedTd.html(htmlContent);
-          var formData = {
-            DoctorName: this.doctor?.firstName,
-            IdNumber: this.doctor?.idNumber ||'Doctor',
-            UniqueNumber: tdId,
-            PatientName:patientName,
-            ClientIdNumber: patientIdNum,
-            MessageToDoctor: 'თავის ტკივილი',
-            Status: 'available',
-          };
-  
-          this.authservice.clientBookAppointment(formData).subscribe(
-            () => {
-              alert('Appointment Booked successfully!');
-            },
-            (error) => {
-              console.error('Error booking appointment:', error);
-            }
-          );
-
-            $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
-            }else{
-              alert("First Login Yourself To Book Appointment");
-            }
-            });
+     
             $('.tdclick').on('click', '.deletebutton',  (event: any) => {
               debugger;
               const clickedDeleteButton = $(event.target);
@@ -140,7 +97,6 @@ export class ClientPageComponent implements OnInit{
     
       this.authservice.getClientDataByIdNumber(patientidNumber).subscribe(
         (data: any) => {
-          const patientName = this.patientFirstName;
           const patientIdNumber = this.patientIdNumber;
           this.appointmentCount = data.count || 0;
     
@@ -190,6 +146,55 @@ export class ClientPageComponent implements OnInit{
       this.tableData.push(row);
     }    
   }
+
+  changePassword(user: Useregisteration) {
+    debugger
+    const newPassword = window.prompt('Enter the new password:');
+    
+    if (newPassword !== null) {
+      // Update the user's password
+      user.password = newPassword;
+  
+      this.authservice.updateUser(user).subscribe(
+        (result) => {
+          alert('Password changed successfully');
+        },
+        (error) => {
+          console.error('Error updating user password:', error);
+          // Handle the error as needed
+        }
+      );
+    }
+  }
+  
+
+  handleCellClick(col: any) {
+    if (col.activated && col.status === 'available' && col.appointment) {
+      const formData = {
+        DoctorName: col.appointment.doctorName,
+        IdNumber: col.appointment.doctorIdNumber || 'Doctor',
+        UniqueNumber: col.value,
+        PatientName: col.appointment.patientName,
+        ClientIdNumber: col.appointment.clientIdNumber,
+        MessageToDoctor: 'თავის ტკივილი',
+        Status: 'available',
+      };
+  
+      console.log(formData)
+      // Call the function to display the details (e.g., showDetailsModal)
+      this.showDetailsModal(formData);
+    }
+  }
+  
+  showDetailsModal(formData: any) {
+    // Implement your logic to display appointment details.
+    // You can use a modal, alert, or any other method based on your UI design.
+    console.log('Appointment Details:', formData);
+    // Example: Show details in an alert
+    alert(`Appointment Details:\nDoctor: ${formData.DoctorName}\nPatient: ${formData.PatientName}`);
+  }
+  
+  
 
   getTimeRange(rowNumber: number): string {
     const startTime = 9;
