@@ -267,7 +267,7 @@ namespace AngularAuthYtAPI.Controllers
 }
 
         [HttpPut("updateDoctor/{id}")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin,doctor")]
         public IActionResult UpdateDoctor(int id, [FromBody] User updatedDoctor)
         {
             try
@@ -282,11 +282,13 @@ namespace AngularAuthYtAPI.Controllers
                 // Update properties of the existingDoctor with properties of updatedDoctor
                 existingDoctor.FirstName = updatedDoctor.FirstName;
                 existingDoctor.LastName = updatedDoctor.LastName;
-                existingDoctor.Email = updatedDoctor.Email;
-                existingDoctor.IdNumber = updatedDoctor.IdNumber;
-                existingDoctor.Password = updatedDoctor.Password;
                 existingDoctor.Category = updatedDoctor.Category;
-                existingDoctor.ImageUrl = updatedDoctor.ImageUrl;
+
+                if (!string.IsNullOrEmpty(updatedDoctor.Password))
+                {
+                    existingDoctor.Password = BCrypt.Net.BCrypt.HashPassword(updatedDoctor.Password);
+                }
+
 
                 _authContext.SaveChanges();
 
@@ -302,7 +304,6 @@ namespace AngularAuthYtAPI.Controllers
 
         [HttpDelete("deleteDoctor/{id}")]
         [Authorize(Roles = "admin")]
-
         public IActionResult DeleteDoctor(int id)
         {
             try
@@ -318,6 +319,37 @@ namespace AngularAuthYtAPI.Controllers
                 _authContext.SaveChanges();
 
                 return Ok(new { Message = "Doctor deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                return StatusCode(500, new { Message = "Internal Server Error" });
+            }
+        }
+
+
+        [HttpPut("updateUser/{id}")]
+        [Authorize(Roles = "client")]
+        public IActionResult UpdateUser(int id, [FromBody] User updateUser)
+        {
+            try
+            {
+                var existingUser = _authContext.Users.FirstOrDefault(u => u.Id == id);
+
+                if (existingUser == null)
+                {
+                    return NotFound();
+                }
+                existingUser.FirstName = updateUser.FirstName;
+                // Update only the password
+                if (!string.IsNullOrEmpty(updateUser.Password))
+                {
+                    existingUser.Password = BCrypt.Net.BCrypt.HashPassword(updateUser.Password);
+                }
+
+                _authContext.SaveChanges();
+
+                return Ok(existingUser);
             }
             catch (Exception ex)
             {
