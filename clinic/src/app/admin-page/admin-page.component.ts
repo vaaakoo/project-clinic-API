@@ -39,13 +39,10 @@ export class AdminPageComponent {
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
   
   ngOnInit() {
-
     this.authservice.getalldoc().subscribe(
       (doctors: doctorregisteration[]) => {
-        // Pick a random doctor from the list
         const randomIndex = Math.floor(Math.random() * doctors.length);
         this.randomDoctor = doctors[randomIndex];
-        // console.log('Random Doctor:', this.randomDoctor);
         this.doctor = this.randomDoctor;
 
           // console.log(this.doctor);
@@ -79,7 +76,7 @@ export class AdminPageComponent {
               alert("You cann't book with you visit! : )");
             }
             });
-            $('.tdclick').on('click', '.deletebutton',  (event: any) => {
+      $('.tdclick').on('click', '.deletebutton',  (event: any) => {
               // debugger;
               const clickedDeleteButton = $(event.target);
               var tdId = clickedDeleteButton.closest('td').attr('id');
@@ -107,7 +104,7 @@ export class AdminPageComponent {
     });
 
     const loadData = () => {
-      // debugger;
+      debugger;
       const IdNumber = this.doctor?.idNumber || 'Doctor';
     
       this.authservice.getAppointmentData(IdNumber).subscribe(
@@ -141,9 +138,6 @@ export class AdminPageComponent {
                     font-weight: 400;
                     line-height: normal;
                     word-wrap: break-word;"> დაჯავშნილია </p>
-                    <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                    <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
-                  </span>
                 `;
                 element.html(htmlContent);
               }
@@ -188,9 +182,8 @@ export class AdminPageComponent {
       this.router.navigate(['/admin-page/category']);
     }
     if (tab === 'doctors') {
-      this.ngOnInit();
+      window.location.reload();
     }
-
   }
 
   getStarArray(starNum: number): number[] {

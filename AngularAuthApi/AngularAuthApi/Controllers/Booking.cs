@@ -29,6 +29,18 @@ namespace AngularAuthApi.Controllers
             return Ok(new { data, Count = count });
         }
 
+        [HttpGet("getdataByTarget/")]
+        public IActionResult getdataByTarget(string UniqueNumber)
+        {
+            var data = db.tblAppointment.Where(x => x.UniqueNumber.Equals(UniqueNumber)).ToList();
+            if (data == null || data.Count == 0)
+                return NotFound(new { message = "No Data Found" });
+
+            var count = data.Count;
+
+            return Ok(new { data, Count = count });
+        }
+
         [HttpPost("BookAppointment")]
         public IActionResult BookAppointment(Appointment appointment)
         {
