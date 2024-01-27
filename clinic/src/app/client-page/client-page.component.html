@@ -125,6 +125,24 @@
         <p>ჩემი ჯავშანი</p>
         <p>( {{ this.appointmentCount }} )</p>
       </div>
+        <div class="square"  *ngIf="this.tooltipBox">
+
+          <div class="middle">
+              <img class="picture" src="../../assets/image3.jpg" alt="">
+              <div class="middle-column">
+                <p class="card-name"><strong>სახელი:</strong> {{ this.doctorName }}  {{ this.doctorLastName}}</p>
+                <p class="card-category"><strong>სპეციალისტი:</strong> {{ this.doctorCategory }} </p>
+                <p class="card-name"><strong>მიზეზი:</strong> {{ this.text }} </p>
+
+                <button type="button"  (click)="onBookingClick(docId)">
+                  <p>კალენდრის ნახვა</p>
+                  <div class="buttons-span"></div>
+              </button>
+              </div>
+
+            
+          </div>
+      </div>
       <div class="time">
         <span class="year">2023</span>
         <div class="buttons-click">
@@ -169,14 +187,16 @@
                     <td class="tdclick" [id]="'td_' + i + '_' + j">
                       <!-- <span *ngIf="!col.activated && j < 5">დაჯავშნა</span> -->
                     </td>
-
+                    
+                    
                   </ng-container>
                 </tr>
               </ng-container>                      
             </tbody>
           </table>
         </div>
-    
+        
+
       <div class="change-sect">
           <button class="redact">
               <span><img src="../../assets/edit-svgrepo-com 2.png" alt=""></span>

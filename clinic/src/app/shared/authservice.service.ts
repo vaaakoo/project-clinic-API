@@ -144,6 +144,11 @@ export class AuthserviceService {
     return this.http.get<doctorregisteration>(`${this.apiUrl}/getDoctor/${id}`);
   }
 
+  getDoctorByIdNumber(idNumber: number): Observable<doctorregisteration> {
+    return this.http.get<doctorregisteration>(`${this.apiUrl}/getDoctorByIdNumber?IdNumber=${idNumber}`);
+  }
+
+
   getUserById(id: number): Observable<Useregisteration> {
     return this.http.get<Useregisteration>(`${this.apiUrl}/getUser/${id}`);
   }
@@ -157,6 +162,11 @@ export class AuthserviceService {
     return this.http.get<any>(`${this.bookUrl}/getdata?ClientIdNumber=${clientidNumber}`);
   }
 
+  getClientDataByIdNumberAndTimeSlot(clientIdNumber: string, tdId: string): Observable<any> {
+    const url = `${this.bookUrl}/getdataBytdid?ClientIdNumber=${clientIdNumber}&tdId=${tdId}`;
+    return this.http.get<any>(url);
+}
+
   clientBookAppointment(formData: any): Observable<any> {
     return this.http.post<any>(`${this.bookUrl}/ClientBookAppointment`, formData);
   }
@@ -166,6 +176,7 @@ export class AuthserviceService {
   }
 
   clientRemoveAppointment(formData: any): Observable<any> {
+    console.log('FormData:', formData); 
     return this.http.post<any>(`${this.bookUrl}/ClientRemoveAppointment`, formData);
   }
 

@@ -32,6 +32,14 @@ export class ClientPageComponent implements OnInit{
   patientFirstName: string = '';
   patientIdNumber: string = '';
   appointmentCount: number = 0;
+  statusBook: string ="=";
+  text: string = "";
+  doctorName: string = "";
+  tooltipBox: boolean = false;
+  doctroImg: any;
+  doctorLastName: string="";
+  doctorCategory: string="";
+  docId: number = 0;
 
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
@@ -56,79 +64,111 @@ export class ClientPageComponent implements OnInit{
       );
     });
 
+    
+
     $(document).ready( () => {
      
-      $('.tdclick').on('click', (event: any) => {
-        debugger;
-        var clickedTd = $(event.target);
-        var tdId = clickedTd.attr('id');
-        var patientName=this.patientFirstName;
-        var patientIdNum =this.patientIdNumber;
+      $('.tdclick').on('click', (event: any) => {   
+        debugger
+        const clickedTd = $(event.target).closest('td');
 
-        if(patientIdNum!=""){
-          debugger;
-          clickedTd.addClass('activated');
-          const htmlContent = `
-            <span class="activated-text">
-                <p>ჩემი <br />ჯავშანი </p>
-                <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
-            </span>
-            `;
-          clickedTd.html(htmlContent);
-          var formData = {
-            DoctorName: this.doctor?.firstName,
-            IdNumber: this.doctor?.idNumber ||'Doctor',
-            UniqueNumber: tdId,
-            PatientName:patientName,
-            ClientIdNumber: patientIdNum,
-            MessageToDoctor: 'თავის ტკივილი',
-            Status: 'available',
-          };
-  
-          this.authservice.clientBookAppointment(formData).subscribe(
-            () => {
-              alert('Appointment Booked successfully!');
+        const tdId = clickedTd.attr('id');
+        console.log(tdId);
+        this.doctorName;
+        this.statusBook;
+        this.text;
+        this.doctroImg;
+        this.doctorLastName;
+        this.doctorCategory;
+        var patientIdNum = this.patientIdNumber;
+        this.docId;
+
+
+        if (clickedTd.hasClass('disactivated')) {
+          // Handle the case when the td is disactivated
+          alert('This time slot is not available.');
+          return;
+        }
+        if (tdId && patientIdNum) {
+          this.tooltipBox = true;
+          this.authservice.getClientDataByIdNumberAndTimeSlot(patientIdNum, tdId).subscribe(
+            (response) => {
+              const appointment = response.data[0];
+          
+              this.doctorName = appointment.doctorName;
+              this.text = appointment.messageToDoctor;
+              this.statusBook = appointment.status;
+          
+              this.authservice.getDoctorByIdNumber(appointment.idNumber).subscribe(
+                (doctorResponse) => { 
+                  debugger
+                  this.doctroImg = doctorResponse.imageUrl; 
+                  this.doctorLastName = doctorResponse.lastName;
+                  this.doctorCategory = doctorResponse.category;
+                  this.docId = doctorResponse.id;
+
+                },
+                (doctorError) => {
+                  console.error('Error fetching doctor data:', doctorError);
+                }
+              );
             },
             (error) => {
-              console.error('Error booking appointment:', error);
+              console.error('Error fetching client data:', error);
             }
           );
+          
+        }
 
-            $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
-            }else{
-              alert("First Login Yourself To Book Appointment");
-            }
             });
             $('.tdclick').on('click', '.deletebutton',  (event: any) => {
-              debugger;
+              var doctorName;
+              var doctorIdNum;
               const clickedDeleteButton = $(event.target);
               var tdId = clickedDeleteButton.closest('td').attr('id');
-              var patientName=this.patientFirstName;
-              var patientIdNum =this.patientIdNumber;
-              const parentTdClick = clickedDeleteButton.closest('.tdclick');
-              parentTdClick.removeClass('activated');
-              parentTdClick.empty();
+              var patientName = this.patientFirstName;
+              var patientIdNum = this.patientIdNumber;
+          
+              if (tdId && patientIdNum) {
+                  this.authservice.getClientDataByIdNumberAndTimeSlot(patientIdNum, tdId).subscribe(
+                      (response) => {
+                          console.log('Client Data Response:', response);
+          
+                          const appointment = response.data[0];
 
-              var formData = {
-                DoctorName: this.doctor?.firstName,
-                IdNumber: this.doctor?.idNumber ||'Doctor',
-                UniqueNumber: tdId,
-                PatientName:patientName,
-                ClientIdNumber: patientIdNum,
-                MessageToDoctor: 'თავის ტკივილი',
-                Status: 'Booked',
-              };
-
-          this.authservice.clientRemoveAppointment(formData).subscribe(
-          () => {
-            alert('Appointment Removed successfully!');
-          },
-          (error) => {
-            console.error('Error removing appointment:', error);
-          }
-        );
-      });
+                          doctorName = appointment.doctorName;
+                          doctorIdNum = appointment.idNumber;
+          
+                          const parentTdClick = clickedDeleteButton.closest('.tdclick');
+                          parentTdClick.removeClass('activated');
+                          parentTdClick.empty();
+          
+                          var formData = {
+                              DoctorName: doctorName,
+                              IdNumber: doctorIdNum,
+                              UniqueNumber: tdId,
+                              PatientName: patientName,
+                              ClientIdNumber: patientIdNum,
+                              MessageToDoctor: 'თავის ტკივილი',
+                              Status: 'Booked',
+                          };
+          
+                          this.authservice.clientRemoveAppointment(formData).subscribe(
+                              () => {
+                                  alert('Appointment Removed successfully!');
+                              },
+                              (error) => {
+                                  console.error('Error removing appointment:', error);
+                              }
+                          );
+                      },
+                      (error) => {
+                          console.error('Error fetching client data:', error);
+                      }
+                  );
+              }
+          });
+          
       
     });
 
@@ -158,10 +198,18 @@ export class ClientPageComponent implements OnInit{
               } else if (appointment.clientIdNumber === patientIdNumber) {
                 element.addClass('activated');
                 const htmlContent = `
-                  <span class="activated-text">
+                  <span class="activated-text" style="font-weight: bold;
+                  color: #3ACF99;
+                  text-align: center;
+                  font-size: 12px;
+                  font-style: normal;
+                  font-weight: 400;
+                  line-height: normal;
+                  word-wrap: break-word;">
                     <p>ჩემი <br />ჯავშანი </p>
-                    <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                    <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
+                    <span class="deletebutton" style="position: absolute; width: 18px; height: 18px; display: flex;
+                    align-items: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
+                    <span class="delete-button" style="padding: 5px;"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>
                 `;
                 element.html(htmlContent);
@@ -185,6 +233,13 @@ export class ClientPageComponent implements OnInit{
       }
       this.tableData.push(row);
     }    
+  }
+
+
+  onBookingClick(docId: number): void {
+    console.log(docId);
+    // Use the router to navigate to the doctor's booking route
+    this.router.navigate(['/booking', docId]);
   }
 
   getTimeRange(rowNumber: number): string {

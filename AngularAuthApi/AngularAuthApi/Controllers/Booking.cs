@@ -16,7 +16,7 @@ namespace AngularAuthApi.Controllers
             db = context;
         }
        
-
+        //clients data
         [HttpGet("getdata")]
         public IActionResult GetBookAppointments(string ClientIdNumber)
         {
@@ -28,6 +28,31 @@ namespace AngularAuthApi.Controllers
 
             return Ok(new { data, Count = count });
         }
+
+        [HttpGet("getdataBytdid")]
+        public IActionResult GetBookAppointmentswithtd(string ClientIdNumber, string tdId)
+        {
+            try
+            {
+                // Assuming tdId is stored in the UniqueNumber property of the Appointment model
+                var data = db.tblAppointment
+                    .Where(x => x.ClientIdNumber.Equals(ClientIdNumber) && x.UniqueNumber.Equals(tdId))
+                    .ToList();
+
+                if (data == null || data.Count == 0)
+                    return NotFound(new { message = "No Data Found" });
+
+                var count = data.Count;
+
+                return Ok(new { data, Count = count });
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                return StatusCode(500, new { Message = "Error retrieving appointment data", Error = ex.Message });
+            }
+        }
+
 
         [HttpPost("BookAppointment")]
         public IActionResult BookAppointment(Appointment appointment)
@@ -48,6 +73,8 @@ namespace AngularAuthApi.Controllers
         public IActionResult RemoveAppointment(Appointment appointment)
         {
             if (appointment != null)
+                Console.WriteLine($"Removing appointment: {appointment.Id}, {appointment.UniqueNumber}, {appointment.IdNumber}");
+
             {
                 var data = db.tblAppointment.Where(x => x.IdNumber == appointment.IdNumber && x.UniqueNumber==appointment.UniqueNumber).FirstOrDefault();
                 db.Remove(data);

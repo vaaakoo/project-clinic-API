@@ -46,12 +46,12 @@ namespace AngularAuthYtAPI.Controllers
             var adminUser = new User
             {
                 FirstName = "Admin",
-                LastName = "User",
+                LastName = "Admin",
                 Password = BCrypt.Net.BCrypt.HashPassword("admin"),
-                IdNumber = "00000000000", // Adjust as needed
+                IdNumber = "00000000000", 
                 Category = null,
                 starNum = 0,
-                Email = "admin", // Adjust as needed
+                Email = "admin", 
                 Role = "admin",
                 ImageUrl = "/assets/admin-image.jpg",
                 IsAdmin = true
@@ -66,20 +66,20 @@ namespace AngularAuthYtAPI.Controllers
         {
             var initialDoctors = new List<User>
         {
-            new User { FirstName = "გიორგი", LastName = "ხორავა", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000001", Category = "ანდროლოგი",starNum = 5, Email = "1@gmail.com", Role = "doctor", ImageUrl = "/assets/image1.jpg", IsAdmin = false},
-            new User { FirstName = "ნატალია", LastName = "გოგოხია", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000002", Category = "ანესთეზიოლოგი", starNum = 3, Email = "2@gmail.com", Role = "doctor", ImageUrl = "/assets/image2.jpg", IsAdmin = false },
-            new User { FirstName = "ანა", LastName = "დვლაი",Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000003", Category = "კარდიოლოგი", starNum = 4, Email = "3@gmail.com", Role = "doctor", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
-            new User { FirstName = "გიორგი", LastName = "გაბიტაშვილი", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000004", Category = "კოსმეტოლოგი", starNum = 5, Email = "4@gmail.com", Role = "doctor", ImageUrl = "/assets/image4.jpg", IsAdmin = false },
-            new User { FirstName = "ბარბარე", LastName = "ქორთუა", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000005", Category = "ლაბორანტი", starNum = 3, Email = "5@gmail.com", Role = "doctor", ImageUrl = "/assets/image5.jpg", IsAdmin = false },
-            new User { FirstName = "გიორგი", LastName = "ხორავა", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000006", Category = "პედიატრი", starNum = 3, Email = "6@gmail.com", Role = "doctor", ImageUrl = "/assets/image6.jpg", IsAdmin = false },
-            new User { FirstName = "ნატალია", LastName = "გაბიტაშვილი", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000007", Category = "ოჯახის ექიმი", starNum = 5, Email = "7@gmail.com", Role = "doctor", ImageUrl = "/assets/image7.jpg", IsAdmin = false },
-            new User { FirstName = "გიორგი", LastName = "დვალი", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000008", Category = "ტოქსიკოლოგი", starNum = 2, Email = "8@gmail.com", Role = "doctor", ImageUrl = "/assets/image8.jpg", IsAdmin = false },
-            new User { FirstName = "ანა", LastName = "გაბიტაშვილი", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000009", Category = "ტრანსფუზილოგი", starNum = 5, Email = "9@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
-            new User { FirstName = "დავით", LastName = "გიუნაშვილი", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000010", Category = "ოჯახის ექიმი", starNum = 4, Email = "10@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
-            new User { FirstName = "ზურაბ", LastName = "ანთაძე", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000011", Category = "თერაპევტი", starNum = 3, Email = "11@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
-            new User { FirstName = "ვაკო", LastName = "ჯანიკა", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000001", Email = "vako@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
-            new User { FirstName = "დავით", LastName = "გიუნა", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000002", Email = "davit@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
-            new User { FirstName = "გიროგი", LastName = "გიორგაძე", Password = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000003", Email = "giorgi@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
+            new User { FirstName = "გიორგი", LastName = "ხორავა",Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000001", Category = "ანდროლოგი",starNum = 5, Email = "1@gmail.com", Role = "doctor", ImageUrl = "/assets/image1.jpg", IsAdmin = false},
+            new User { FirstName = "ნატალია", LastName = "გოგოხია",Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000002", Category = "ანესთეზიოლოგი", starNum = 3, Email = "2@gmail.com", Role = "doctor", ImageUrl = "/assets/image2.jpg", IsAdmin = false },
+            new User { FirstName = "ანა", LastName = "დვლაი",Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000003", Category = "კარდიოლოგი", starNum = 4, Email = "3@gmail.com", Role = "doctor", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
+            new User { FirstName = "გიორგი", LastName = "გაბიტაშვილი",Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000004", Category = "კოსმეტოლოგი", starNum = 5, Email = "4@gmail.com", Role = "doctor", ImageUrl = "/assets/image4.jpg", IsAdmin = false },
+            new User { FirstName = "ბარბარე", LastName = "ქორთუა", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000005", Category = "ლაბორანტი", starNum = 3, Email = "5@gmail.com", Role = "doctor", ImageUrl = "/assets/image5.jpg", IsAdmin = false },
+            new User { FirstName = "გიორგი", LastName = "ხორავა", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000006", Category = "პედიატრი", starNum = 3, Email = "6@gmail.com", Role = "doctor", ImageUrl = "/assets/image6.jpg", IsAdmin = false },
+            new User { FirstName = "ნატალია", LastName = "გაბიტაშვილი", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000007", Category = "ოჯახის ექიმი", starNum = 5, Email = "7@gmail.com", Role = "doctor", ImageUrl = "/assets/image7.jpg", IsAdmin = false },
+            new User { FirstName = "გიორგი", LastName = "დვალი",Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000008", Category = "ტოქსიკოლოგი", starNum = 2, Email = "8@gmail.com", Role = "doctor", ImageUrl = "/assets/image8.jpg", IsAdmin = false },
+            new User { FirstName = "ანა", LastName = "გაბიტაშვილი", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000009", Category = "ტრანსფუზილოგი", starNum = 5, Email = "9@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
+            new User { FirstName = "დავით", LastName = "გიუნაშვილი", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000010", Category = "ოჯახის ექიმი", starNum = 4, Email = "10@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
+            new User { FirstName = "ზურაბ", LastName = "ანთაძე", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000011", Category = "თერაპევტი", starNum = 3, Email = "11@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
+            new User { FirstName = "ვაკო", LastName = "ჯანიკა", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000001", Email = "vako@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
+            new User { FirstName = "დავით", LastName = "გიუნა", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000002", Email = "davit@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
+            new User { FirstName = "გიროგი", LastName = "გიორგაძე", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000003", Email = "giorgi@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
 
         };
 
@@ -266,6 +266,28 @@ namespace AngularAuthYtAPI.Controllers
             return StatusCode(500, new { Message = "Internal Server Error" });
         }
 }
+
+
+        [HttpGet("getDoctorByIdNumber")]
+        public IActionResult getDoctorByIdNumber(string IdNumber)
+        {
+            try
+            {
+                var doctor = _authContext.Users.FirstOrDefault(u => u.IdNumber == IdNumber && u.Category != null);
+
+                if (doctor == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(doctor);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                return StatusCode(500, new { Message = "Internal Server Error" });
+            }
+        }
 
         [HttpPut("updateDoctor/{id}")]
         [Authorize(Roles = "admin")]

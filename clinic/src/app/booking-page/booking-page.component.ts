@@ -88,11 +88,19 @@ export class BookingPageComponent implements OnInit{
           // this.messageToDoctor = true;
           clickedTd.addClass('activated');
           const htmlContent = `
-            <span class="activated-text">
-                <p>ჩემი <br />ჯავშანი </p>
-                <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
-            </span>
+          <span class="activated-text" style="font-weight: bold;
+          color: #3ACF99;
+          text-align: center;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          word-wrap: break-word;">
+            <p>ჩემი <br />ჯავშანი </p>
+            <span class="deletebutton" style="position: absolute; width: 18px; height: 18px; display: flex;
+            align-items: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
+            <span class="delete-button" style="padding: 5px;"><img src="../../assets/Group 3.png" alt=""></span>
+          </span>
             `;
           clickedTd.html(htmlContent);
           var formData = {
@@ -127,16 +135,21 @@ export class BookingPageComponent implements OnInit{
               var tdId = clickedDeleteButton.closest('td').attr('id');
               var patientName=this.patientFirstName;
               var patientIdNum = this.patientIdNum;
+              var doctorName = this.doctor?.firstName;
+              var doctorIdNum = this.doctor?.idNumber;
+              var tdId = tdId;
+
               const parentTdClick = clickedDeleteButton.closest('.tdclick');
               parentTdClick.removeClass('activated');
               parentTdClick.empty();
 
               var formData = {
-                DoctorName: this.doctor?.firstName,
-                IdNumber: this.doctor?.idNumber ||'Doctor',
+                DoctorName: doctorName,
+                IdNumber: doctorIdNum,
                 UniqueNumber: tdId,
                 PatientName:patientName,
                 ClientIdNumber: patientIdNum,
+                MessageToDoctor: "თავის ტკივილი",
                 Status: 'Booked',
               };      
 
@@ -178,10 +191,18 @@ export class BookingPageComponent implements OnInit{
               } else if (appointment.clientIdNumber === patientIdNumber) {
                 element.addClass('activated');
                 const htmlContent = `
-                  <span class="activated-text">
+                <span class="activated-text" style="font-weight: bold;
+                  color: #3ACF99;
+                  text-align: center;
+                  font-size: 12px;
+                  font-style: normal;
+                  font-weight: 400;
+                  line-height: normal;
+                  word-wrap: break-word;">
                     <p>ჩემი <br />ჯავშანი </p>
-                    <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                    <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
+                    <span class="deletebutton" style="position: absolute; width: 18px; height: 18px; display: flex;
+                    align-items: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
+                    <span class="delete-button" style="padding: 5px;"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>
                 `;
                 element.html(htmlContent);
