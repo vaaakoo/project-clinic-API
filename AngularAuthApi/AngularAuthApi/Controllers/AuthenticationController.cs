@@ -35,23 +35,13 @@ namespace AngularAuthApi.Controllers
 
             var user = await _authContext.Users.FirstOrDefaultAsync(u => u.Email == loginModel.Email);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginModel.Password, user.Password))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(loginModel.Password, user.PasswordHash))
             {
                 // Invalid credentials
                 return Unauthorized(new { Message = "Invalid credentials" });
             }
 
-
-            // Check for admin credentials
-            if (user.Email == "admin" && loginModel.Password == "admin")
-            {
-                user.Role = "admin";
-            }
-            else if (!string.IsNullOrEmpty(user.Category))
-            {
-                // User has a category, assume it's a doctor
-                user.Role = "doctor";
-            }
+            // Rest of your logic...
 
             var token = GenerateJwtToken(user);
 
@@ -62,6 +52,7 @@ namespace AngularAuthApi.Controllers
                 ExpiresIn = _jwtExpirationDays * 60 * 60 // Token expiration time in seconds
             });
         }
+
 
         private string GenerateJwtToken(User user)
         {

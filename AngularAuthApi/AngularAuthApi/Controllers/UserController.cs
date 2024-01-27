@@ -119,7 +119,8 @@ namespace AngularAuthYtAPI.Controllers
             if (!string.IsNullOrEmpty(passMessage))
                 return BadRequest(new { Message = passMessage.ToString() });*/
             userObj.Role = "client";
-            userObj.Password = BCrypt.Net.BCrypt.HashPassword(userObj.Password);
+
+            userObj.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userObj.Password);
 
             await _authContext.AddAsync(userObj);
             await _authContext.SaveChangesAsync();
@@ -207,7 +208,7 @@ namespace AngularAuthYtAPI.Controllers
                 return BadRequest(new { Message = "Idnumber Already Exist" });
 
             userObj.Role = "doctor";
-            userObj.Password = BCrypt.Net.BCrypt.HashPassword(userObj.Password);
+            userObj.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userObj.Password);
             await _authContext.AddAsync(userObj);
             await _authContext.SaveChangesAsync();
 
@@ -425,7 +426,8 @@ namespace AngularAuthYtAPI.Controllers
                     var user = _authContext.Users.FirstOrDefault(u => u.Email == email);
                     if (user != null)
                     {
-                        user.Password = resetCode; // Assuming resetCode is the new password
+                        user.Password = resetCode;
+                        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(resetCode);
                         _authContext.SaveChanges();
                     }
 
@@ -445,7 +447,7 @@ namespace AngularAuthYtAPI.Controllers
                                         <p>ძვირფასო <strong>{name}</strong>,</p>
                                         <p>მადლობას გიხდით ჩვენი კომპანიის სერვისით სარგებლობისთვის</p>
                                         <p>თქვენი ახალი პაროლი არის:</p>
-                                        <div style='background-color: #3498db; color: #fff; padding: 10px; border-radius: 5px; font-size: 18px; font-weight: bold;'>{resetCode}</div>
+                                        <div style='background-color: #3498db; color: #fff; padding: 10px; border-radius: 5px; font-size: 18px; font-weight: bold;'>{user.Password}</div>
                                         <p>თქვენი კოდი არ გაუზიაროთ სხვას.</p> <hr>
                                         <h4>გთხოვთ გადადით გვერდზე და გაიარეთ ავტორიზაცია. 😊😊😊</h4>
                                         <hr>
@@ -454,7 +456,7 @@ namespace AngularAuthYtAPI.Controllers
 
                 </body>
               </html>";
-
+                    
                     await _passwordResetService.SendResetCodeAsync(email, resetCode, body, subject);
 
                     // Return the reset code to the client if needed
