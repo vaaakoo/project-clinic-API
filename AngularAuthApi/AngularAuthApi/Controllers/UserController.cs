@@ -47,7 +47,8 @@ namespace AngularAuthYtAPI.Controllers
             {
                 FirstName = "Admin",
                 LastName = "Admin",
-                Password = BCrypt.Net.BCrypt.HashPassword("admin"),
+                Password = "admin",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin"),
                 IdNumber = "00000000000", 
                 Category = null,
                 starNum = 0,
@@ -77,9 +78,9 @@ namespace AngularAuthYtAPI.Controllers
             new User { FirstName = "ანა", LastName = "გაბიტაშვილი", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000009", Category = "ტრანსფუზილოგი", starNum = 5, Email = "9@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
             new User { FirstName = "დავით", LastName = "გიუნაშვილი", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000010", Category = "ოჯახის ექიმი", starNum = 4, Email = "10@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
             new User { FirstName = "ზურაბ", LastName = "ანთაძე", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="00000000011", Category = "თერაპევტი", starNum = 3, Email = "11@gmail.com", Role = "doctor", ImageUrl = "/assets/image9.jpg", IsAdmin = false },
-            new User { FirstName = "ვაკო", LastName = "ჯანიკა", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000001", Email = "vako@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
-            new User { FirstName = "დავით", LastName = "გიუნა", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000002", Email = "davit@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
-            new User { FirstName = "გიროგი", LastName = "გიორგაძე", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000003", Email = "giorgi@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
+            new User { FirstName = "ვაკო", LastName = "ჯანიკა", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000001", Email = "v@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
+            new User { FirstName = "დავით", LastName = "გიუნა", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000002", Email = "d@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
+            new User { FirstName = "გიროგი", LastName = "გიორგაძე", Password = "123456", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"), IdNumber="10000000003", Email = "g@gmail.com", Role = "client", ImageUrl = "/assets/image3.jpg", IsAdmin = false },
 
         };
 
@@ -381,6 +382,27 @@ namespace AngularAuthYtAPI.Controllers
                 }
 
                 return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                return StatusCode(500, new { Message = "Internal Server Error" });
+            }
+        }
+
+        [HttpGet("getClientByIdNumber")]
+        public IActionResult getClientByIdNumber(string IdNumber)
+        {
+            try
+            {
+                var client = _authContext.Users.FirstOrDefault(u => u.IdNumber == IdNumber );
+
+                if (client == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(client);
             }
             catch (Exception ex)
             {

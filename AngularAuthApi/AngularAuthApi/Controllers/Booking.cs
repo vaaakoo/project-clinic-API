@@ -57,8 +57,14 @@ namespace AngularAuthApi.Controllers
         [HttpPost("BookAppointment")]
         public IActionResult BookAppointment(Appointment appointment)
         {
+            
             if (appointment != null)
             {
+                if (appointment.ClientIdNumber == "00000000000")
+                {
+                    return BadRequest();
+                }
+                Console.WriteLine(appointment.UniqueNumber);
                 db.Add(appointment);
                 db.SaveChanges();
                 return Ok();
@@ -99,6 +105,31 @@ namespace AngularAuthApi.Controllers
             return Ok(new { data, Count = count });
 
         }
+
+        [HttpGet("getDoctordataBytdid")]
+        public IActionResult getDoctordataBytdid(string IdNumber, string tdId)
+        {
+            try
+            {
+                // Assuming tdId is stored in the UniqueNumber property of the Appointment model
+                var data = db.tblAppointment
+                    .Where(x => x.IdNumber.Equals(IdNumber) && x.UniqueNumber.Equals(tdId))
+                    .ToList();
+
+                if (data == null || data.Count == 0)
+                    return NotFound(new { message = "No Data Found" });
+
+                var count = data.Count;
+
+                return Ok(new { data, Count = count });
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex);
+                return StatusCode(500, new { Message = "Error retrieving appointment data", Error = ex.Message });
+            }
+        }
+
 
         [HttpPost("ClientBookAppointment")]
         public IActionResult ClientBookAppointment(Appointment appointment)

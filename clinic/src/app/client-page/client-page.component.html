@@ -125,10 +125,10 @@
         <p>ჩემი ჯავშანი</p>
         <p>( {{ this.appointmentCount }} )</p>
       </div>
-        <div class="square"  *ngIf="this.tooltipBox">
 
+        <div class="square"  *ngIf="this.tooltipBox">
           <div class="middle">
-              <img class="picture" src="../../assets/image3.jpg" alt="">
+              <img class="picture" [src]="this.doctroImg" alt="">
               <div class="middle-column">
                 <p class="card-name"><strong>სახელი:</strong> {{ this.doctorName }}  {{ this.doctorLastName}}</p>
                 <p class="card-category"><strong>სპეციალისტი:</strong> {{ this.doctorCategory }} </p>
@@ -139,8 +139,6 @@
                   <div class="buttons-span"></div>
               </button>
               </div>
-
-            
           </div>
       </div>
       <div class="time">

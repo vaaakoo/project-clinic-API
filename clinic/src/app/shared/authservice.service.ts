@@ -51,9 +51,9 @@ export class AuthserviceService {
   getToken(): { token: string, userInfo: any, userInfoForRole: any } {
     const token = localStorage.getItem('authToken') || '';
     const userInfoForRole = this.getUserInfoForRole(token);
-
+    
     const userInfo = this.getUserInfo();
-    // console.log(userInfo['role']);
+    // console.log(userInfo);
     return { token, userInfo, userInfoForRole };
   }
 
@@ -89,7 +89,6 @@ export class AuthserviceService {
     return this.http.post<any>(`${this.apiUrl1}/login`, user)
       .pipe(
         tap(response => {
-          // console.log('Login response:', response);
           this.setAuthenticationToken(response.token);
           const user = response.user;
           this.setUserInfo(user);
@@ -148,6 +147,10 @@ export class AuthserviceService {
     return this.http.get<doctorregisteration>(`${this.apiUrl}/getDoctorByIdNumber?IdNumber=${idNumber}`);
   }
 
+  getClientByIdNumber(idNumber: number): Observable<Useregisteration> {
+    return this.http.get<Useregisteration>(`${this.apiUrl}/getClientByIdNumber?IdNumber=${idNumber}`);
+  }
+
 
   getUserById(id: number): Observable<Useregisteration> {
     return this.http.get<Useregisteration>(`${this.apiUrl}/getUser/${id}`);
@@ -167,6 +170,10 @@ export class AuthserviceService {
     return this.http.get<any>(url);
 }
 
+getBookDataByDoctorsIdNumberAndTimeSlot(idNumber: string, tdId: string): Observable<any> {
+  const url = `${this.bookUrl}/getDoctordataBytdid?IdNumber=${idNumber}&tdId=${tdId}`;
+  return this.http.get<any>(url);
+}
   clientBookAppointment(formData: any): Observable<any> {
     return this.http.post<any>(`${this.bookUrl}/ClientBookAppointment`, formData);
   }
@@ -176,7 +183,6 @@ export class AuthserviceService {
   }
 
   clientRemoveAppointment(formData: any): Observable<any> {
-    console.log('FormData:', formData); 
     return this.http.post<any>(`${this.bookUrl}/ClientRemoveAppointment`, formData);
   }
 

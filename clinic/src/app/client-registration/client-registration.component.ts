@@ -92,6 +92,7 @@ export class ClientRegistrationComponent {
     this.timerRunning = false;
     this.activationmessage = 'Resend';
   }
+
   onSubmit() {
     // debugger;
     this.buttontext = 'Wait..';

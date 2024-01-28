@@ -61,47 +61,10 @@ export class AdminPageComponent {
     $(document).ready( () => {
      
       $('.tdclick').on('click', (event: any) => {
-        // debugger;
-        var clickedTd = $(event.target);
-        console.log(clickedTd);
-        var tdId = clickedTd.attr('id');
-        console.log(tdId);
-        var doctorName=this.doctorFirstName;
-        var doctorIdNumber = this.doctorIdNumber;
-        console.log(doctorName);
-
-        if(doctorName!=""){
-          // debugger;
-          console.log("here is doctor:" + doctorName);
-  
-            $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
-            }else{
-              alert("You cann't book with you visit! : )");
-            }
+        
             });
             $('.tdclick').on('click', '.deletebutton',  (event: any) => {
-              // debugger;
-              const clickedDeleteButton = $(event.target);
-              var tdId = clickedDeleteButton.closest('td').attr('id');
-              const parentTdClick = clickedDeleteButton.closest('.tdclick');
-              parentTdClick.removeClass('activated');
-              parentTdClick.empty();
-
-              var formData = {
-                DoctorName: this.doctor?.firstName,
-                IdNumber: this.doctor?.idNumber ||'Doctor',
-                UniqueNumber: tdId,
-                Status: 'Booked',
-              };
-
-          this.authservice.clientRemoveAppointment(formData).subscribe(
-          () => {
-            alert('Appointment Removed successfully!');
-          },
-          (error) => {
-            console.error('Error removing appointment:', error);
-          }
-        );
+              
       });
       
     });
@@ -141,9 +104,6 @@ export class AdminPageComponent {
                     font-weight: 400;
                     line-height: normal;
                     word-wrap: break-word;"> დაჯავშნილია </p>
-                    <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                    <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
-                  </span>
                 `;
                 element.html(htmlContent);
               }

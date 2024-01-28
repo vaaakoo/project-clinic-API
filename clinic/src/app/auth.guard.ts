@@ -17,31 +17,46 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const { token, userInfoForRole } = this.authService.getToken();
-    const role = userInfoForRole && userInfoForRole['role'];
-    const userId = userInfoForRole['UserId'];
+    const role = userInfoForRole?.['role'];
+    const userId = userInfoForRole?.['UserId'];
   
     if (this.authService.isLoggedIn || this.authService.isAdministrator || this.authService.isDoctor) {
-  
+  debugger
+  // console.log('Current URL:', state.url);
       if ((state.url.startsWith('/admin-page') || state.url.startsWith('/admin-page/category') || state.url.startsWith('/admin-page/registration')) && role !== 'admin') {
         this.router.navigate(['/home']);
         alert('You do not have permission to access Admins page, please login!');
         return false;
       }
   
-      if (state.url.startsWith('/booking') && role !== 'client') {
-        const userId = next.params['id']; // Assuming the parameter is named 'id'
-        
-        if (userId !== userInfoForRole['UserId']) {
+      if (state.url.startsWith('/client-page') ) {
+        const id = next.params['id'];
+        if (role !== "client") {
+          this.router.navigate(['/home']);
+          alert('You do not have permission to access this page, please login!');
+          return false;
+        }
+
+        if (id !== userId) {
           this.router.navigate(['/home']);
           alert('You do not have permission to access this page, please login!');
           return false;
         }
       }
-      const doctorId = +next.params['id'];  // Convert to number if necessary
-      if (state.url.startsWith('/doctor-page') && role !== 'doctor' && doctorId !== userId) {
+  
+      if (state.url.startsWith('/doctor-page') ) {
+        const id = next.params['id'];
+        if (role !== "doctor") {
           this.router.navigate(['/home']);
           alert('You do not have permission to access this page, please login!');
           return false;
+        }
+
+        if (id !== userId) {
+          this.router.navigate(['/home']);
+          alert('You do not have permission to access this page, please login!');
+          return false;
+        }
       }
   
       return true;
@@ -51,5 +66,6 @@ export class AuthGuard implements CanActivate {
     this.router.navigate(['']);
     return false;
   }
+  
   
   }

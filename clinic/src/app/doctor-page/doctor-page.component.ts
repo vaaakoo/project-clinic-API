@@ -32,7 +32,11 @@ export class DoctorPageComponent implements OnInit{
   appointmentCount: number = 0;
   doctorFirstName: string='';
   doctorIdNumber: string='';
-  
+  text: string = "";
+  clientName: string = "";
+  tooltipBox: boolean = false;
+  clientLastName: string="";
+  clientIdNumber: string="";
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
   
@@ -45,9 +49,8 @@ export class DoctorPageComponent implements OnInit{
       this.authservice.getDoctorById(this.doctorId).subscribe(
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
-          // console.log(this.doctor);
-          this.doctorFirstName = this.authservice.loginusername;
-          this.doctorIdNumber = this.authservice.loginUser;
+          this.doctorFirstName = doctor.firstName;
+          this.doctorIdNumber = doctor.idNumber;
           loadData();
         },
         (error) => {
@@ -58,46 +61,98 @@ export class DoctorPageComponent implements OnInit{
 
     $(document).ready( () => {
      
-      $('.tdclick').on('click', (event: any) => {
-        debugger;
-        var clickedTd = $(event.target);
-        var tdId = clickedTd.attr('id');
-        var doctorName=this.doctorFirstName;
-        var doctorIdNumber = this.doctorIdNumber;
-        // console.log(doctorName);
+      $('.tdclick').on('click', (event: any) => {   
+        debugger
+        const clickedTd = $(event.target).closest('td');
 
-        if(doctorName!=""){
-          debugger;
-          // console.log("here is doctor:" + doctorName);
-  
-            $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
-            }else{
-              alert("You cann't book with you visit! : )");
+        const tdId = clickedTd.attr('id');
+        this.clientName;
+        this.text;
+        this.clientLastName;
+        this.clientIdNumber;
+        this.doctorIdNumber;
+
+        if (clickedTd.hasClass('disactivated')) {
+          // Handle the case when the td is disactivated
+          alert('This time slot is not available.');
+          return;
+        }
+        if (tdId && this.doctorIdNumber) {
+          this.tooltipBox = true;
+          this.authservice.getBookDataByDoctorsIdNumberAndTimeSlot(this.doctorIdNumber, tdId).subscribe(
+            (response) => {
+              const appointment = response.data[0];
+              this.clientName = appointment.patientName;
+              this.text = appointment.messageToDoctor;
+              this.clientIdNumber = appointment.clientIdNumber;
+          
+              this.authservice.getClientByIdNumber(appointment.idNumber).subscribe(
+                (clientResponse) => { 
+                  debugger
+                  this.clientLastName = clientResponse.lastName;
+                  this.clientIdNumber = clientResponse.idNumber;
+
+                },
+                (doctorError) => {
+                  console.error('Error fetching doctor data:', doctorError);
+                }
+              );
+            },
+            (error) => {
+              console.error('Error fetching client data:', error);
             }
+          );
+          
+        }
+
             });
             $('.tdclick').on('click', '.deletebutton',  (event: any) => {
               debugger;
+              var doctorName = this.doctorFirstName;
+              var doctorIdNum = this.doctorIdNumber;
               const clickedDeleteButton = $(event.target);
               var tdId = clickedDeleteButton.closest('td').attr('id');
-              const parentTdClick = clickedDeleteButton.closest('.tdclick');
-              parentTdClick.removeClass('activated');
-              parentTdClick.empty();
+              var patientName = this.clientName;
+              var patientIdNum = this.clientIdNumber;
 
-              var formData = {
-                DoctorName: this.doctor?.firstName,
-                IdNumber: this.doctor?.idNumber ||'Doctor',
-                UniqueNumber: tdId,
-                Status: 'Booked',
-              };
+              if (tdId && doctorIdNum) {
+                this.authservice.getBookDataByDoctorsIdNumberAndTimeSlot(doctorIdNum, tdId).subscribe(
+                    (response) => {
+                        console.log('Client Data Response:', response);
+        
+                        const appointment = response.data[0];
 
-          this.authservice.clientRemoveAppointment(formData).subscribe(
-          () => {
-            alert('Appointment Removed successfully!');
-          },
-          (error) => {
-            console.error('Error removing appointment:', error);
-          }
-        );
+                        patientName = appointment.patientName;
+                        patientIdNum = appointment.clientIdNumber;
+        
+                        const parentTdClick = clickedDeleteButton.closest('.tdclick');
+                        parentTdClick.removeClass('activated');
+                        parentTdClick.empty();
+        
+                        var formData = {
+                            DoctorName: doctorName,
+                            IdNumber: doctorIdNum,
+                            UniqueNumber: tdId,
+                            PatientName: patientName,
+                            ClientIdNumber: patientIdNum,
+                            MessageToDoctor: 'თავის ტკივილი',
+                            Status: 'Booked',
+                        };
+        
+                        this.authservice.clientRemoveAppointment(formData).subscribe(
+                            () => {
+                                alert('Appointment Removed successfully!');
+                            },
+                            (error) => {
+                                console.error('Error removing appointment:', error);
+                            }
+                        );
+                    },
+                    (error) => {
+                        console.error('Error fetching client data:', error);
+                    }
+                );
+            }
       });
       
     });
@@ -137,8 +192,9 @@ export class DoctorPageComponent implements OnInit{
                     font-weight: 400;
                     line-height: normal;
                     word-wrap: break-word;"> დაჯავშნილია </p>
-                    <span class="deletebutton" style="position: absolute; top: 0; right: 0; background-color: white; border: none; border-radius: 50%;">
-                    <span class="delete-button" style="padding: 6px;"><img src="../../assets/Group 3.png" alt=""></span>
+                    <span class="deletebutton" style="position: absolute; width: 18px; height: 18px; display: flex;
+                    align-items: center; justify-content: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
+                    <span class="delete-button"><img src="../../assets/Group 3.png" alt=""></span>
                   </span>
                 `;
                 element.html(htmlContent);

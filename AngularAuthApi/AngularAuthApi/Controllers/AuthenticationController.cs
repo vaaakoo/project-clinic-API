@@ -27,19 +27,30 @@ namespace AngularAuthApi.Controllers
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUser loginModel)
+        
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await _authContext.Users.FirstOrDefaultAsync(u => u.Email == loginModel.Email);
+            // Case-insensitive email search
+            var user = await _authContext.Users
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == loginModel.Email.ToLower());
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(loginModel.Password, user.PasswordHash))
+            if (user == null)
             {
-                // Invalid credentials
+                // User not found
                 return Unauthorized(new { Message = "Invalid credentials" });
             }
+
+            // Verify hashed password
+            if (!BCrypt.Net.BCrypt.Verify(loginModel.Password, user.PasswordHash))
+            {
+                // Invalid password
+                return Unauthorized(new { Message = "Invalid credentials" });
+            }
+
 
             // Rest of your logic...
 

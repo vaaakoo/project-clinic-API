@@ -28,7 +28,7 @@ export class BookingPageComponent implements OnInit{
   textToDoctor: string='';
 
   unauthorizedMessageShown: boolean = false;
-  messageToDoctor: boolean = false;
+  messageToDoctor: boolean = true;
   doctor?: doctorregisteration ;
   doctorId: number | undefined; 
   patientFirstName: string = '';
@@ -67,9 +67,9 @@ export class BookingPageComponent implements OnInit{
     });
 
     $(document).ready( () => {
-     
+      let modalConfirmCallback: ((textToDoctor: string) => void) | undefined;
       $('.tdclick').on('click', (event: any) => {
-        debugger;
+
         var clickedTd = $(event.target);
 
         if (clickedTd.hasClass('disactivated')) {
@@ -77,11 +77,17 @@ export class BookingPageComponent implements OnInit{
           alert('This time slot is not available.');
           return;
         }
+
+        debugger;
+        $('#myModal').css('display', 'block');
+
         var tdId = clickedTd.attr('id');
         var patientName=this.patientFirstName;
         var patientIdNum = this.patientIdNum;
        
 
+        modalConfirmCallback = (textToDoctor) => {
+          console.log('Message to Doctor:', textToDoctor);
         if(patientIdNum!="" && patientName !=""){
           debugger;
           this.unauthorizedMessageShown = false;
@@ -109,7 +115,7 @@ export class BookingPageComponent implements OnInit{
             UniqueNumber: tdId,
             PatientName:patientName,
             ClientIdNumber: patientIdNum,
-            MessageToDoctor: "text",
+            MessageToDoctor: textToDoctor,
             Status: 'available',
           };
   
@@ -128,7 +134,20 @@ export class BookingPageComponent implements OnInit{
               alert("First Login Yourself To Book Appointment");
               this.unauthorizedMessageShown = true;
             }
+          };
+            // Handle the confirm button click
+            $('#confirmMessage').on('click', () => {
+              const messageToDoctor = $('#messageToDoctor').val() as string;
+              $('#myModal').css('display', 'none');
+              modalConfirmCallback?.(messageToDoctor);
             });
+        
+            $('.close').on('click', () => {
+              modalConfirmCallback = undefined;
+              $('#myModal').css('display', 'none');
+            });
+            });
+            
       $('.tdclick').on('click', '.deletebutton',  (event: any) => {
               debugger;
               const clickedDeleteButton = $(event.target);

@@ -440,6 +440,7 @@ td:nth-last-child(2) {
 
 .booking-message {
   position: absolute;
+  display: none;
   margin-left: 589px;
   margin-top: -278px;
   width: 420px;

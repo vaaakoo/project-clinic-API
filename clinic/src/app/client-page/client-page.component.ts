@@ -73,7 +73,6 @@ export class ClientPageComponent implements OnInit{
         const clickedTd = $(event.target).closest('td');
 
         const tdId = clickedTd.attr('id');
-        console.log(tdId);
         this.doctorName;
         this.statusBook;
         this.text;
@@ -122,6 +121,7 @@ export class ClientPageComponent implements OnInit{
 
             });
             $('.tdclick').on('click', '.deletebutton',  (event: any) => {
+              debugger
               var doctorName;
               var doctorIdNum;
               const clickedDeleteButton = $(event.target);
@@ -208,8 +208,8 @@ export class ClientPageComponent implements OnInit{
                   word-wrap: break-word;">
                     <p>ჩემი <br />ჯავშანი </p>
                     <span class="deletebutton" style="position: absolute; width: 18px; height: 18px; display: flex;
-                    align-items: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
-                    <span class="delete-button" style="padding: 5px;"><img src="../../assets/Group 3.png" alt=""></span>
+                    align-items: center; justify-content: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
+                    <span class="delete-button" ><img src="../../assets/Group 3.png" alt=""></span>
                   </span>
                 `;
                 element.html(htmlContent);

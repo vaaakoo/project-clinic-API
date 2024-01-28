@@ -2,49 +2,44 @@
     <h2>რეგისტრაცია</h2>
     
     <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+
       <div class="form-group">
        <div class="row">
         <div class="col-6">
           <label for="firstName">სახელი</label>
-         
         </div>
         <div class="col-6">
           <div *ngIf="firstname.touched && user.firstName === ''">
-            <span style="color: red;">First Name is Required</span>
+            <span style="color: red;">სავალდებულო ველი</span>
           </div>
         </div>
        </div>
         <input type="text" id="firstName" name="firstName" placeholder="( მინიმუმ 5 სიმბოლო )" #firstname="ngModel" [(ngModel)]="user.firstName" required>
       </div>
-  
-      
+
       <div class="form-group email-group">
         <div class="row">
           <div class="col-6">
             <label for="email">Email</label>
-           
           </div>
           <div class="col-6">
             <div *ngIf="email.touched && user.email === ''">
-              <span style="color: red;">Email is Required</span>
+              <span style="color: red;">სავალდებულო ველი</span>
             </div>
           </div>
          </div>
-        
         <input type="email" id="email" name="email" #email="ngModel" [(ngModel)]="user.email" required class="email-input">
         <img (click)="sendactivationcode(this.user.email)" class="right-arrow-img" src="../../assets/mail-right-arrow.png" alt="Right Arrow">
       </div>
       
       <div class="form-group">
-        
         <div class="row">
           <div class="col-6">
             <label for="idNumber">პირადი</label>
-           
           </div>
           <div class="col-6">
             <div *ngIf="idNumber.touched && user.idNumber === ''">
-              <span style="color: red;">idNumber is Required</span>
+              <span style="color: red;">სავალდებულო ველი</span>
             </div>
           </div>
          </div>
@@ -52,22 +47,20 @@
       </div>
       
       <div class="form-group">
-        
         <div class="row">
           <div class="col-6">
             <label for="lastName">გვარი</label>
-           
           </div>
           <div class="col-6">
             <div *ngIf="lastName.touched && user.lastName === ''">
-              <span style="color: red;">Last Name is Required</span>
+              <span style="color: red;">სავალდებულო ველი</span>
             </div>
           </div>
          </div>
         <input type="text" id="lastName" #lastName="ngModel" name="lastName" [(ngModel)]="user.lastName" required>
       </div>
+
       <div class="form-group">
-        
         <div class="row">
           <div class="col-6 activeMesStyle" style="flex: 0 0 100%; max-width: 100%;">
             <div class="labels">
@@ -77,28 +70,26 @@
             <label (click)="resendactivationcode(this.user.email)" class="vada" for="">{{activationmessage}}</label>
           </div>
             <div *ngIf="activationCode.touched && activationmessage === ''">
-              <span style="color: red;">Activation Code is Required</span>
+              <span style="color: red;">სავალდებულო ველი</span>
             </div>
           </div>
          </div>
         <div class="activation">
           <input type="text" id="activationCode" #activationCode="ngModel" name="activationCode" [(ngModel)]="user.activationCode" required>
-          <div *ngIf="activationmessage === '' && activationCode.touched">
+          <div *ngIf="!timerRunning && activationCode.touched">
             <span>*ბმულის მოქმედების ვადა ამოიწურა</span>
           </div>
         </div>
       </div>
   
       <div class="form-group">
-        
         <div class="row">
           <div class="col-6">
             <label for="password">პაროლი</label>
-           
           </div>
           <div class="col-6">
             <div *ngIf="password.touched && user.password === ''">
-              <span style="color: red;">First Name is Required</span>
+              <span style="color: red;">სავალდებულო ველი</span>
             </div>
           </div>
          </div>

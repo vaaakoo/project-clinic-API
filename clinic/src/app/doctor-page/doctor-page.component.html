@@ -126,7 +126,19 @@
     </div>
     <!-- ცხრილი -->
     <div class="calendar">
+      
       <div class="time">
+        <div class="square"  *ngIf="this.tooltipBox">
+          <div class="middle">
+              <img class="picture" src="../../assets/default-image.png" alt="">
+              <div class="middle-column">
+                <p class="card-name"><strong>სახელი:</strong> {{ this.clientName }}  {{ this.clientLastName}}</p>
+                <p class="card-category"><strong>პირადი:</strong> {{ this.clientIdNumber }} </p>
+                <p class="card-name"><strong>მიზეზი:</strong> {{ this.text }} </p>
+  
+              </div>
+          </div>
+      </div>
         <span class="year">2023</span>
         <div class="buttons-click">
           <span class="arrow arrow-left"
