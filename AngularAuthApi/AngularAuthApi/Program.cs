@@ -23,8 +23,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = false, // Set to true if you have an issuer
-            ValidateAudience = false, // Set to true if you have an audience
+            ValidateIssuer = false, 
+            ValidateAudience = false, 
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("YourSuperStrongSecretKeyWithAtLeast256Bits")) 

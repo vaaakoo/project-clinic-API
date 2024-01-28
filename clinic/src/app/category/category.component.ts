@@ -62,17 +62,13 @@ export class CategoryComponent implements OnInit {
       doctor.firstName = updatedFirstName;
       doctor.lastName = updatedLastName;
       doctor.category = updatedCategory;
-
-      // Save changes to the server or update the list directly
+      debugger
       this.authservice.updateDoctor(doctor).subscribe(
         (result) => {
-          // console.log('Doctor updated successfully:', result);
-          // Update the list of doctors after editing
           this.loadDoctorData();
         },
         (error) => {
           console.error('Error updating doctor:', error);
-          // Handle the error as needed
         }
       );
     }

@@ -43,7 +43,7 @@
             </div>
           </div>
          </div>
-        <input type="text" id="idNumber" name="idNumber" #idNumber="ngModel" placeholder="00000000000" [(ngModel)]="user.idNumber" required>
+        <input type="text" id="idNumber" name="idNumber" #idNumber="ngModel" placeholder="00000000000" maxlength="11" [(ngModel)]="user.idNumber" required>
       </div>
       
       <div class="form-group">

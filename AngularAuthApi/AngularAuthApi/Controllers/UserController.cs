@@ -306,11 +306,7 @@ namespace AngularAuthYtAPI.Controllers
                 // Update properties of the existingDoctor with properties of updatedDoctor
                 existingDoctor.FirstName = updatedDoctor.FirstName;
                 existingDoctor.LastName = updatedDoctor.LastName;
-                existingDoctor.Email = updatedDoctor.Email;
-                existingDoctor.IdNumber = updatedDoctor.IdNumber;
-                existingDoctor.Password = updatedDoctor.Password;
                 existingDoctor.Category = updatedDoctor.Category;
-                existingDoctor.ImageUrl = updatedDoctor.ImageUrl;
 
                 _authContext.SaveChanges();
 
@@ -326,7 +322,6 @@ namespace AngularAuthYtAPI.Controllers
 
         [HttpDelete("deleteDoctor/{id}")]
         [Authorize(Roles = "admin")]
-
         public IActionResult DeleteDoctor(int id)
         {
             try

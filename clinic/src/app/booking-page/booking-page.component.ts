@@ -51,12 +51,9 @@ export class BookingPageComponent implements OnInit{
       this.authservice.getDoctorById(this.doctorId).subscribe(
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
-          // console.log(this.doctor);
-          // this.patient = this.authservice.loginUser;
           this.patient = this.authservice.getToken().userInfo;
           console.log(this.patient);
           this.patientFirstName = this.authservice.getToken().userInfo.firstName;
-          // console.log(this.patientFirstName);
           this.patientIdNum = this.authservice.getToken().userInfo.idNumber
           loadData();
         },

@@ -148,7 +148,7 @@ export class AdminPageComponent {
       this.router.navigate(['/admin-page/category']);
     }
     if (tab === 'doctors') {
-      this.ngOnInit();
+      window.location.reload();
     }
 
   }

@@ -15,7 +15,7 @@
       
       <div class="form-group">
         <label for="idNumber">პირადი</label>
-        <input type="text" id="idNumber" name="idNumber" placeholder="00000000000" [(ngModel)]="authserviceService.doctor.idNumber" required>
+        <input type="text" id="idNumber" name="idNumber" maxlength="11" placeholder="00000000000" [(ngModel)]="authserviceService.doctor.idNumber" required>
       </div>
       
       <div class="form-group">

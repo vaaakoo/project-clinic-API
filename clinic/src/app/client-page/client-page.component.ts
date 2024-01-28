@@ -82,7 +82,7 @@ export class ClientPageComponent implements OnInit{
         var patientIdNum = this.patientIdNumber;
         this.docId;
 
-
+        this.tooltipBox = true;
         if (clickedTd.hasClass('disactivated')) {
           // Handle the case when the td is disactivated
           alert('This time slot is not available.');
@@ -122,6 +122,7 @@ export class ClientPageComponent implements OnInit{
             });
             $('.tdclick').on('click', '.deletebutton',  (event: any) => {
               debugger
+              this.tooltipBox = false;
               var doctorName;
               var doctorIdNum;
               const clickedDeleteButton = $(event.target);
