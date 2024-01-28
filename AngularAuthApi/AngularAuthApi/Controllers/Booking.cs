@@ -136,6 +136,10 @@ namespace AngularAuthApi.Controllers
         {
             if (appointment != null)
             {
+                if (appointment.ClientIdNumber == "00000000000")
+                {
+                    return BadRequest();
+                }
                 db.Add(appointment);
                 db.SaveChanges();
                 return Ok();
