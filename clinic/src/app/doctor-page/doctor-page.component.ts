@@ -78,17 +78,20 @@ export class DoctorPageComponent implements OnInit{
           return;
         }
         if (tdId && this.doctorIdNumber) {
+          debugger;
           this.tooltipBox = true;
           this.authservice.getBookDataByDoctorsIdNumberAndTimeSlot(this.doctorIdNumber, tdId).subscribe(
             (response) => {
               const appointment = response.data[0];
               this.clientName = appointment.patientName;
+              console.log(appointment)
               this.text = appointment.messageToDoctor;
               this.clientIdNumber = appointment.clientIdNumber;
           
-              this.authservice.getClientByIdNumber(appointment.idNumber).subscribe(
+              this.authservice.getClientByIdNumber(appointment.clientIdNumber).subscribe(
                 (clientResponse) => { 
                   debugger
+                  console.log(clientResponse)
                   this.clientLastName = clientResponse.lastName;
                   this.clientIdNumber = clientResponse.idNumber;
 
@@ -121,7 +124,6 @@ export class DoctorPageComponent implements OnInit{
                         console.log('Client Data Response:', response);
         
                         const appointment = response.data[0];
-
                         patientName = appointment.patientName;
                         patientIdNum = appointment.clientIdNumber;
         

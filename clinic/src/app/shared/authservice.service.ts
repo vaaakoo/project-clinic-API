@@ -59,7 +59,6 @@ export class AuthserviceService {
 
   // 
   setUserInfo(user: any): void {
-    // Store the user information in localStorage
     localStorage.setItem('userInfo', JSON.stringify(user));
   }
   
