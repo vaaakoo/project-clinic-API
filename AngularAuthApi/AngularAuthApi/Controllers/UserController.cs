@@ -30,7 +30,7 @@ namespace AngularAuthYtAPI.Controllers
             _activationCodeService = activationCodeService;
             _passwordResetService = passwordResetService;
 
-            if (!_authContext.Users.Any(user => user.Category != null))
+            if (!_authContext.Users.Any())
             {
                 SeedInitialData();
             }
