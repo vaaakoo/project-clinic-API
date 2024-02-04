@@ -25,6 +25,9 @@ export class ClientPageComponent implements OnInit{
     { num: 23, day: 'sun' },
   ];
 
+  submissionSuccess: boolean = false;
+
+
   doctor?: doctorregisteration ;
   doctorId: number | undefined; 
   client?: Useregisteration;
@@ -40,7 +43,8 @@ export class ClientPageComponent implements OnInit{
   doctorLastName: string="";
   doctorCategory: string="";
   docId: number = 0;
-
+  oldPassword: string="";
+  newPassword: string="";
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
   
@@ -236,6 +240,33 @@ export class ClientPageComponent implements OnInit{
     }    
   }
 
+  // password changer
+  onSubmit() {
+    const email = this.authservice.getToken().userInfo.email;
+    this.changePassword(email, this.oldPassword, this.newPassword);
+  }
+  
+  changePassword(email: string, oldPassword: string, newPassword: string) {
+    if (!oldPassword || !newPassword) {
+      alert('Old and new passwords are required.');
+      return;
+    }
+  
+    this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
+      (response) => {
+        alert('Password changed successfully:');
+        window.location.reload();
+        this.submissionSuccess = true;
+
+      },
+      (error) => {
+        alert('Error changing password:');
+        this.submissionSuccess = false;
+
+      }
+    );
+  }
+  
 
   onBookingClick(docId: number): void {
     console.log(docId);

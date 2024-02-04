@@ -53,7 +53,7 @@ export class AuthserviceService {
     const userInfoForRole = this.getUserInfoForRole(token);
     
     const userInfo = this.getUserInfo();
-    // console.log(userInfo);
+    console.log(userInfo);
     return { token, userInfo, userInfoForRole };
   }
 
@@ -128,6 +128,16 @@ export class AuthserviceService {
     return this.http.get(apiUrl);
   }
 
+  changePassword(email: string, oldPassword: string, newPassword: string): Observable<any> {
+    const url = `${this.apiUrl}/change-password`;
+    const body = {
+      email: email,
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    };
+
+    return this.http.post(url, body);
+  }
   
 
   registerdoctor(user: doctorregisteration): Observable<any> {

@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using AngularAuthApi.Repositories.Interfaces;
 using AngularAuthApi.Repositories;
 using System.Net.Mail;
+using AngularAuthApi.Models;
 
 
 namespace AngularAuthYtAPI.Controllers
@@ -595,6 +596,49 @@ namespace AngularAuthYtAPI.Controllers
                 // Log the exception or handle it based on your application's error handling strategy
                 Console.Error.WriteLine(ex);
                 return StatusCode(500, new { Message = "Error sending password reset code", Error = ex.Message });
+            }
+        }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] PasswordChangeRequest passwordChangeRequest)
+        {
+            try
+            {
+                // Get the user based on their email
+                var user = await _authContext.Users.FirstOrDefaultAsync(u => u.Email == passwordChangeRequest.Email);
+
+                // Check if the user exists
+                if (user == null)
+                {
+                    return BadRequest(new { Message = "User not found" });
+                }
+
+                // Check if the provided old password matches the stored password hash
+                if (!BCrypt.Net.BCrypt.Verify(passwordChangeRequest.OldPassword, user.PasswordHash))
+                {
+                    return BadRequest(new { Message = "Invalid old password" });
+                }
+
+                // Check the strength of the new password
+                var passMessage = CheckPasswordStrength(passwordChangeRequest.NewPassword);
+                if (!string.IsNullOrEmpty(passMessage))
+                {
+                    return BadRequest(new { Message = passMessage });
+                }
+
+                // Update the user's password
+                user.Password = passwordChangeRequest.NewPassword;
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(passwordChangeRequest.NewPassword);
+
+                // Save changes to the database
+                await _authContext.SaveChangesAsync();
+
+                return Ok(new { Message = "Password changed successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it based on your application's error handling strategy
+                return StatusCode(500, new { Message = "Error changing password", Error = ex.Message });
             }
         }
 

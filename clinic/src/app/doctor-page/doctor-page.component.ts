@@ -37,6 +37,10 @@ export class DoctorPageComponent implements OnInit{
   tooltipBox: boolean = false;
   clientLastName: string="";
   clientIdNumber: string="";
+  oldPassword: string="";
+  newPassword: string="";
+  submissionSuccess: boolean = false;
+
 
   constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
   
@@ -222,6 +226,32 @@ export class DoctorPageComponent implements OnInit{
     }    
   }
 
+    // password changer
+    onSubmit() {
+      const email = this.authservice.getToken().userInfo.email;
+      this.changePassword(email, this.oldPassword, this.newPassword);
+    }
+    
+    changePassword(email: string, oldPassword: string, newPassword: string) {
+      if (!oldPassword || !newPassword) {
+        alert('Old and new passwords are required.');
+        return;
+      }
+    
+      this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
+        (response) => {
+          alert('Password changed successfully:');
+          window.location.reload();
+          this.submissionSuccess = true;
+  
+        },
+        (error) => {
+          alert('Error changing password:');
+          this.submissionSuccess = false;
+  
+        }
+      );
+    }
   getTimeRange(rowNumber: number): string {
     const startTime = 9;
     const endTime = 18;

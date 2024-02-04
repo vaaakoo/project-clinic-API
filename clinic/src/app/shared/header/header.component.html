@@ -161,7 +161,7 @@
               <input type="text" class="form-control" [(ngModel)]="authservice.logindata.email" name="email" id="recipient-email" placeholder="ელ.ფოსტა/ ტელეფონის ნომერი" required>
             </div>
             <div class="form-group">
-              <input type="text" [(ngModel)]="authservice.logindata.password" name="password" class="form-control form-password" id="recipient-name" placeholder="პაროლი" required>
+              <input type="password" [(ngModel)]="authservice.logindata.password" name="password" class="form-control form-password" id="recipient-name" placeholder="პაროლი" required>
               <span class="forget-password" (click)="sendResetCode()"><p>პაროლის აღდგენა</p></span>
             </div>
           
