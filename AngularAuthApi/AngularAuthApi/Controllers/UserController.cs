@@ -22,6 +22,8 @@ namespace AngularAuthYtAPI.Controllers
         private static string globalActivationCode = string.Empty;
         private readonly IActivationCodeService _activationCodeService;
         private readonly IPasswordResetService _passwordResetService;
+        private static DateTime activationCodeExpirationTime;
+
 
 
         public UserController(AppDbContext context, IActivationCodeService activationCodeService, IPasswordResetService passwordResetService)
@@ -105,20 +107,29 @@ namespace AngularAuthYtAPI.Controllers
                 return BadRequest(new { Message = "This is not valid" });
             }
 
+            if (!IsValidEmail(userObj.Email))
+                return BadRequest(new { Message = "Invalid email format" });
+
             // check email
             if (await CheckEmailExistAsync(userObj.Email))
                 return BadRequest(new { Message = "Email Already Exist" });
 
             //check username
             if (await CheckIdNumberExistAsync(userObj.IdNumber))
-                return BadRequest(new { Message = "Idnumber Already Exist" });
+                return BadRequest(new { Message = "Invalid or already existing ID number. ID number must be 11 digits." });
 
             if (userObj.activationcode != globalActivationCode)
                 return BadRequest(new { Message = "Activation Code is In Valid" });
 
-            /*var passMessage = CheckPasswordStrength(userObj.Password);
+            if (DateTime.Now > activationCodeExpirationTime)
+            {
+                return BadRequest(new { Message = "Activation code has expired" });
+            }
+
+            var passMessage = CheckPasswordStrength(userObj.Password);
             if (!string.IsNullOrEmpty(passMessage))
-                return BadRequest(new { Message = passMessage.ToString() });*/
+                return BadRequest(new { Message = passMessage.ToString() });
+
             userObj.Role = "client";
 
             userObj.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userObj.Password);
@@ -200,13 +211,18 @@ namespace AngularAuthYtAPI.Controllers
             if (string.IsNullOrEmpty(userObj.Email) || string.IsNullOrEmpty(userObj.Password) || string.IsNullOrEmpty(userObj.Category) || string.IsNullOrEmpty(userObj.Password) || string.IsNullOrEmpty(userObj.FirstName) || string.IsNullOrEmpty(userObj.LastName) || string.IsNullOrEmpty(userObj.IdNumber))
                 return BadRequest(new { Message = "Please Fill All Records" });
 
-
+            if (!IsValidEmail(userObj.Email))
+                return BadRequest(new { Message = "Invalid email format" });
             if (await CheckEmailExistAsync(userObj.Email))
                 return BadRequest(new { Message = "Email Already Exist" });
 
             //check username
             if (await CheckIdNumberExistAsync(userObj.IdNumber))
-                return BadRequest(new { Message = "Idnumber Already Exist" });
+                return BadRequest(new { Message = "Invalid or already existing ID number. ID number must be 11 digits." });
+
+            var passMessage = CheckPasswordStrength(userObj.Password);
+            if (!string.IsNullOrEmpty(passMessage))
+                return BadRequest(new { Message = passMessage.ToString() });
 
             userObj.Role = "doctor";
             userObj.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userObj.Password);
@@ -221,13 +237,73 @@ namespace AngularAuthYtAPI.Controllers
         }
 
 
+        private string CheckPasswordStrength(string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                return "Password cannot be empty.";
+            }
+
+            // Define the regular expressions for password requirements
+            var hasMinimumLength = new Regex(@".{12,}");
+            var hasLowerChar = new Regex(@"[a-z]");
+            var hasUpperChar = new Regex(@"[A-Z]");
+            var hasDigit = new Regex(@"\d");
+            var hasSpecialChar = new Regex(@"[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]");
+
+            // Check if the password meets each requirement
+            if (!hasMinimumLength.IsMatch(password))
+            {
+                return "Password must be at least 12 characters long.";
+            }
+
+            if (!hasLowerChar.IsMatch(password))
+            {
+                return "Password must contain at least one lowercase letter.";
+            }
+
+            if (!hasUpperChar.IsMatch(password))
+            {
+                return "Password must contain at least one uppercase letter.";
+            }
+
+            if (!hasDigit.IsMatch(password))
+            {
+                return "Password must contain at least one digit.";
+            }
+
+            if (!hasSpecialChar.IsMatch(password))
+            {
+                return "Password must contain at least one special character.";
+            }
+
+            return string.Empty; // Indicates that the password is strong
+        }
+
+
         private async Task<bool> CheckEmailExistAsync(string? email)
             => await _authContext.Users.AnyAsync(x => x.Email.Equals(email));
 
 
-        private Task<bool> CheckIdNumberExistAsync(string? idnumber)
-            => _authContext.Users.AnyAsync(x => x.IdNumber == idnumber);
+        private async Task<bool> CheckIdNumberExistAsync(string? idNumber)
+        {
+            if (idNumber == null || idNumber.Length != 11 || !idNumber.All(char.IsDigit))
+            {
+                return true; // If the length is not exactly 11 or contains non-numeric characters, consider it as already existing
+            }
 
+            return await _authContext.Users.AnyAsync(x => x.IdNumber == idNumber);
+        }
+
+
+        private bool IsValidEmail(string email)
+        {
+            // Regular expression for a basic email format
+            string emailRegex = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$";
+
+            // Check if the email matches the regular expression
+            return System.Text.RegularExpressions.Regex.IsMatch(email, emailRegex);
+        }
 
         [HttpGet("getDoctor")]
         public IActionResult GetDoctor()
@@ -411,10 +487,18 @@ namespace AngularAuthYtAPI.Controllers
         {
             try
             {
+                if (await CheckEmailExistAsync(email))
+                {
+                    return BadRequest(new { Message = "Email is already registered" });
+                }
+
                 if (!string.IsNullOrEmpty(email))
                 {
                     var activationCode = await _activationCodeService.GenerateActivationCodeAsync();
                     globalActivationCode = activationCode;
+                    activationCodeExpirationTime = DateTime.Now.AddMinutes(2); 
+
+
 
                     // Customize the email subject and body as needed
                     var subject = "აქტივაციის კოდი";

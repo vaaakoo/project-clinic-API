@@ -28,6 +28,7 @@ export class ClientRegistrationComponent {
   };
 
   sendactivationcode(email: string) {
+    debugger
     if (email == null || email == '') {
       this.activationmessage = 'Please Enter Email Address';
     } else {
@@ -39,11 +40,19 @@ export class ClientRegistrationComponent {
           this.startTimer();
         },
         (error) => {
-          this.activationmessage = error;
+          console.error('Error:', error);
+          this.activationmessage = 'Error Email';
+          
+          if (error && error.includes('Bad Request')) {
+            // Display an alert for bad request
+            alert('Email is already registered. Please use a different email.');
+          }
         }
       );
     }
   }
+
+
   startTimer() {
     this.timerRunning = true;
 
