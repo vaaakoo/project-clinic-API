@@ -1,6 +1,7 @@
 ﻿using AngularAuthApi.Models;
 using AngularAuthApi.Repositories.Interfaces;
 using AngularAuthYtAPI.Context;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace AngularAuthApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class Booking : ControllerBase
     {
         private readonly AppDbContext db;

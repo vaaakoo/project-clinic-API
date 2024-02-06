@@ -145,64 +145,7 @@ namespace AngularAuthYtAPI.Controllers
             });
         }
 
-        /*[HttpPost("AuthenticateUser")]
-        public IActionResult AuthenticateUser([FromBody] User userObj)
-        {
-            try
-            {
-                if (userObj.Email == null || userObj.Password == null)
-                {
-                    return BadRequest(new { message = "Null data" });
-                }
-
-                // Check if the provided credentials match the default admin credentials
-                if (userObj.Email == "admin" && userObj.Password == "admin")
-                {
-
-                    var adminUser = new User { Email = "admin", IsAdmin = true, Role = "admin" };
-                    return Ok(new
-                    {
-                        Message = "true",
-                        User = adminUser
-                    });
-                }
-
-                // Check if the provided credentials match the default admin credentials
-                var users = _authContext.Users.Where(x => x.Email.ToLower() == userObj.Email.ToLower() && x.Password.ToLower() == userObj.Password.ToLower()).FirstOrDefault();
-
-                if (users == null)
-                {
-                    return BadRequest();
-                }
-
-                if (users.Category != null)
-                {
-                    var doctorUser = _authContext.Users
-                        .Where(x => x.Email.ToLower() == userObj.Email.ToLower() && x.Password.ToLower() == userObj.Password.ToLower())
-                        .FirstOrDefault();
-
-                    return Ok(new
-                    {
-                        Message = "doctor login",
-                        User = doctorUser
-                    });
-                }
-
-                return Ok(new
-                {
-                    Message = "client login",
-                    User = users
-                });
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine(ex);
-
-                // Return an error response
-                return StatusCode(500, new { Message = "Internal Server Error" });
-            }
-        }*/
-
+        
         [HttpPost("doctor-register")]
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddDoctor([FromBody] User userObj)
@@ -290,7 +233,7 @@ namespace AngularAuthYtAPI.Controllers
         {
             if (idNumber == null || idNumber.Length != 11 || !idNumber.All(char.IsDigit))
             {
-                return true; // If the length is not exactly 11 or contains non-numeric characters, consider it as already existing
+                return true; 
             }
 
             return await _authContext.Users.AnyAsync(x => x.IdNumber == idNumber);
@@ -299,10 +242,8 @@ namespace AngularAuthYtAPI.Controllers
 
         private bool IsValidEmail(string email)
         {
-            // Regular expression for a basic email format
             string emailRegex = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$";
 
-            // Check if the email matches the regular expression
             return System.Text.RegularExpressions.Regex.IsMatch(email, emailRegex);
         }
 
@@ -316,10 +257,8 @@ namespace AngularAuthYtAPI.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception
                 Console.Error.WriteLine(ex);
 
-                // Return an error response
                 return StatusCode(500, new { Message = "Internal Server Error" });
             }
         }
@@ -433,10 +372,8 @@ namespace AngularAuthYtAPI.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception
                 Console.Error.WriteLine(ex);
 
-                // Return an error response
                 return StatusCode(500, new { Message = "Internal Server Error" });
             }
         }
@@ -501,7 +438,6 @@ namespace AngularAuthYtAPI.Controllers
 
 
 
-                    // Customize the email subject and body as needed
                     var subject = "აქტივაციის კოდი";
                     var body = $@"
                             <html>
@@ -604,10 +540,8 @@ namespace AngularAuthYtAPI.Controllers
         {
             try
             {
-                // Get the user based on their email
                 var user = await _authContext.Users.FirstOrDefaultAsync(u => u.Email == passwordChangeRequest.Email);
 
-                // Check if the user exists
                 if (user == null)
                 {
                     return BadRequest(new { Message = "User not found" });
@@ -637,7 +571,6 @@ namespace AngularAuthYtAPI.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it based on your application's error handling strategy
                 return StatusCode(500, new { Message = "Error changing password", Error = ex.Message });
             }
         }
