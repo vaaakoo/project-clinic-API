@@ -36,6 +36,7 @@ export class ClientRegistrationComponent {
       this.activationmessage = 'Please Wait...';
       this.authserviceService.sendactivationcode(email).subscribe(
         (response) => {
+          this.messageService.add({severity:'success', summary:'Success', detail:'აქტივაციის კოდი გაგზავნილია მეილზე!'});
           this.timerMinutes = 2;
           this.timerSeconds = 0;
           this.startTimer();
@@ -124,9 +125,9 @@ export class ClientRegistrationComponent {
         this.isbuttondsiabed = false;
         this.stopTimer();
         this.activationmessage = '';
-        alert(
-          error.error.message
-        );
+        // alert(
+        //   error.error.message
+        // );
         this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
 
       }
