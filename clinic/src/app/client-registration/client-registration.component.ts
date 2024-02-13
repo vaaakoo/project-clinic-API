@@ -41,7 +41,8 @@ export class ClientRegistrationComponent {
           this.startTimer();
         },
         (error) => {
-          console.error('Error:', error);
+          // console.error('Error:', error);
+          this.messageService.add({severity:'error', summary:'Error', detail:'მეილი უკვე გამოყენებულია, გთხოვთ შეცვალოთ მეილი.'});
           this.activationmessage = 'Error Email';
           
           if (error && error.includes('Bad Request')) {
@@ -123,9 +124,9 @@ export class ClientRegistrationComponent {
         this.isbuttondsiabed = false;
         this.stopTimer();
         this.activationmessage = '';
-        // alert(
-        //   error.error.message
-        // );
+        alert(
+          error.error.message
+        );
         this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
 
       }
