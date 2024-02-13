@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthserviceService } from '../shared/authservice.service';
-import { doctorregisteration } from '../useregisteration';
+import { AuthserviceService } from '../core/auth/authservice.service';
+import { doctorregisteration } from '../core/auth/useregisteration';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 

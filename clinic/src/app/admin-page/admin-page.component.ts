@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { doctorregisteration } from '../useregisteration';
-import { AuthserviceService } from '../shared/authservice.service';
+import { doctorregisteration } from '../core/auth/useregisteration';
+import { AuthserviceService } from '../core/auth/authservice.service';
 import { data } from 'jquery';
 declare var $: any;
 

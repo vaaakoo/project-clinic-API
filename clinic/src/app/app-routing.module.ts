@@ -8,7 +8,7 @@ import { DoctorPageComponent } from './doctor-page/doctor-page.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { ClientPageComponent } from './client-page/client-page.component';
 import { BookingPageComponent } from './booking-page/booking-page.component';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './core/auth/auth.guard';
 
 
 

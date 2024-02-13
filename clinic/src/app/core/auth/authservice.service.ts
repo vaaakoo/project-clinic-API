@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { Useregisteration, doctorregisteration } from '../useregisteration';
+import { Useregisteration, doctorregisteration } from './useregisteration';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +13,10 @@ export class AuthserviceService {
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
-  private apiUrl: string = 'http://localhost:5100/api/User';
-  private bookUrl: string = 'http://localhost:5100/api/Booking';
-  private apiUrl1: string = 'http://localhost:5100/api/Authentication';
+  private apiUrl: string = environment.apiUrl + '/User';
+  private bookUrl: string = environment.apiUrl + '/Booking';
+  private apiUrl1: string = environment.apiUrl + '/Authentication';
+
   alldoctor: doctorregisteration[] = [];
   doctor:doctorregisteration=new doctorregisteration();
   logindata:Useregisteration=new Useregisteration();
@@ -53,7 +55,7 @@ export class AuthserviceService {
     const userInfoForRole = this.getUserInfoForRole(token);
     
     const userInfo = this.getUserInfo();
-    console.log(userInfo);
+    // console.log(userInfo);
     return { token, userInfo, userInfoForRole };
   }
 

@@ -16,9 +16,9 @@ import { AdminPageComponent } from './admin-page/admin-page.component';
 import { DoctorPageComponent } from './doctor-page/doctor-page.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BookingPageComponent } from './booking-page/booking-page.component';
-import { AuthInterceptor } from './shared/auth.interceptor';
-import { AuthGuard } from './auth.guard';
-import { AuthserviceService } from './shared/authservice.service';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
+import { AuthGuard } from './core/auth/auth.guard';
+import { AuthserviceService } from './core/auth/authservice.service';
 
 @NgModule({
   declarations: [

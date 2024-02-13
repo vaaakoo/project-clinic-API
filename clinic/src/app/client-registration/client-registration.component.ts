@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { AuthserviceService } from '../shared/authservice.service';
+import { AuthserviceService } from '../core/auth/authservice.service';
 import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-client-registration',
