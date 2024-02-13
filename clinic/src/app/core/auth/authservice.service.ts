@@ -4,12 +4,13 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Useregisteration, doctorregisteration } from './useregisteration';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from 'src/environments/environment';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthserviceService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private messageService: MessageService) {}
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
@@ -47,7 +48,8 @@ export class AuthserviceService {
 
   logout(): void {
     this.clearAuthenticationToken();
-    alert("you can not logout, please login! ")
+    // alert("you can not logout, please login! ")
+    // this.messageService.add({severity:'error', summary:'Error', detail:'you can not logout, please login!'});
   }
 
   getToken(): { token: string, userInfo: any, userInfoForRole: any } {
