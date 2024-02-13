@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { doctorregisteration } from '../core/auth/useregisteration';
 import { AuthserviceService } from '../core/auth/authservice.service';
 import { data } from 'jquery';
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
@@ -36,7 +37,7 @@ export class AdminPageComponent {
   starIcons: string[] | undefined;
 
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService) {}
   
   ngOnInit() {
 
@@ -55,6 +56,7 @@ export class AdminPageComponent {
       },
       (error) => {
         console.error('Error fetching doctors:', error);
+        this.messageService.add({severity:'error', summary:'Error', detail:'Failed to fetch doctors. Please try again later.'});
       }
     );
 
@@ -114,6 +116,7 @@ export class AdminPageComponent {
         },
         (error) => {
           console.error('Error fetching appointment data:', error);
+          this.messageService.add({severity:'error', summary:'Error', detail:'Error fetching appointment data:' + error });
         }
       );
     };

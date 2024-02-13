@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthserviceService } from '../../core/auth/authservice.service';
 import { Useregisteration, doctorregisteration } from 'src/app/core/auth/useregisteration';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
+
 
 @Component({
   selector: 'app-header',
@@ -21,7 +25,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    public authservice: AuthserviceService
+    public authservice: AuthserviceService,
+    private messageService: MessageService
   ) {}
   
   ngOnInit(): void {
@@ -34,6 +39,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onSubmit() {
+    debugger
     // Perform your authentication logic here
     if (this.authservice.logindata.email !== '' && this.authservice.logindata.password !== null) {
       this.authservice.login(this.authservice.logindata).subscribe(
@@ -42,7 +48,6 @@ export class HeaderComponent implements OnInit {
           this.authservice.loginusername = response.user.firstName;
           this.authservice.loginUser = response.user;
           this.authUser = this.authservice.getToken().userInfo; // Update authUser here
-          console.log(this.authUser.role);
   
           switch (true) {
             case response.user.isAdmin:
@@ -56,12 +61,16 @@ export class HeaderComponent implements OnInit {
               this.authservice.setAuthenticationStatus(true);
               break;
           }
-          alert("You are authenticated successfully");
+          this.messageService.add({severity:'success', summary:'Success', detail:'You are authenticated successfully'});
           this.submissionSuccess = true;
-          window.location.reload();
+          // window.location.reload();
         },
         (error) => {
-          console.log(error);
+          if (error.status === 401) {
+            this.messageService.add({severity:'error', summary:'Error', detail:'Authentication failed. Please check your email and password.'});
+          } else {
+            this.messageService.add({severity:'error', summary:'Error', detail:'An unexpected error occurred. Please try again later.'});
+          }
         }
       );
     }
@@ -92,7 +101,9 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn = false;
     this.isAdministrator = false;
     this.isDoctor = false;
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   }
   
 
@@ -102,15 +113,18 @@ export class HeaderComponent implements OnInit {
       this.authservice.sendResetCode(this.authservice.logindata.email).subscribe(
         (response) => {
           // console.log(response);
-          alert('Reset code sent successfully to ' + this.authservice.logindata.email);
+          // alert('Reset code sent successfully to ' + this.authservice.logindata.email);
+          this.messageService.add({severity:'success', summary:'Success', detail:'Reset code sent successfully to ' + this.authservice.logindata.email });
         },
         (error) => {
           console.error(error);
-          alert('Error sending reset code');
+          // alert('Error sending reset code');
+          this.messageService.add({severity:'error', summary:'Error', detail:'Error sending reset code' });
         }
       );
     } else {
       alert('Please provide a valid email address.');
+      this.messageService.add({severity:'error', summary:'Error', detail:'Please provide a valid email address.' });
     }
   }
 }

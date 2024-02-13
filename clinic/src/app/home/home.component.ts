@@ -3,6 +3,7 @@ import { AuthserviceService } from '../core/auth/authservice.service';
 import { doctorregisteration } from '../core/auth/useregisteration';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
   maxVisibleDoctors = 6;
 
 
-constructor(public authservice:AuthserviceService, private route: ActivatedRoute, private router: Router){}
+constructor(public authservice:AuthserviceService, private route: ActivatedRoute, private router: Router, private messageService: MessageService){}
 
 ngOnInit() {
   this.authservice.getalldoc().subscribe(
