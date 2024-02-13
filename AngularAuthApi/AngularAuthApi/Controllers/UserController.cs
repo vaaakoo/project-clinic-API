@@ -26,7 +26,6 @@ namespace AngularAuthYtAPI.Controllers
         private static DateTime activationCodeExpirationTime;
 
 
-
         public UserController(AppDbContext context, IActivationCodeService activationCodeService, IPasswordResetService passwordResetService)
         {
             _authContext = context;
@@ -119,8 +118,14 @@ namespace AngularAuthYtAPI.Controllers
             if (await CheckIdNumberExistAsync(userObj.IdNumber))
                 return BadRequest(new { Message = "Invalid or already existing ID number. ID number must be 11 digits." });
 
-            if (userObj.activationcode != globalActivationCode)
-                return BadRequest(new { Message = "Activation Code is In Valid" });
+            /*if (userObj.activationcode != globalActivationCode)
+                return BadRequest(new { Message = "Activation Code is In Valid" });*/
+
+            var activationCodeEntity = await _authContext.ActivationCodes.FirstOrDefaultAsync(ac => ac.Email == userObj.Email && ac.Code == userObj.activationcode && !ac.Used && ac.ExpirationTime > DateTime.Now);
+            if (activationCodeEntity == null)
+            {
+                return BadRequest(new { Message = "Invalid or expired activation code" });
+            }
 
             if (DateTime.Now > activationCodeExpirationTime)
             {
@@ -134,6 +139,9 @@ namespace AngularAuthYtAPI.Controllers
             userObj.Role = "client";
 
             userObj.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userObj.Password);
+
+            activationCodeEntity.Used = true;
+            _authContext.Update(activationCodeEntity);
 
             await _authContext.AddAsync(userObj);
             await _authContext.SaveChangesAsync();
@@ -430,10 +438,20 @@ namespace AngularAuthYtAPI.Controllers
                     return BadRequest(new { Message = "Email is already registered" });
                 }
 
+                var existingActivationCode = await _authContext.ActivationCodes.FirstOrDefaultAsync(ac => ac.Email == email && !ac.Used);
+
+                if (existingActivationCode != null)
+                {
+                    // Mark the existing activation code as used
+                    existingActivationCode.Used = true;
+                    _authContext.Update(existingActivationCode);
+                    await _authContext.SaveChangesAsync();
+                }
+
                 if (!string.IsNullOrEmpty(email))
                 {
                     var activationCode = await _activationCodeService.GenerateActivationCodeAsync();
-                    globalActivationCode = activationCode;
+                    /*globalActivationCode = activationCode;*/
                     activationCodeExpirationTime = DateTime.Now.AddMinutes(2); 
 
 

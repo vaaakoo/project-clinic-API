@@ -12,6 +12,8 @@ namespace AngularAuthYtAPI.Context
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Appointment> tblAppointment { get; set; }
+        public DbSet<ActivationCode> ActivationCodes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

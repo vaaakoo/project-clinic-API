@@ -2,11 +2,19 @@
 using System.Net.Mail;
 using System.Net;
 using System.Text;
+using AngularAuthYtAPI.Context;
+using AngularAuthApi.Models;
 
 namespace AngularAuthApi.Repositories
 {
     public class ActivationCodeService : IActivationCodeService
     {
+        private readonly AppDbContext _dbContext;
+
+        public ActivationCodeService(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public Task<string> GenerateActivationCodeAsync()
         {
             Random rnd=new Random();
@@ -20,24 +28,47 @@ namespace AngularAuthApi.Repositories
 
         public async Task SendActivationCodeAsync(string email, string activationCode, string body, string subject)
         {
-            var smtpClient = new SmtpClient("smtp.gmail.com")
+
+            try
             {
-                Port = 587,
-                Credentials = new NetworkCredential("vaktonik@gmail.com", "gwponglvmipzhaja"),
-                EnableSsl = true,
-            };
+                // Store the activation code in the database
+                var activationCodeEntity = new ActivationCode
+                {
+                    Email = email,
+                    Code = activationCode,
+                    CreationTime = DateTime.Now,
+                    ExpirationTime = DateTime.Now.AddMinutes(2), // Set expiration time
+                    Used = false
+                };
 
-            var mailMessage = new MailMessage
+                _dbContext.ActivationCodes.Add(activationCodeEntity);
+                await _dbContext.SaveChangesAsync();
+
+                // Send activation code via email
+                var smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("vaktonik@gmail.com", "gwponglvmipzhaja"),
+                    EnableSsl = true,
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress("vaktonik@gmail.com"),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true,
+                };
+
+                mailMessage.To.Add(email);
+
+                await smtpClient.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
             {
-                From = new MailAddress("vaktonik@gmail.com"),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true,
-            };
-
-            mailMessage.To.Add(email);
-
-            await smtpClient.SendMailAsync(mailMessage);
+                // Log or handle the exception as needed
+                throw new Exception("Error sending activation code via email", ex);
+            }
         }
 
     }
