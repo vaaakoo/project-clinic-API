@@ -90,7 +90,8 @@ export class ClientPageComponent implements OnInit{
         this.tooltipBox = true;
         if (clickedTd.hasClass('disactivated')) {
           // Handle the case when the td is disactivated
-          alert('This time slot is not available.');
+          // alert('This time slot is not available.');
+          this.messageService.add({severity:'error', summary:'Error', detail:'This time slot is not available.'});
           return;
         }
         if (tdId && patientIdNum) {
@@ -259,7 +260,9 @@ export class ClientPageComponent implements OnInit{
       (response) => {
         // alert('Password changed successfully:');
         this.messageService.add({severity:'success', summary:'Success', detail:'Password changed successfully!'});
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
         this.submissionSuccess = true;
 
       },

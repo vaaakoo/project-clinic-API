@@ -124,7 +124,7 @@ namespace AngularAuthYtAPI.Controllers
             var activationCodeEntity = await _authContext.ActivationCodes.FirstOrDefaultAsync(ac => ac.Email == userObj.Email && ac.Code == userObj.activationcode && !ac.Used && ac.ExpirationTime > DateTime.Now);
             if (activationCodeEntity == null)
             {
-                return BadRequest(new { Message = "Invalid or expired activation code" });
+                return BadRequest(new { Message = "Invalid or also used or expired activation code" });
             }
 
             if (DateTime.Now > activationCodeExpirationTime)

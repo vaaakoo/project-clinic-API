@@ -237,19 +237,24 @@ export class DoctorPageComponent implements OnInit{
     
     changePassword(email: string, oldPassword: string, newPassword: string) {
       if (!oldPassword || !newPassword) {
-        alert('Old and new passwords are required.');
+        // alert('Old and new passwords are required.');
+        this.messageService.add({severity:'error', summary:'Error', detail:'Old and new passwords are required.'});
         return;
       }
     
       this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
         (response) => {
-          alert('Password changed successfully:');
-          window.location.reload();
+          // alert('Password changed successfully:');
+          this.messageService.add({severity:'success', summary:'Success', detail:'Password changed successfully!'});
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
           this.submissionSuccess = true;
   
         },
         (error) => {
-          alert('Error changing password:');
+          // alert('Error changing password:');
+          this.messageService.add({severity:'error', summary:'Error', detail:'Error changing password!'});
           this.submissionSuccess = false;
   
         }
