@@ -1,20 +1,23 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { Useregisteration, doctorregisteration } from '../useregisteration';
+import { Useregisteration, doctorregisteration } from './useregisteration';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from 'src/environments/environment';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthserviceService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private messageService: MessageService) {}
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
-  private apiUrl: string = 'http://localhost:5100/api/User';
-  private bookUrl: string = 'http://localhost:5100/api/Booking';
-  private apiUrl1: string = 'http://localhost:5100/api/Authentication';
+  private apiUrl: string = environment.apiUrl + '/User';
+  private bookUrl: string = environment.apiUrl + '/Booking';
+  private apiUrl1: string = environment.apiUrl + '/Authentication';
+
   alldoctor: doctorregisteration[] = [];
   doctor:doctorregisteration=new doctorregisteration();
   logindata:Useregisteration=new Useregisteration();
@@ -45,7 +48,8 @@ export class AuthserviceService {
 
   logout(): void {
     this.clearAuthenticationToken();
-    alert("you can not logout, please login! ")
+    // alert("you can not logout, please login! ")
+    // this.messageService.add({severity:'error', summary:'Error', detail:'you can not logout, please login!'});
   }
 
   getToken(): { token: string, userInfo: any, userInfoForRole: any } {
@@ -53,7 +57,7 @@ export class AuthserviceService {
     const userInfoForRole = this.getUserInfoForRole(token);
     
     const userInfo = this.getUserInfo();
-    console.log(userInfo);
+    // console.log(userInfo);
     return { token, userInfo, userInfoForRole };
   }
 

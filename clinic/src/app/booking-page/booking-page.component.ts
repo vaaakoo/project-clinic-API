@@ -1,8 +1,9 @@
 import { Component , OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthserviceService } from '../shared/authservice.service';
-import { Useregisteration, doctorregisteration } from '../useregisteration';
+import { AuthserviceService } from '../core/auth/authservice.service';
+import { Useregisteration, doctorregisteration } from '../core/auth/useregisteration';
 import { data } from 'jquery';
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
@@ -36,7 +37,7 @@ export class BookingPageComponent implements OnInit{
   patientIdNum?: string='';
   
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService) {}
   
   submitForm() {
     // console.log('Form submitted with:', this.visitConfirmation);
@@ -45,20 +46,18 @@ export class BookingPageComponent implements OnInit{
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.doctorId = +params['id'];
-      // console.log('Doctor ID from route parameters:', this.doctorId);
-      
-
+   
       this.authservice.getDoctorById(this.doctorId).subscribe(
         (doctor: doctorregisteration) => {
           this.doctor = doctor;
           this.patient = this.authservice.getToken().userInfo;
-          console.log(this.patient);
           this.patientFirstName = this.authservice.getToken().userInfo.firstName;
           this.patientIdNum = this.authservice.getToken().userInfo.idNumber
           loadData();
         },
         (error) => {
           console.error('Error fetching doctor data:', error);
+          this.messageService.add({severity:'error', summary:'Error', detail:'Error fetching appointment data:' + error });
         }
       );
     });
@@ -70,8 +69,8 @@ export class BookingPageComponent implements OnInit{
         var clickedTd = $(event.target);
 
         if (clickedTd.hasClass('disactivated')) {
-          // Handle the case when the td is disactivated
-          alert('This time slot is not available.');
+          // alert('This time slot is not available.');
+          this.messageService.add({severity:'error', summary:'Error', detail:'This time slot is not available.' });
           return;
         }
 
@@ -118,17 +117,20 @@ export class BookingPageComponent implements OnInit{
   
           this.authservice.clientBookAppointment(formData).subscribe(
             () => {
-              alert('Appointment Booked successfully!');
+              // alert('Appointment Booked successfully!');
+              this.messageService.add({severity:'success', summary:'Success', detail:'Appointment Booked successfully!'});
               this.messageToDoctor = false;
             },
             (error) => {
-              console.error('Error booking appointment:', error);
+              // console.error('Error booking appointment:', error);
+              this.messageService.add({severity:'error', summary:'Error', detail:'Error booking appointment:' + error });
             }
           );
             debugger;
             $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
             }else{
-              alert("First Login Yourself To Book Appointment");
+              // alert("First Login Yourself To Book Appointment");
+              this.messageService.add({severity:'error', summary:'Error', detail:'First Login Yourself To Book Appointment!' });
               this.unauthorizedMessageShown = true;
             }
           };
@@ -172,9 +174,11 @@ export class BookingPageComponent implements OnInit{
           this.authservice.clientRemoveAppointment(formData).subscribe(
           () => {
             alert('Appointment Removed successfully!');
+            this.messageService.add({severity:'success', summary:'Success', detail:'Appointment Removed successfully!'});
           },
           (error) => {
             console.error('Error removing appointment:', error);
+            this.messageService.add({severity:'error', summary:'Error', detail:'Error removing appointment'});
           }
         );
       });

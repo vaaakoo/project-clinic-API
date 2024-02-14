@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { AuthserviceService } from '../shared/authservice.service';
+import { AuthserviceService } from '../core/auth/authservice.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-registration',
@@ -16,7 +17,8 @@ export class RegistrationComponent {
   buttontext: string = 'რეგისტრაცია';
   constructor(
     public authserviceService: AuthserviceService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
   }
 
@@ -59,13 +61,15 @@ export class RegistrationComponent {
           this.userimage="";
           this.buttontext = 'რეგისტრაცია';
           this.isbuttondsiabed = false;
-          alert('Successfully saved the Record');
+          // alert('Successfully saved the Record');
+          this.messageService.add({severity:'success', summary:'Success', detail:'რეგისტრაცია გავლილია!'});
           this.router.navigate(['/admin-page/category']);
         },
         (error: HttpErrorResponse) => {
           this.buttontext = 'რეგისტრაცია';
           this.isbuttondsiabed = false;
-          alert(error.error.message);
+          // alert(error.error.message);
+          this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
         }
       );
   }

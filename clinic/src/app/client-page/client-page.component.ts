@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Useregisteration, doctorregisteration } from '../useregisteration';
-import { AuthserviceService } from '../shared/authservice.service';
+import { Useregisteration, doctorregisteration } from '../core/auth/useregisteration';
+import { AuthserviceService } from '../core/auth/authservice.service';
 import { data } from 'jquery';
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
@@ -46,7 +47,7 @@ export class ClientPageComponent implements OnInit{
   oldPassword: string="";
   newPassword: string="";
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService) {}
   
   ngOnInit() {
 
@@ -160,7 +161,8 @@ export class ClientPageComponent implements OnInit{
           
                           this.authservice.clientRemoveAppointment(formData).subscribe(
                               () => {
-                                  alert('Appointment Removed successfully!');
+                                  // alert('Appointment Removed successfully!');
+                                  this.messageService.add({severity:'success', summary:'Success', detail:'Appointment Removed successfully!'});
                               },
                               (error) => {
                                   console.error('Error removing appointment:', error);
@@ -248,21 +250,23 @@ export class ClientPageComponent implements OnInit{
   
   changePassword(email: string, oldPassword: string, newPassword: string) {
     if (!oldPassword || !newPassword) {
-      alert('Old and new passwords are required.');
+      // alert('Old and new passwords are required.');
+      this.messageService.add({severity:'error', summary:'Error', detail:'Old and new passwords are required.'});
       return;
     }
   
     this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
       (response) => {
-        alert('Password changed successfully:');
+        // alert('Password changed successfully:');
+        this.messageService.add({severity:'success', summary:'Success', detail:'Password changed successfully!'});
         window.location.reload();
         this.submissionSuccess = true;
 
       },
       (error) => {
-        alert('Error changing password:');
+        // alert('Error changing password:');
+        this.messageService.add({severity:'error', summary:'Error', detail:'Error changing password!'});
         this.submissionSuccess = false;
-
       }
     );
   }

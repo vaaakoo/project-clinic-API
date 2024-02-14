@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { doctorregisteration } from '../useregisteration';
-import { AuthserviceService } from '../shared/authservice.service';
+import { doctorregisteration } from '../core/auth/useregisteration';
+import { AuthserviceService } from '../core/auth/authservice.service';
 import { data } from 'jquery';
+import { MessageService } from 'primeng/api';
 declare var $: any;
 
 @Component({
@@ -42,7 +43,7 @@ export class DoctorPageComponent implements OnInit{
   submissionSuccess: boolean = false;
 
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute,) {}
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService) {}
   
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -78,7 +79,8 @@ export class DoctorPageComponent implements OnInit{
 
         if (clickedTd.hasClass('disactivated')) {
           // Handle the case when the td is disactivated
-          alert('This time slot is not available.');
+          // alert('This time slot is not available.');
+          this.messageService.add({severity:'error', summary:'Error', detail:'This time slot is not available.'});
           return;
         }
         if (tdId && this.doctorIdNumber) {
@@ -88,14 +90,14 @@ export class DoctorPageComponent implements OnInit{
             (response) => {
               const appointment = response.data[0];
               this.clientName = appointment.patientName;
-              console.log(appointment)
+              // console.log(appointment)
               this.text = appointment.messageToDoctor;
               this.clientIdNumber = appointment.clientIdNumber;
           
               this.authservice.getClientByIdNumber(appointment.clientIdNumber).subscribe(
                 (clientResponse) => { 
                   debugger
-                  console.log(clientResponse)
+                  // console.log(clientResponse)
                   this.clientLastName = clientResponse.lastName;
                   this.clientIdNumber = clientResponse.idNumber;
 
@@ -147,7 +149,8 @@ export class DoctorPageComponent implements OnInit{
         
                         this.authservice.clientRemoveAppointment(formData).subscribe(
                             () => {
-                                alert('Appointment Removed successfully!');
+                                // alert('Appointment Removed successfully!');
+                                this.messageService.add({severity:'success', summary:'Success', detail:'Appointment Removed successfully!'});
                             },
                             (error) => {
                                 console.error('Error removing appointment:', error);

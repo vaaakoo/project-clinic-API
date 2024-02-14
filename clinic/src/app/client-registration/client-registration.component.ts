@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { AuthserviceService } from '../shared/authservice.service';
+import { AuthserviceService } from '../core/auth/authservice.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-client-registration',
   templateUrl: './client-registration.component.html',
@@ -16,7 +17,7 @@ export class ClientRegistrationComponent {
   timerText: string = '2:00';
   private intervalId: any;
   buttontext: string = 'რეგისტრაცია';
-  constructor(private authserviceService: AuthserviceService) {}
+  constructor(private authserviceService: AuthserviceService, private messageService: MessageService) {}
   user = {
     id: 0, 
     firstName: '',
@@ -35,17 +36,20 @@ export class ClientRegistrationComponent {
       this.activationmessage = 'Please Wait...';
       this.authserviceService.sendactivationcode(email).subscribe(
         (response) => {
+          this.messageService.add({severity:'success', summary:'Success', detail:'აქტივაციის კოდი გაგზავნილია მეილზე!'});
           this.timerMinutes = 2;
           this.timerSeconds = 0;
           this.startTimer();
         },
         (error) => {
-          console.error('Error:', error);
+          // console.error('Error:', error);
+          this.messageService.add({severity:'error', summary:'Error', detail:'მეილი უკვე გამოყენებულია, გთხოვთ შეცვალოთ მეილი.'});
           this.activationmessage = 'Error Email';
           
           if (error && error.includes('Bad Request')) {
             // Display an alert for bad request
-            alert('Email is already registered. Please use a different email.');
+            this.messageService.add({severity:'error', summary:'Error', detail:'მეილი უკვე გამოყენებულია, გთხოვთ შეცვალოთ მეილი.'});
+
           }
         }
       );
@@ -62,7 +66,7 @@ export class ClientRegistrationComponent {
       } else {
         this.updateTimer();
       }
-    }, 1000); // Update every 1 second
+    }, 1000); 
   }
 
   updateTimer() {
@@ -113,16 +117,19 @@ export class ClientRegistrationComponent {
         this.isbuttondsiabed = false;
         this.stopTimer();
         this.activationmessage = '';
-        alert('Successfully saved the Record');
+        // alert('Successfully saved the Record');
+        this.messageService.add({severity:'success', summary:'Success', detail:'რეგისტრაცია გავლილია, გთხოვთ გაიაროთ ავტორიზაცია!'});
       },
       (error: HttpErrorResponse) => {
         this.buttontext = 'რეგისტრაცია';
         this.isbuttondsiabed = false;
         this.stopTimer();
         this.activationmessage = '';
-        alert(
-          error.error.message
-        );
+        // alert(
+        //   error.error.message
+        // );
+        this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
+
       }
     );
   }
