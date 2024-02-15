@@ -250,6 +250,7 @@ export class ClientPageComponent implements OnInit{
   }
   
   changePassword(email: string, oldPassword: string, newPassword: string) {
+    debugger
     if (!oldPassword || !newPassword) {
       // alert('Old and new passwords are required.');
       this.messageService.add({severity:'error', summary:'Error', detail:'Old and new passwords are required.'});
@@ -258,8 +259,7 @@ export class ClientPageComponent implements OnInit{
   
     this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
       (response) => {
-        // alert('Password changed successfully:');
-        this.messageService.add({severity:'success', summary:'Success', detail:'Password changed successfully!'});
+        this.messageService.add({severity:'success', summary:'Success', detail: response.message});
         setTimeout(() => {
           window.location.reload();
         }, 1000);
@@ -267,8 +267,7 @@ export class ClientPageComponent implements OnInit{
 
       },
       (error) => {
-        // alert('Error changing password:');
-        this.messageService.add({severity:'error', summary:'Error', detail:'Error changing password!'});
+        this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
         this.submissionSuccess = false;
       }
     );

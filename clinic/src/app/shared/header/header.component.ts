@@ -76,6 +76,7 @@ export class HeaderComponent implements OnInit {
     }
   }
   
+  
 
   navigateToRegistration() {
     this.router.navigate(['/client-reg']);
@@ -114,16 +115,16 @@ export class HeaderComponent implements OnInit {
         (response) => {
           // console.log(response);
           // alert('Reset code sent successfully to ' + this.authservice.logindata.email);
-          this.messageService.add({severity:'success', summary:'Success', detail:'Reset code sent successfully to ' + this.authservice.logindata.email });
+          this.messageService.add({severity:'success', summary:'Success', detail: response.message + this.authservice.logindata.email });
         },
         (error) => {
           console.error(error);
           // alert('Error sending reset code');
-          this.messageService.add({severity:'error', summary:'Error', detail:'Error sending reset code' });
+          this.messageService.add({severity:'error', summary:'Error', detail:error.error.message });
         }
       );
     } else {
-      alert('Please provide a valid email address.');
+      // alert('Please provide a valid email address.');
       this.messageService.add({severity:'error', summary:'Error', detail:'Please provide a valid email address.' });
     }
   }

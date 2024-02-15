@@ -79,7 +79,6 @@ export class DoctorPageComponent implements OnInit{
 
         if (clickedTd.hasClass('disactivated')) {
           // Handle the case when the td is disactivated
-          // alert('This time slot is not available.');
           this.messageService.add({severity:'error', summary:'Error', detail:'This time slot is not available.'});
           return;
         }
@@ -127,7 +126,7 @@ export class DoctorPageComponent implements OnInit{
               if (tdId && doctorIdNum) {
                 this.authservice.getBookDataByDoctorsIdNumberAndTimeSlot(doctorIdNum, tdId).subscribe(
                     (response) => {
-                        console.log('Client Data Response:', response);
+                        // console.log('Client Data Response:', response);
         
                         const appointment = response.data[0];
                         patientName = appointment.patientName;
@@ -148,9 +147,9 @@ export class DoctorPageComponent implements OnInit{
                         };
         
                         this.authservice.clientRemoveAppointment(formData).subscribe(
-                            () => {
+                            (response) => {
                                 // alert('Appointment Removed successfully!');
-                                this.messageService.add({severity:'success', summary:'Success', detail:'Appointment Removed successfully!'});
+                                this.messageService.add({severity:'success', summary:'Success', detail: response.message });
                             },
                             (error) => {
                                 console.error('Error removing appointment:', error);
@@ -245,7 +244,7 @@ export class DoctorPageComponent implements OnInit{
       this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
         (response) => {
           // alert('Password changed successfully:');
-          this.messageService.add({severity:'success', summary:'Success', detail:'Password changed successfully!'});
+          this.messageService.add({severity:'success', summary:'Success', detail: response.message});
           setTimeout(() => {
             window.location.reload();
           }, 1000);
@@ -254,7 +253,7 @@ export class DoctorPageComponent implements OnInit{
         },
         (error) => {
           // alert('Error changing password:');
-          this.messageService.add({severity:'error', summary:'Error', detail:'Error changing password!'});
+          this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
           this.submissionSuccess = false;
   
         }
