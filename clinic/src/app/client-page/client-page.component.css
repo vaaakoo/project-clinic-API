@@ -131,6 +131,22 @@
   align-items: center;
 }
 
+.change-pass {
+  /* Button-like appearance */
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.change-pass:hover {
+  /* Add box shadow on hover */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 
 /* calendar */
 .calendar {
@@ -664,6 +680,3 @@ form p {
 
 }
 
-.change-pass {
-  cursor: pointer;
-}

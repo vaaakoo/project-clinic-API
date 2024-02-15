@@ -104,19 +104,19 @@ namespace AngularAuthYtAPI.Controllers
             //check username
             if (userObj.Email == "admin" && userObj.Password == "admin")
             {
-                return BadRequest(new { Message = "This is not valid" });
+                return BadRequest(new { Message = "შეცდომაა!" });
             }
 
             if (!IsValidEmail(userObj.Email))
-                return BadRequest(new { Message = "Invalid email format" });
+                return BadRequest(new { Message = "მეილის ფორმატი არასწორია!" });
 
             // check email
             if (await CheckEmailExistAsync(userObj.Email))
-                return BadRequest(new { Message = "Email Already Exist" });
+                return BadRequest(new { Message = "ეს მეილი გამოყენებულია! გთხოვთ გაიაროთ ავტორიზაცია." });
 
             //check username
             if (await CheckIdNumberExistAsync(userObj.IdNumber))
-                return BadRequest(new { Message = "Invalid or already existing ID number. ID number must be 11 digits." });
+                return BadRequest(new { Message = "შეცდომა! პირადი ნომერი უნდა შეიცავდეს 11 ციფრს!" });
 
             /*if (userObj.activationcode != globalActivationCode)
                 return BadRequest(new { Message = "Activation Code is In Valid" });*/
@@ -124,12 +124,12 @@ namespace AngularAuthYtAPI.Controllers
             var activationCodeEntity = await _authContext.ActivationCodes.FirstOrDefaultAsync(ac => ac.Email == userObj.Email && ac.Code == userObj.activationcode && !ac.Used && ac.ExpirationTime > DateTime.Now);
             if (activationCodeEntity == null)
             {
-                return BadRequest(new { Message = "Invalid or also used or expired activation code" });
-            }
-
-            if (DateTime.Now > activationCodeExpirationTime)
-            {
-                return BadRequest(new { Message = "Activation code has expired" });
+                if (DateTime.Now > activationCodeExpirationTime)
+                {
+                    return BadRequest(new { Message = "აქტივაციის კოდი ვადაგასულია!" });
+                }
+                
+                return BadRequest(new { Message = "აქტივაციის კოდი არასწორია ან/და გამოყენებული!" });
             }
 
             var passMessage = CheckPasswordStrength(userObj.Password);
@@ -149,7 +149,7 @@ namespace AngularAuthYtAPI.Controllers
             return Ok(new
             {
                 Status = 200,
-                Message = "User Added!"
+                Message = "რეგისტრაცია გავლილია!"
             });
         }
 
@@ -206,30 +206,30 @@ namespace AngularAuthYtAPI.Controllers
             // Check if the password meets each requirement
             if (!hasMinimumLength.IsMatch(password))
             {
-                return "Password must be at least 12 characters long.";
+                return "პაროლი უნდა შეიცავდეს მინიმუმ 12 სიმბოლოს.";
             }
 
             if (!hasLowerChar.IsMatch(password))
             {
-                return "Password must contain at least one lowercase letter.";
+                return "პაროლი უნდა შეიცავდეს პატარა ანბანის ასოს!";
             }
 
             if (!hasUpperChar.IsMatch(password))
             {
-                return "Password must contain at least one uppercase letter.";
+                return "პაროლი უნდა შეიცავდეს ერთ დიდ ანბანის ასოს.";
             }
 
             if (!hasDigit.IsMatch(password))
             {
-                return "Password must contain at least one digit.";
+                return "პაროლი უნდა შეიცავდეს ციფრს!";
             }
 
             if (!hasSpecialChar.IsMatch(password))
             {
-                return "Password must contain at least one special character.";
+                return "პაროლი უნდა შეიცავდეს ერთ სიმბოლოს!";
             }
 
-            return string.Empty; // Indicates that the password is strong
+            return string.Empty; 
         }
 
 
@@ -475,7 +475,7 @@ namespace AngularAuthYtAPI.Controllers
 
                     await _activationCodeService.SendActivationCodeAsync(email, activationCode, body, subject);
 
-                    return Ok(new { Message = "Activation code sent successfully" });
+                    return Ok(new { Message = "აქტივაციის კოდი გაიგზავნა წარმატებით!" });
                 }
                 else
                 {
@@ -538,7 +538,7 @@ namespace AngularAuthYtAPI.Controllers
                     await _passwordResetService.SendResetCodeAsync(email, resetCode, body, subject);
 
                     // Return the reset code to the client if needed
-                    return Ok(new { Message = "Password reset code sent successfully", ResetCode = resetCode });
+                    return Ok(new { Message = "ახალი პაროლი გაიგზავნა მეილზე!", ResetCode = resetCode });
                 }
                 else
                 {
@@ -562,13 +562,13 @@ namespace AngularAuthYtAPI.Controllers
 
                 if (user == null)
                 {
-                    return BadRequest(new { Message = "User not found" });
+                    return BadRequest(new { Message = "მომხმარებელი არ მოიძებნა!" });
                 }
 
                 // Check if the provided old password matches the stored password hash
                 if (!BCrypt.Net.BCrypt.Verify(passwordChangeRequest.OldPassword, user.PasswordHash))
                 {
-                    return BadRequest(new { Message = "Invalid old password" });
+                    return BadRequest(new { Message = "ძველი პაროლი არასწორია!" });
                 }
 
                 // Check the strength of the new password
@@ -585,7 +585,7 @@ namespace AngularAuthYtAPI.Controllers
                 // Save changes to the database
                 await _authContext.SaveChangesAsync();
 
-                return Ok(new { Message = "Password changed successfully" });
+                return Ok(new { Message = "პაროლი შეცვლილია!" });
             }
             catch (Exception ex)
             {
