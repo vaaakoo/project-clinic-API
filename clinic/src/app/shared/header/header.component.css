@@ -12,6 +12,7 @@
 
 .nav-bar-1 {
   display: flex; 
+  justify-content: space-between;
   margin-top: 17px;
   align-items: center; 
   margin-left: auto;
@@ -23,6 +24,7 @@
   display: flex;
   align-items: center;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .logo-link img {

@@ -36,19 +36,20 @@ export class ClientRegistrationComponent {
       this.activationmessage = 'Please Wait...';
       this.authserviceService.sendactivationcode(email).subscribe(
         (response) => {
-          this.messageService.add({severity:'success', summary:'Success', detail:'აქტივაციის კოდი გაგზავნილია მეილზე!'});
+          console.log(response)
+          this.messageService.add({severity:'success', summary:'Success', detail: response.message});
           this.timerMinutes = 2;
           this.timerSeconds = 0;
           this.startTimer();
         },
         (error) => {
-          // console.error('Error:', error);
-          this.messageService.add({severity:'error', summary:'Error', detail:'მეილი უკვე გამოყენებულია, გთხოვთ შეცვალოთ მეილი.'});
+          console.error('Error:', error);
+          this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
           this.activationmessage = 'Error Email';
           
           if (error && error.includes('Bad Request')) {
             // Display an alert for bad request
-            this.messageService.add({severity:'error', summary:'Error', detail:'მეილი უკვე გამოყენებულია, გთხოვთ შეცვალოთ მეილი.'});
+            this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
 
           }
         }
@@ -117,17 +118,13 @@ export class ClientRegistrationComponent {
         this.isbuttondsiabed = false;
         this.stopTimer();
         this.activationmessage = '';
-        // alert('Successfully saved the Record');
-        this.messageService.add({severity:'success', summary:'Success', detail:'რეგისტრაცია გავლილია, გთხოვთ გაიაროთ ავტორიზაცია!'});
+        this.messageService.add({severity:'success', summary:'Success', detail: response.message});
       },
       (error: HttpErrorResponse) => {
         this.buttontext = 'რეგისტრაცია';
         this.isbuttondsiabed = false;
         this.stopTimer();
         this.activationmessage = '';
-        // alert(
-        //   error.error.message
-        // );
         this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
 
       }

@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
       if ((state.url.startsWith('/admin-page') || state.url.startsWith('/admin-page/category') || state.url.startsWith('/admin-page/registration')) && role !== 'admin') {
         this.router.navigate(['/home']);
         // alert('You do not have permission to access Admins page, please login!');
-        this.messageService.add({severity:'error', summary:'Error', detail:'You do not have permission to access Admins page, please login!'});
+        this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
 
         return false;
       }
@@ -37,14 +37,14 @@ export class AuthGuard implements CanActivate {
         if (role !== "client") {
           this.router.navigate(['/home']);
           // alert('You do not have permission to access this page, please login!');
-          this.messageService.add({severity:'error', summary:'Error', detail:'You do not have permission to access Client page, please login!'});
+          this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
           return false;
         }
 
         if (id !== userId) {
           this.router.navigate(['/home']);
           // alert('You do not have permission to access this page, please login!');
-          this.messageService.add({severity:'error', summary:'Error', detail:'You do not have permission to access Client page, please login!'});
+          this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
           return false;
         }
       }
@@ -54,14 +54,14 @@ export class AuthGuard implements CanActivate {
         if (role !== "doctor") {
           this.router.navigate(['/home']);
           // alert('You do not have permission to access this page, please login!');
-          this.messageService.add({severity:'error', summary:'Error', detail:'You do not have permission to access Doctor page, please login!'});
+          this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
           return false;
         }
 
         if (id !== userId) {
           this.router.navigate(['/home']);
           // alert('You do not have permission to access this page, please login!');
-          this.messageService.add({severity:'error', summary:'Error', detail:'You do not have permission to access Doctor page, please login!'});
+          this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
           return false;
         }
       }
@@ -70,7 +70,7 @@ export class AuthGuard implements CanActivate {
     }
   
     // alert('You do not have permission to access this page, please login!');
-    this.messageService.add({severity:'error', summary:'Error', detail:'You do not have permission to access this page, please login!'});
+    this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
     this.router.navigate(['']);
     return false;
   }

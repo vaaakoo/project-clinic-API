@@ -22,6 +22,9 @@ import { AuthserviceService } from './core/auth/authservice.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { CardComponent } from './card/card.component';
+import { CategoryFieldComponent } from './category-field/category-field.component';
+
 
 
 
@@ -37,7 +40,9 @@ import { MessageService } from 'primeng/api';
     ClientPageComponent,
     AdminPageComponent,
     DoctorPageComponent,
-    BookingPageComponent
+    BookingPageComponent,
+    CardComponent,
+    CategoryFieldComponent
   ],
   imports: [
     BrowserModule,

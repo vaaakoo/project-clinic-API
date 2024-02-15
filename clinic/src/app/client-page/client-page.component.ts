@@ -90,7 +90,8 @@ export class ClientPageComponent implements OnInit{
         this.tooltipBox = true;
         if (clickedTd.hasClass('disactivated')) {
           // Handle the case when the td is disactivated
-          alert('This time slot is not available.');
+          // alert('This time slot is not available.');
+          this.messageService.add({severity:'error', summary:'Error', detail:'This time slot is not available.'});
           return;
         }
         if (tdId && patientIdNum) {
@@ -249,6 +250,7 @@ export class ClientPageComponent implements OnInit{
   }
   
   changePassword(email: string, oldPassword: string, newPassword: string) {
+    debugger
     if (!oldPassword || !newPassword) {
       // alert('Old and new passwords are required.');
       this.messageService.add({severity:'error', summary:'Error', detail:'Old and new passwords are required.'});
@@ -257,15 +259,15 @@ export class ClientPageComponent implements OnInit{
   
     this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
       (response) => {
-        // alert('Password changed successfully:');
-        this.messageService.add({severity:'success', summary:'Success', detail:'Password changed successfully!'});
-        window.location.reload();
+        this.messageService.add({severity:'success', summary:'Success', detail: response.message});
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
         this.submissionSuccess = true;
 
       },
       (error) => {
-        // alert('Error changing password:');
-        this.messageService.add({severity:'error', summary:'Error', detail:'Error changing password!'});
+        this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
         this.submissionSuccess = false;
       }
     );
