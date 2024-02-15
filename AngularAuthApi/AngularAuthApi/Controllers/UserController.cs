@@ -485,7 +485,7 @@ namespace AngularAuthYtAPI.Controllers
             catch (Exception ex)
             {
                 // Log the exception or handle it based on your application's error handling strategy
-                return StatusCode(500, new { Message = "Error sending activation code", Error = ex.Message });
+                return StatusCode(500, new { Message = "პაროლის შეცვლის დროს მოხდა შეცდომა!", Error = ex.Message });
             }
         }
 
