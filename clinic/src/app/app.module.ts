@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CardComponent } from './card/card.component';
+import { CategoryFieldComponent } from './category-field/category-field.component';
 
 
 
@@ -40,7 +41,8 @@ import { CardComponent } from './card/card.component';
     AdminPageComponent,
     DoctorPageComponent,
     BookingPageComponent,
-    CardComponent
+    CardComponent,
+    CategoryFieldComponent
   ],
   imports: [
     BrowserModule,
