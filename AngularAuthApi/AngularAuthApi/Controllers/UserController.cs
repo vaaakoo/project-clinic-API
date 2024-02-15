@@ -435,7 +435,7 @@ namespace AngularAuthYtAPI.Controllers
             {
                 if (await CheckEmailExistAsync(email))
                 {
-                    return BadRequest(new { Message = "Email is already registered" });
+                    return BadRequest(new { Message = "მეილი უკვე რეგისტრირებულია!" });
                 }
 
                 var existingActivationCode = await _authContext.ActivationCodes.FirstOrDefaultAsync(ac => ac.Email == email && !ac.Used);
@@ -511,7 +511,7 @@ namespace AngularAuthYtAPI.Controllers
 
                     if (user.Role == "admin")
                     {
-                        return BadRequest(new { Message = "Admin password reset is not allowed" });
+                        return BadRequest(new { Message = "ადმინის პაროლის ცვლილება შეუძლებელია!" });
                     }
 
 
@@ -538,7 +538,7 @@ namespace AngularAuthYtAPI.Controllers
                     await _passwordResetService.SendResetCodeAsync(email, resetCode, body, subject);
 
                     // Return the reset code to the client if needed
-                    return Ok(new { Message = "ახალი პაროლი გაიგზავნა მეილზე!", ResetCode = resetCode });
+                    return Ok(new { Message = "ახალი პაროლი გაიგზავნა მეილზე - ", ResetCode = resetCode });
                 }
                 else
                 {
@@ -549,7 +549,7 @@ namespace AngularAuthYtAPI.Controllers
             {
                 // Log the exception or handle it based on your application's error handling strategy
                 Console.Error.WriteLine(ex);
-                return StatusCode(500, new { Message = "Error sending password reset code", Error = ex.Message });
+                return StatusCode(500, new { Message = "პარალოს გაგზავნისას მოხდა შეცდომა!", Error = ex.Message });
             }
         }
 
@@ -589,7 +589,7 @@ namespace AngularAuthYtAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "Error changing password", Error = ex.Message });
+                return StatusCode(500, new { Message = "პაროლის ცვლილების დროს მოხდა შეცდომა!", Error = ex.Message });
             }
         }
 
