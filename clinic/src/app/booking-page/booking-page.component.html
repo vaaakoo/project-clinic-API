@@ -42,62 +42,21 @@
                 </div>
             </div>
               <div class="time-and-table">
-                <div class="custom-table">
-                  <table>
-                    <thead class="header">
-                      <tr>
-                        <th class="days-botton">
-                          <span class="img-2"
-                            ><img
-                              src="../../assets/right-arrow_271228.png"
-                              style="width: 12px; height: 12px"
-                              alt=""
-                          /></span>
-                          <span
-                            ><img
-                              src="../../assets/right-arrow_271228.png"
-                              style="width: 12px; height: 12px"
-                              alt=""
-                          /></span>
-                        </th>
-                        <th *ngFor="let num of tableHeaders; let i = index">
-                          <div class="days">
-                            <p class="day-number">{{ num.num }}</p>
-                            <p>({{ num.day }})</p>
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <ng-container *ngFor="let row of tableData; let i = index">
-                        <tr>
-                          <td class="rowhead">{{ getTimeRange(i) }}</td>
-                          <!-- Display time range in the first column -->
-                          <ng-container *ngFor="let col of row.cols; let j = index">
-                            <td class="tdclick" [id]="'td_' + i + '_' + j">
-                              <!-- <span *ngIf="!col.activated && j < 5">დაჯავშნა</span> -->
-                            </td>
+                <app-custom-table [tableData]="tableDataService.tableData" [tableHeaders]="tableDataService.tableHeaders"></app-custom-table>
 
-                          </ng-container>
-                        </tr>
-                      </ng-container>                      
-                    </tbody>
-                    <div *ngIf="unauthorizedMessageShown" class="unauthorized-message">
-                      <p>დასაჯავშნათ გთხოვთ გაიაროთ </p>
-                      <span>ავტორიზაცია ან რეგისტრაცია</span>
-                    </div>
-
-                    <div id="myModal" class="booking-message">
-                      <div class="booking-message-box modal-content">
-                        <p>გსურთ ვიზიტის დაჯავნშნა ?</p>
-                        <p class="last-child">შეგიძლიათ მიუთუთოთ თქვენი პორბლემა</p>
-                        <textarea id="messageToDoctor" placeholder="აღწერა..." rows="5"></textarea>
-                        <button id="confirmMessage" class="adding">დაჯავშნა</button>
-                      </div>
-                    </div>
-                  </table>
+                <div *ngIf="unauthorizedMessageShown" class="unauthorized-message">
+                  <p>დასაჯავშნათ გთხოვთ გაიაროთ </p>
+                  <span>ავტორიზაცია ან რეგისტრაცია</span>
                 </div>
-            
+
+                <div id="myModal" class="booking-message">
+                  <div class="booking-message-box modal-content">
+                    <p>გსურთ ვიზიტის დაჯავნშნა ?</p>
+                    <p class="last-child">შეგიძლიათ მიუთუთოთ თქვენი პორბლემა</p>
+                    <textarea id="messageToDoctor" placeholder="აღწერა..." rows="5"></textarea>
+                    <button id="confirmMessage" class="adding">დაჯავშნა</button>
+                  </div>
+                </div>
               <div class="change-sect">
                   <button class="redact">
                       <span><img src="../../assets/edit-svgrepo-com 2.png" alt=""></span>

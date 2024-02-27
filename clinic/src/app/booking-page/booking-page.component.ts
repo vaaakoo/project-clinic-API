@@ -4,6 +4,7 @@ import { AuthserviceService } from '../core/auth/authservice.service';
 import { Useregisteration, doctorregisteration } from '../core/auth/useregisteration';
 import { data } from 'jquery';
 import { MessageService } from 'primeng/api';
+import { TableDataService } from '../core/auth/table-data-service.service';
 declare var $: any;
 
 @Component({
@@ -12,18 +13,6 @@ declare var $: any;
   styleUrls: ['./booking-page.component.css']
 })
 export class BookingPageComponent implements OnInit{
-
-  tableData: { cols: { value: string; activated: boolean }[] }[] = [];
- 
-  tableHeaders: { num: number; day: string }[] = [
-    { num: 17, day: 'mon' },
-    { num: 18, day: 'tue' },
-    { num: 19, day: 'wed' },
-    { num: 20, day: 'thu' },
-    { num: 21, day: 'fri' },
-    { num: 22, day: 'sat' },
-    { num: 23, day: 'sun' },
-  ];
 
   visitConfirmation: string = '';
   textToDoctor: string='';
@@ -37,7 +26,7 @@ export class BookingPageComponent implements OnInit{
   patientIdNum?: string='';
   
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService) {}
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {}
   
   submitForm() {
     // console.log('Form submitted with:', this.visitConfirmation);
@@ -238,26 +227,9 @@ export class BookingPageComponent implements OnInit{
       );
     };
     
-
-    for (let i = 1; i <= 9; i++) {
-      const row = { cols: [] as { value: string; activated: boolean }[] };
-      for (let j = 1; j <= 7; j++) {
-        row.cols.push({ value: `${i}-${j}`, activated: false });
-      }
-      this.tableData.push(row);
-    }    
   }
 
-  getTimeRange(rowNumber: number): string {
-    const startTime = 9;
-    const endTime = 18;
-    const timeSlot = 1;
-
-    const startHour = startTime + rowNumber * timeSlot;
-    const endHour = startHour + timeSlot;
-
-    return `${startHour}:00 - ${endHour}:00`;
-  }
+  
 
   getStarArray(starNum: number): number[] {
     return Array.from({ length: starNum }, (_, index) => index);

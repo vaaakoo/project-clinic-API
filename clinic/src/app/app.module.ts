@@ -27,6 +27,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { RatingModule } from 'primeng/rating';
 import { CategoryFieldComponent } from './category-field/category-field.component';
+import { CustomTableComponent } from './custom-table/custom-table.component';
 
 
 
@@ -45,7 +46,8 @@ import { CategoryFieldComponent } from './category-field/category-field.componen
     DoctorPageComponent,
     BookingPageComponent,
     CardComponent,
-    CategoryFieldComponent
+    CategoryFieldComponent,
+    CustomTableComponent
     ],
   imports: [
     BrowserModule,

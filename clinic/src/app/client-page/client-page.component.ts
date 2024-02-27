@@ -4,6 +4,7 @@ import { Useregisteration, doctorregisteration } from '../core/auth/useregistera
 import { AuthserviceService } from '../core/auth/authservice.service';
 import { data } from 'jquery';
 import { MessageService } from 'primeng/api';
+import { TableDataService } from '../core/auth/table-data-service.service';
 declare var $: any;
 
 @Component({
@@ -14,20 +15,7 @@ declare var $: any;
 
 export class ClientPageComponent implements OnInit{
 
-  tableData: { cols: { value: string; activated: boolean }[] }[] = [];
- 
-  tableHeaders: { num: number; day: string }[] = [
-    { num: 17, day: 'mon' },
-    { num: 18, day: 'tue' },
-    { num: 19, day: 'wed' },
-    { num: 20, day: 'thu' },
-    { num: 21, day: 'fri' },
-    { num: 22, day: 'sat' },
-    { num: 23, day: 'sun' },
-  ];
-
   submissionSuccess: boolean = false;
-
 
   doctor?: doctorregisteration ;
   doctorId: number | undefined; 
@@ -47,7 +35,7 @@ export class ClientPageComponent implements OnInit{
   oldPassword: string="";
   newPassword: string="";
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService) {}
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {}
   
   ngOnInit() {
 
@@ -232,15 +220,66 @@ export class ClientPageComponent implements OnInit{
         }
       );
     };
-    
 
-    for (let i = 1; i <= 9; i++) {
-      const row = { cols: [] as { value: string; activated: boolean }[] };
-      for (let j = 1; j <= 7; j++) {
-        row.cols.push({ value: `${i}-${j}`, activated: false });
-      }
-      this.tableData.push(row);
-    }    
+    // const loadData = () => {
+    //   debugger;
+    //   const patientidNumber = this.patientIdNumber || 'Client';
+    
+    //   this.authservice.getClientDataByIdNumber(patientidNumber).subscribe(
+    //     (data: any) => {
+    //       const patientIdNumber = this.patientIdNumber;
+    //       this.appointmentCount = data.count || 0;
+    
+    //       data.data.forEach((appointment: any) => {
+    //         const element = document.getElementById(appointment.uniqueNumber);
+    
+    //         if (!element) {
+    //           return;
+    //         }
+    
+    //         if (appointment.status === 'Unavailable' || appointment.clientIdNumber !== patientIdNumber) {
+    //           element.classList.add('disactivated');
+    //           element.innerHTML = `
+    //             <span class="activated-text">
+    //               <p>Not <br /> Available</p>
+    //             </span>
+    //           `;
+    //           const deleteButton = element.querySelector('.deletebutton');
+    //           if (deleteButton) {
+    //             deleteButton.parentElement?.removeChild(deleteButton);
+    //           }
+    //         } else if (appointment.clientIdNumber === patientIdNumber) {
+    //           element.classList.add('activated');
+    //           element.innerHTML = `
+    //             <span class="activated-text" style="font-weight: bold;
+    //               color: #3ACF99;
+    //               text-align: center;
+    //               font-size: 12px;
+    //               font-style: normal;
+    //               font-weight: 400;
+    //               line-height: normal;
+    //               word-wrap: break-word;">
+    //                 <p>ჩემი <br />ჯავშანი </p>
+    //                 <span class="deletebutton" style="position: absolute; width: 18px; height: 18px; display: flex;
+    //                   align-items: center; justify-content: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
+    //                   <span class="delete-button"><img src="../../assets/Group 3.png" alt=""></span>
+    //                 </span>
+    //             </span>
+    //           `;
+    //         }
+    //       });
+    
+    //       const disactivatedTds = document.querySelectorAll('.tdclick.disactivated');
+    //       disactivatedTds.forEach((td) => {
+    //         td.setAttribute('disabled', 'true');
+    //       });
+    //     },
+    //     (error) => {
+    //       console.error('Error fetching appointment data:', error);
+    //     }
+    //   );
+    // };
+      
   }
 
   // password changer
@@ -280,16 +319,6 @@ export class ClientPageComponent implements OnInit{
     this.router.navigate(['/booking', docId]);
   }
 
-  getTimeRange(rowNumber: number): string {
-    const startTime = 9;
-    const endTime = 18;
-    const timeSlot = 1;
-
-    const startHour = startTime + rowNumber * timeSlot;
-    const endHour = startHour + timeSlot;
-
-    return `${startHour}:00 - ${endHour}:00`;
-  }
 }
 
 

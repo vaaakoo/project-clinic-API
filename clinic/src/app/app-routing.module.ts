@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'client-reg', component: ClientRegistrationComponent },
   { path: 'admin-page/registration', component: RegistrationComponent, canActivate: [AuthGuard] },
   {path: 'booking', component: BookingPageComponent, canActivate: [AuthGuard]},
-  {path: 'booking/:id', component: BookingPageComponent, canActivate: [AuthGuard]},
+  {path: 'booking/:id', component: BookingPageComponent},
   { path: 'admin-page', component: AdminPageComponent, canActivate: [AuthGuard] },
   { path: 'doctor-page/:id', component: DoctorPageComponent, canActivate: [AuthGuard] },
   {path: 'client-page/:id', component: ClientPageComponent, canActivate: [AuthGuard]},

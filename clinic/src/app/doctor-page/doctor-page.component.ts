@@ -4,6 +4,7 @@ import { doctorregisteration } from '../core/auth/useregisteration';
 import { AuthserviceService } from '../core/auth/authservice.service';
 import { data } from 'jquery';
 import { MessageService } from 'primeng/api';
+import { TableDataService } from '../core/auth/table-data-service.service';
 declare var $: any;
 
 @Component({
@@ -13,18 +14,8 @@ declare var $: any;
 })
 export class DoctorPageComponent implements OnInit{
 
-  tableData: { cols: { value: string; activated: boolean }[] }[] = [];
+  // tableData: { cols: { value: string; activated: boolean }[] }[] = [];
  
-  tableHeaders: { num: number; day: string }[] = [
-    { num: 17, day: 'mon' },
-    { num: 18, day: 'tue' },
-    { num: 19, day: 'wed' },
-    { num: 20, day: 'thu' },
-    { num: 21, day: 'fri' },
-    { num: 22, day: 'sat' },
-    { num: 23, day: 'sun' },
-  ];
-
 
   unauthorizedMessageShown: boolean = false;
   messageToDoctor: boolean = false;
@@ -43,7 +34,7 @@ export class DoctorPageComponent implements OnInit{
   submissionSuccess: boolean = false;
 
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService) {}
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {}
   
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -217,15 +208,7 @@ export class DoctorPageComponent implements OnInit{
         }
       );
     };
-    
-
-    for (let i = 1; i <= 9; i++) {
-      const row = { cols: [] as { value: string; activated: boolean }[] };
-      for (let j = 1; j <= 7; j++) {
-        row.cols.push({ value: `${i}-${j}`, activated: false });
-      }
-      this.tableData.push(row);
-    }    
+      
   }
 
     // password changer
@@ -259,17 +242,7 @@ export class DoctorPageComponent implements OnInit{
         }
       );
     }
-  getTimeRange(rowNumber: number): string {
-    const startTime = 9;
-    const endTime = 18;
-    const timeSlot = 1;
-
-    const startHour = startTime + rowNumber * timeSlot;
-    const endHour = startHour + timeSlot;
-
-    return `${startHour}:00 - ${endHour}:00`;
-  }
-
+  
   getStarArray(starNum: number): number[] {
     return Array.from({ length: starNum }, (_, index) => index);
   }
