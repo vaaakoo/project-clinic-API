@@ -316,7 +316,7 @@ namespace AngularAuthYtAPI.Controllers
 
         [HttpPut("updateDoctor/{id}")]
         [Authorize(Roles = "admin")]
-        public IActionResult UpdateDoctor(int id, [FromBody] User updatedDoctor)
+        public async Task<IActionResult> UpdateDoctorAsync(int id, [FromBody] Doctor updatedDoctor)
         {
             try
             {
@@ -326,11 +326,54 @@ namespace AngularAuthYtAPI.Controllers
                 {
                     return NotFound();
                 }
-
+                
                 // Update properties of the existingDoctor with properties of updatedDoctor
-                existingDoctor.FirstName = updatedDoctor.FirstName;
-                existingDoctor.LastName = updatedDoctor.LastName;
-                existingDoctor.Category = updatedDoctor.Category;
+                if (!string.IsNullOrEmpty(updatedDoctor.FirstName))
+                {
+                    existingDoctor.FirstName = updatedDoctor.FirstName;
+                }
+
+                if (!string.IsNullOrEmpty(updatedDoctor.LastName))
+                {
+                    existingDoctor.LastName = updatedDoctor.LastName;
+                }
+
+                if (!string.IsNullOrEmpty(updatedDoctor.Email))
+                {
+                    // Check if email is valid
+                    if (!IsValidEmail(updatedDoctor.Email))
+                        return BadRequest(new { Message = "Invalid email format" });
+                    if (await CheckEmailExistAsync(updatedDoctor.Email))
+                        return BadRequest(new { Message = "Email Already Exist" });
+                    existingDoctor.Email = updatedDoctor.Email;
+                }
+
+                if (!string.IsNullOrEmpty(updatedDoctor.Password))
+                {
+                    var passMessage = CheckPasswordStrength(updatedDoctor.Password);
+                    if (!string.IsNullOrEmpty(passMessage))
+                        return BadRequest(new { Message = passMessage.ToString() });
+                    existingDoctor.Password = updatedDoctor.Password;
+                    existingDoctor.PasswordHash = BCrypt.Net.BCrypt.HashPassword(existingDoctor.Password);
+                }
+
+                if (!string.IsNullOrEmpty(updatedDoctor.IdNumber))
+                {
+                    //check username
+                    if (await CheckIdNumberExistAsync(updatedDoctor.IdNumber))
+                        return BadRequest(new { Message = "Invalid or already existing ID number. ID number must be 11 digits." });
+                    existingDoctor.IdNumber = updatedDoctor.IdNumber;
+                }
+
+                if (!string.IsNullOrEmpty(updatedDoctor.Category))
+                {
+                    existingDoctor.Category = updatedDoctor.Category;
+                }
+                if (updatedDoctor.starNum.HasValue)
+                {
+                    existingDoctor.starNum = updatedDoctor.starNum.GetValueOrDefault();
+                }
+
 
                 _authContext.SaveChanges();
 
