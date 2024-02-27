@@ -23,6 +23,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { CardComponent } from './card/card.component';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { RatingModule } from 'primeng/rating';
 import { CategoryFieldComponent } from './category-field/category-field.component';
 
 
@@ -43,7 +46,7 @@ import { CategoryFieldComponent } from './category-field/category-field.componen
     BookingPageComponent,
     CardComponent,
     CategoryFieldComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -51,7 +54,10 @@ import { CategoryFieldComponent } from './category-field/category-field.componen
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ToastModule
+    ToastModule,
+    DialogModule,
+    DropdownModule,
+    RatingModule
   ],
   providers: [
     AuthserviceService,

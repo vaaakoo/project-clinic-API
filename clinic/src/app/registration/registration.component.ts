@@ -3,6 +3,7 @@ import { AuthserviceService } from '../core/auth/authservice.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { CategoryService } from '../core/auth/category-list.service';
 
 @Component({
   selector: 'app-registration',
@@ -18,7 +19,8 @@ export class RegistrationComponent {
   constructor(
     public authserviceService: AuthserviceService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private categoryService: CategoryService
   ) {
   }
 
@@ -30,21 +32,7 @@ export class RegistrationComponent {
 
   showDropdown() {
     setTimeout(() => {
-      this.categoryList = [
-      'ანდროლოგი',
-      'ანესთეზიოლოგი',
-      'კარდიოლოგი',
-      'კოსმეტოლოგი',
-      'ლაბორანტი',
-      'ოჯახის ექიმი',
-      'პედიატრი',
-      'ტოქსიკოლოგი',
-      'ტრანსფუზილოგი',
-      'გინეკოლოგი',
-      'დერმატოლოგი',
-      'ენდოკრინოლოგი',
-      'გასტროენტეროლოგი',
-      'თერაპევტი'];
+      this.categoryList = this.categoryService.getCategoryList();
     }, 1000); 
   }
 
