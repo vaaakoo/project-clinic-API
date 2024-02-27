@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Useregisteration, doctorregisteration } from '../core/auth/useregisteration';
-import { AuthserviceService } from '../core/auth/authservice.service';
+import { Useregisteration, doctorregisteration } from '../../core/auth/useregisteration';
+import { AuthserviceService } from '../../core/auth/authservice.service';
 import { data } from 'jquery';
 import { MessageService } from 'primeng/api';
-import { TableDataService } from '../core/auth/table-data-service.service';
+import { TableDataService } from '../../core/auth/table-data-service.service';
+import { BasePageComponent } from '../base-page/base-page.component';
 declare var $: any;
 
 @Component({
@@ -13,29 +14,13 @@ declare var $: any;
   styleUrls: ['./client-page.component.css']
 })
 
-export class ClientPageComponent implements OnInit{
+export class ClientPageComponent extends BasePageComponent implements OnInit{
 
-  submissionSuccess: boolean = false;
 
-  doctor?: doctorregisteration ;
-  doctorId: number | undefined; 
-  client?: Useregisteration;
-  clientId: number | undefined; 
-  patientFirstName: string = '';
-  patientIdNumber: string = '';
-  appointmentCount: number = 0;
-  statusBook: string ="=";
-  text: string = "";
-  doctorName: string = "";
-  tooltipBox: boolean = false;
-  doctroImg: any;
-  doctorLastName: string="";
-  doctorCategory: string="";
-  docId: number = 0;
-  oldPassword: string="";
-  newPassword: string="";
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {}
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {
+    super();
+  }
   
   ngOnInit() {
 
@@ -282,35 +267,6 @@ export class ClientPageComponent implements OnInit{
       
   }
 
-  // password changer
-  onSubmit() {
-    const email = this.authservice.getToken().userInfo.email;
-    this.changePassword(email, this.oldPassword, this.newPassword);
-  }
-  
-  changePassword(email: string, oldPassword: string, newPassword: string) {
-    debugger
-    if (!oldPassword || !newPassword) {
-      // alert('Old and new passwords are required.');
-      this.messageService.add({severity:'error', summary:'Error', detail:'Old and new passwords are required.'});
-      return;
-    }
-  
-    this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
-      (response) => {
-        this.messageService.add({severity:'success', summary:'Success', detail: response.message});
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-        this.submissionSuccess = true;
-
-      },
-      (error) => {
-        this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
-        this.submissionSuccess = false;
-      }
-    );
-  }
   
 
   onBookingClick(docId: number): void {

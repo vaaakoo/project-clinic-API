@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { ClientRegistrationComponent } from './client-registration/client-registration.component';
 import { CategoryComponent } from './category/category.component';
 import { RegistrationComponent } from './registration/registration.component';
-import { DoctorPageComponent } from './doctor-page/doctor-page.component';
-import { AdminPageComponent } from './admin-page/admin-page.component';
-import { ClientPageComponent } from './client-page/client-page.component';
-import { BookingPageComponent } from './booking-page/booking-page.component';
+import { DoctorPageComponent } from './pages/doctor-page/doctor-page.component';
+import { AdminPageComponent } from './pages/admin-page/admin-page.component';
+import { ClientPageComponent } from './pages/client-page/client-page.component';
+import { BookingPageComponent } from './pages/booking-page/booking-page.component';
 import { AuthGuard } from './core/auth/auth.guard';
 
 

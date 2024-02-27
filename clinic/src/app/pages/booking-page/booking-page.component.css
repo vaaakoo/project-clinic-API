@@ -190,151 +190,13 @@ span .year {
   line-height: normal;
 }
 
-.custom-table {
-  width: 830px;
-  min-height: 587px;
-  border-radius: 10px;
-  background: #FFF;
-  box-shadow: 0px 4px 30px 0px rgba(5, 51, 84, 0.05);
-  }
-  
-  .header {
-    width: 100%;
-    height: 48px;
-    background-color: #f2f2f2;
-    gap: 20px;
-    border-right: #000;
-    text-align: center;
 
-  }
-
- .days-botton {
-  display: flex;
-  height: 48px;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
- }
-
-.days-botton span {
-  width: 21px;
-  height: 21px;
-  border-radius: 100%;
-  background-color: #FFF;
-}
-
-.days-botton img {
-  display: flex;
-  margin: 5px 5px 2px 5px;
-}
-
-.img-2 {
-  transform: rotate(180deg);
-}
-  
-.days {
-  display: flex;
-  gap: 5px;
-  text-align: center;
-  align-items: center; 
-  justify-content: center;
-}
-
-.days:last-child {
-  color: #053354;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.day-number {
-  color: #18A4E1;
-  text-align: center;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-tr {
-  align-self: center;
-}
-
-td {
-  border: 1px solid #ddd;
-  text-align: center;
-  padding: 0px;
-  height: 60px;
-  width: 100px;
-  position: relative;
-}
-
-.activated-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #DAFAEE;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-}
-
-.activated-text p {
-  font-weight: bold;
-  color: #3ACF99;
-  text-align: center;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  word-wrap: break-word;
-}
-
-.delete-button {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  background-color: #FFFFFF;
-  top: 4px;
-  right: 4px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.delete-button img {
-  width: 6px; /* Adjust the width of the image */
-  height: 6px; /* Adjust the height of the image */
-  display: block;
-}
-
-/* Set the width of the first column */
-td:first-child {
-  width: 130px;
-}
-
-/* Set the background color for the last two columns */
-td:nth-last-child(1),
-td:nth-last-child(2) {
-  background: #FFFFF5;
-}
 
 .booking-message {
   position: absolute;
   display: none;
   margin-left: 589px;
-  margin-top: -278px;
+  margin-top: 278px;
   width: 420px;
   height: 263px;
   flex-shrink: 0;
@@ -397,7 +259,7 @@ td:nth-last-child(2) {
 .unauthorized-message {
   position: absolute;
   margin-left: 256px;
-  margin-top: -42px;
+  margin-top: 552px;
   padding: 18px 32px;
   width: 320px;
   height: 78px;

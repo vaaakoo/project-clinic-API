@@ -6,13 +6,13 @@ import { Injectable } from '@angular/core';
 export class TableDataService {
   tableData: { cols: { value: string; activated: boolean }[] }[] = [];
   tableHeaders: { num: number; day: string }[] = [
-    { num: 17, day: 'mon' },
-    { num: 18, day: 'tue' },
-    { num: 19, day: 'wed' },
-    { num: 20, day: 'thu' },
-    { num: 21, day: 'fri' },
-    { num: 22, day: 'sat' },
-    { num: 23, day: 'sun' },
+    { num: 17, day: 'ორშ' },
+    { num: 18, day: 'სამ' },
+    { num: 19, day: 'ოთხ' },
+    { num: 20, day: 'ხუთ' },
+    { num: 21, day: 'პარ' },
+    { num: 22, day: 'შაბ' },
+    { num: 23, day: 'კვი' },
   ];
 
   constructor() {

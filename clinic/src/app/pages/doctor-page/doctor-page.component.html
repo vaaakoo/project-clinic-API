@@ -13,7 +13,7 @@
           
           <div class="doctors-stars" *ngIf="this.doctor">
             <ng-container *ngFor="let star of getStarArray(this.doctor?.starNum || 0)">
-              <img src="../../assets/material-symbols_star-rounded.png" alt="Star">
+              <img src="../../../assets/material-symbols_star-rounded.png" alt="Star">
             </ng-container>
           </div>
         </div>
@@ -42,7 +42,7 @@
       <div class="time">
         <div class="square"  *ngIf="this.tooltipBox">
           <div class="middle">
-              <img class="picture" src="../../assets/default-image.png" alt="">
+              <img class="picture" src="../../../assets/default-image.png" alt="">
               <div class="middle-column">
                 <p class="card-name"><strong>სახელი:</strong> {{ this.clientName }}  {{ this.clientLastName}}</p>
                 <p class="card-category"><strong>პირადი:</strong> {{ this.clientIdNumber }} </p>
@@ -55,13 +55,13 @@
         <div class="buttons-click">
           <span class="arrow arrow-left"
             ><img
-              src="../../assets/material-symbols_arrow-back-ios-rounded.png"
+              src="../../../assets/material-symbols_arrow-back-ios-rounded.png"
               alt=""
           /></span>
           <button class="action-button">აპრილი</button>
           <span class="arrow arrow-right"
             ><img
-              src="../../assets/material-symbols_arrow-back-ios-rounded (1).png"
+              src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png"
               alt=""
           /></span>
         </div>
@@ -73,7 +73,7 @@
         <div class="redacted-button">
           <button class="redact">
             <span
-              ><img src="../../assets/edit-svgrepo-com 2.png" alt=""
+              ><img src="../../../assets/edit-svgrepo-com 2.png" alt=""
             /></span>
             <p>რედაქტირება</p>
           </button>
@@ -81,7 +81,7 @@
         </div>
         <button class="delete">
           <span
-            ><img src="../../assets/delete-file-svgrepo-com 3.png" alt=""
+            ><img src="../../../assets/delete-file-svgrepo-com 3.png" alt=""
           /></span>
           <p>წაშლა</p>
         </button>
@@ -91,27 +91,4 @@
 </div>
 
   <!-- modal -->
-  <div class="modal fade" id="passwordChangeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">პაროლის შეცვლა</h5>
-        </div>
-        <div class="modal-body">
-          <form (ngSubmit)="onSubmit()">
-            <div class="form-group">
-              <input type="password" class="form-control" name="old-password" id="old-password" placeholder="ძველი პაროლი" [(ngModel)]="oldPassword" required> 
-            </div>
-            <div class="form-group">
-              <input type="password"  name="newPassword" class="form-control form-password" id="recipient-name" placeholder="ახალი პაროლი" [(ngModel)]="newPassword" required> 
-            </div>
-          
-            <div class="modal-footer">
-              <button type="submit" *ngIf="submissionSuccess" data-dismiss="modal">დახურვა</button>
-              <button type="submit" *ngIf="!submissionSuccess">შენახვა</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-password-change-modal></app-password-change-modal>

@@ -7,7 +7,7 @@
     <div class="doctors">
         <div class="hero-doctor">
             <div class="upper">
-                <img class="main-image" src="../../assets/default-image.png" alt="">
+                <img class="main-image" src="../../../assets/default-image.png" alt="">
                 <h4>{{this.client?.firstName}} {{this.client?.lastName}}</h4>
                 <h6>ექიმი</h6>
             </div>
@@ -56,9 +56,9 @@
       <div class="time">
         <span class="year">2023</span>
         <div class="buttons-click">
-            <span class="arrow arrow-left "><img src="../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
+            <span class="arrow arrow-left "><img src="../../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
             <button class="action-button">აპრილი</button>
-            <span class="arrow arrow-right"><img src="../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
+            <span class="arrow arrow-right"><img src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
         </div>
     </div>
       <div class="time-and-table">
@@ -66,11 +66,11 @@
 
       <div class="change-sect">
           <button class="redact">
-              <span><img src="../../assets/edit-svgrepo-com 2.png" alt=""></span>
+              <span><img src="../../../assets/edit-svgrepo-com 2.png" alt=""></span>
               <p>რედაქტირება</p>
           </button>
         <button class="delete">
-            <span><img src="../../assets/delete-file-svgrepo-com 3.png" alt=""></span>
+            <span><img src="../../../assets/delete-file-svgrepo-com 3.png" alt=""></span>
             <p>წაშლა</p>
         </button>
     </div>
@@ -78,27 +78,4 @@
   </div>
 </div>
   <!-- modal -->
-  <div class="modal fade" id="passwordChangeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">პაროლის შეცვლა</h5>
-        </div>
-        <div class="modal-body">
-          <form (ngSubmit)="onSubmit()">
-            <div class="form-group">
-              <input type="password" class="form-control" name="old-password" id="old-password" placeholder="ძველი პაროლი" [(ngModel)]="oldPassword" required> 
-            </div>
-            <div class="form-group">
-              <input type="password"  name="newPassword" class="form-control form-password" id="recipient-name" placeholder="ახალი პაროლი" [(ngModel)]="newPassword" required> 
-            </div>
-          
-            <div class="modal-footer">
-              <button type="submit" *ngIf="submissionSuccess" data-dismiss="modal">დახურვა</button>
-              <button type="submit" *ngIf="!submissionSuccess">შენახვა</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+   <app-password-change-modal></app-password-change-modal>

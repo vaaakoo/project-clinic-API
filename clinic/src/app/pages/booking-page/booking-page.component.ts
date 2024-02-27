@@ -1,10 +1,11 @@
 import { Component , OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthserviceService } from '../core/auth/authservice.service';
-import { Useregisteration, doctorregisteration } from '../core/auth/useregisteration';
+import { AuthserviceService } from '../../core/auth/authservice.service';
+import { Useregisteration, doctorregisteration } from '../../core/auth/useregisteration';
 import { data } from 'jquery';
 import { MessageService } from 'primeng/api';
-import { TableDataService } from '../core/auth/table-data-service.service';
+import { TableDataService } from '../../core/auth/table-data-service.service';
+import { BasePageComponent } from '../base-page/base-page.component';
 declare var $: any;
 
 @Component({
@@ -12,21 +13,18 @@ declare var $: any;
   templateUrl: './booking-page.component.html',
   styleUrls: ['./booking-page.component.css']
 })
-export class BookingPageComponent implements OnInit{
+export class BookingPageComponent extends BasePageComponent implements OnInit{
 
   visitConfirmation: string = '';
   textToDoctor: string='';
 
-  unauthorizedMessageShown: boolean = false;
-  messageToDoctor: boolean = true;
-  doctor?: doctorregisteration ;
-  doctorId: number | undefined; 
-  patientFirstName: string = '';
   patient?: Useregisteration;
   patientIdNum?: string='';
   
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {}
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {
+    super();
+  }
   
   submitForm() {
     // console.log('Form submitted with:', this.visitConfirmation);
