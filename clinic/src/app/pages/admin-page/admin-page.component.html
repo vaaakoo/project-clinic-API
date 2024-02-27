@@ -33,28 +33,28 @@
        
                             <div class="doctors-stars" *ngIf="this.doctor">
                                 <ng-container *ngFor="let star of getStarArray(this.doctor?.starNum || 0)">
-                                  <img src="../../assets/material-symbols_star-rounded.png" alt="Star">
+                                  <img src="../../../assets/material-symbols_star-rounded.png" alt="Star">
                                 </ng-container>
                               </div>
 
                         </div>
                         <div class="card-middle">
                             <div class="card-middle-grid">
-                                <span><img src="../../assets/edit-svgrepo-com2-dark.png" alt=""></span>
+                                <span><img src="../../../assets/edit-svgrepo-com2-dark.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>პირადი ნომერი</h3>
                                     <p>{{this.doctor?.idNumber}}</p>
                                 </div>
                             </div>
                             <div class="card-middle-grid">
-                                <span><img src="../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
+                                <span><img src="../../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>Email</h3>
                                     <p>{{this.doctor?.email}}</p>
                                 </div>
                             </div>
                             <div class="card-middle-grid">
-                                <span><img src="../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
+                                <span><img src="../../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>პაროლის შეცვლა</h3>
                                 </div>
@@ -62,7 +62,7 @@
                         </div>
                         <div class="card-right">
                             <div class="card-middle-grid">
-                                <span><img src="../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
+                                <span><img src="../../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>დაჯავშნილია :</h3>
                                     <p>( {{this.appointmentCount}} )</p>
@@ -78,11 +78,11 @@
                         <p>+ დამატება</p>
                     </button>
                     <button class="redact">
-                        <span><img src="../../assets/edit-svgrepo-com 2.png" alt=""></span>
+                        <span><img src="../../../assets/edit-svgrepo-com 2.png" alt=""></span>
                         <p>რედაქტირება</p>
                     </button>
                     <button class="delete">
-                        <span><img src="../../assets/delete-file-svgrepo-com 3.png" alt=""></span>
+                        <span><img src="../../../assets/delete-file-svgrepo-com 3.png" alt=""></span>
                         <p>წაშლა</p>
                     </button>
                 </div>
@@ -93,53 +93,15 @@
                 <div class="time">
                     <span class="year">2023</span>
                     <div class="buttons-click">
-                        <span class="arrow arrow-left "><img src="../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
+                        <span class="arrow arrow-left "><img src="../../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
                         <button class="action-button">აპრილი</button>
-                        <span class="arrow arrow-right"><img src="../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
+                        <span class="arrow arrow-right"><img src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
                     </div>
                 </div>
                
                 <!-- calendar -->
-                <div class="custom-table">
-                    <table>
-                        <thead class="header">
-                          <tr>
-                            <th class="days-botton">
-                              <span class="img-2"
-                                ><img
-                                  src="../../assets/right-arrow_271228.png"
-                                  style="width: 12px; height: 12px"
-                                  alt=""
-                              /></span>
-                              <span
-                                ><img
-                                  src="../../assets/right-arrow_271228.png"
-                                  style="width: 12px; height: 12px"
-                                  alt=""
-                              /></span>
-                            </th>
-                            <th *ngFor="let num of tableHeaders; let i = index">
-                              <div class="days">
-                                <p class="day-number">{{ num.num }}</p>
-                                <p>({{ num.day }})</p>
-                              </div>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <ng-container *ngFor="let row of tableData; let i = index">
-                            <tr>
-                              <td class="rowhead">{{ getTimeRange(i) }}</td>
-                              <!-- Display time range in the first column -->
-                              <ng-container *ngFor="let col of row.cols; let j = index">
-                                <td class="tdclick" id="{{'td_' + i + '_' + j}}">
-                                </td>
-                              </ng-container>
-                            </tr>
-                          </ng-container>
-                        </tbody>
-                      </table>
-                </div>              
+                <app-custom-table [tableData]="tableDataService.tableData" [tableHeaders]="tableDataService.tableHeaders"></app-custom-table>
+          
             </div>
         </div>
     </div>

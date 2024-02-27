@@ -1,0 +1,74 @@
+<div class="home-hero">
+    <div class="categories">
+      <!-- კატეგორიები -->
+      <app-category-field class="category"></app-category-field>
+
+      <div class="doctor-hero">
+          <!-- ექიმები -->
+          <div class="doctors">
+              <div class="hero-doctor">
+                  <div class="upper">
+                      <img class="main-image" [src]="this.doctor?.imageUrl">
+                    <div class="upper-child">
+                        <h4>{{this.doctor?.firstName}} {{ this.doctor?.lastName }}</h4>
+                        <p>{{this.doctor?.category}}</p>
+                        
+                        <div class="doctors-stars" *ngIf="this.doctor">
+                          <ng-container *ngFor="let star of getStarArray(this.doctor?.starNum || 0)">
+                            <img src="../../../assets/material-symbols_star-rounded.png" alt="Star">
+                          </ng-container>
+                        </div>
+                        
+                        
+                    </div>
+                  </div>
+                  <img src="../../../assets/Vector 7.png" alt="">
+                  <div class="cv-style">
+                    <p><span class="blue-text">2017 - დღემდე</span>, ჩვენი კლინიკის გენერალური დირექტორი</p>
+                    <p><span class="blue-text">2002 - დღემდე</span>, ჩვენი კომპიუტერული ტომოგრაფიის განყოფილების ხელმძღვანელი</p>
+                    <p><span class="blue-text">1995 - დღემდე</span>, კარდიოლოგი / არითმოლოგი</p>
+
+                  </div>
+              </div> 
+          </div>
+          <!-- ცხრილი -->
+        <div class="calendar">
+              <div class="time">
+                <span class="year">2023</span>
+                <div class="buttons-click">
+                    <span class="arrow arrow-left "><img src="../../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
+                    <button class="action-button">აპრილი</button>
+                    <span class="arrow arrow-right"><img src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
+                </div>
+            </div>
+              <div class="time-and-table">
+                <app-custom-table [tableData]="tableDataService.tableData" [tableHeaders]="tableDataService.tableHeaders"></app-custom-table>
+
+                <div *ngIf="unauthorizedMessageShown" class="unauthorized-message">
+                  <p>დასაჯავშნათ გთხოვთ გაიაროთ </p>
+                  <span>ავტორიზაცია ან რეგისტრაცია</span>
+                </div>
+
+                <div id="myModal" class="booking-message">
+                  <div class="booking-message-box modal-content">
+                    <p>გსურთ ვიზიტის დაჯავნშნა ?</p>
+                    <p class="last-child">შეგიძლიათ მიუთუთოთ თქვენი პორბლემა</p>
+                    <textarea id="messageToDoctor" placeholder="აღწერა..." rows="5"></textarea>
+                    <button id="confirmMessage" class="adding">დაჯავშნა</button>
+                  </div>
+                </div>
+              <div class="change-sect">
+                  <button class="redact">
+                      <span><img src="../../../assets/edit-svgrepo-com 2.png" alt=""></span>
+                      <p>რედაქტირება</p>
+                  </button>
+                <button class="delete">
+                    <span><img src="../../../assets/delete-file-svgrepo-com 3.png" alt=""></span>
+                    <p>წაშლა</p>
+                </button>
+            </div>
+       </div>
+          
+      </div>
+      </div>
+</div>

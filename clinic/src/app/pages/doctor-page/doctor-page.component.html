@@ -1,0 +1,94 @@
+<div class="home-hero">
+  <div class="categories">
+    <!-- კატეგორიები -->
+    <app-category-field class="category"></app-category-field>
+    <!-- ექიმები -->
+    <div class="doctors">
+      <div class="hero-doctor">
+        <div class="upper">
+          <img class="main-image" [src]="this.doctor?.imageUrl" />
+          <h4>{{ this.doctor?.firstName }} {{ this.doctor?.lastName }}</h4>
+          <h6>ექიმი</h6>
+          <p>{{ this.doctor?.category }}</p>
+          
+          <div class="doctors-stars" *ngIf="this.doctor">
+            <ng-container *ngFor="let star of getStarArray(this.doctor?.starNum || 0)">
+              <img src="../../../assets/material-symbols_star-rounded.png" alt="Star">
+            </ng-container>
+          </div>
+        </div>
+        <div class="middle-first">
+          <h4>პირადი ნომერი</h4>
+          <p>{{ this.doctor?.idNumber }}</p>
+        </div>
+
+        <div class="middle-second">
+          <div class="middle-first">
+            <h4>Email :</h4>
+            <p>{{ this.doctor?.email }}</p>
+          </div>
+          <h4 class="change-pass" data-toggle="modal" data-target="#passwordChangeModal" data-whatever="@mdo">პაროლის შეცვლა</h4>
+        </div>
+
+        <div class="middle-first">
+          <h4>დაჯავშნილია :</h4>
+          <p>( {{this.appointmentCount}} )</p>
+        </div>
+      </div>
+    </div>
+    <!-- ცხრილი -->
+    <div class="calendar">
+      
+      <div class="time">
+        <div class="square"  *ngIf="this.tooltipBox">
+          <div class="middle">
+              <img class="picture" src="../../../assets/default-image.png" alt="">
+              <div class="middle-column">
+                <p class="card-name"><strong>სახელი:</strong> {{ this.clientName }}  {{ this.clientLastName}}</p>
+                <p class="card-category"><strong>პირადი:</strong> {{ this.clientIdNumber }} </p>
+                <p class="card-name"><strong>მიზეზი:</strong> {{ this.text }} </p>
+  
+              </div>
+          </div>
+      </div>
+        <span class="year">2023</span>
+        <div class="buttons-click">
+          <span class="arrow arrow-left"
+            ><img
+              src="../../../assets/material-symbols_arrow-back-ios-rounded.png"
+              alt=""
+          /></span>
+          <button class="action-button">აპრილი</button>
+          <span class="arrow arrow-right"
+            ><img
+              src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png"
+              alt=""
+          /></span>
+        </div>
+      </div>
+      <!-- calendar -->
+      <app-custom-table [tableData]="tableDataService.tableData" [tableHeaders]="tableDataService.tableHeaders"></app-custom-table>
+
+      <div class="change-sect">
+        <div class="redacted-button">
+          <button class="redact">
+            <span
+              ><img src="../../../assets/edit-svgrepo-com 2.png" alt=""
+            /></span>
+            <p>რედაქტირება</p>
+          </button>
+          <p class="comment-redact">*აღწერის ცვლილება</p>
+        </div>
+        <button class="delete">
+          <span
+            ><img src="../../../assets/delete-file-svgrepo-com 3.png" alt=""
+          /></span>
+          <p>წაშლა</p>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- modal -->
+  <app-password-change-modal></app-password-change-modal>

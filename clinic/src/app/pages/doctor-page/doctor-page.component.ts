@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { doctorregisteration } from '../core/auth/useregisteration';
-import { AuthserviceService } from '../core/auth/authservice.service';
+import { doctorregisteration } from '../../core/auth/useregisteration';
+import { AuthserviceService } from '../../core/auth/authservice.service';
 import { data } from 'jquery';
 import { MessageService } from 'primeng/api';
+import { TableDataService } from '../../core/auth/table-data-service.service';
+import { BasePageComponent } from '../base-page/base-page.component';
 declare var $: any;
 
 @Component({
@@ -11,39 +13,15 @@ declare var $: any;
   templateUrl: './doctor-page.component.html',
   styleUrls: ['./doctor-page.component.css'],
 })
-export class DoctorPageComponent implements OnInit{
-
-  tableData: { cols: { value: string; activated: boolean }[] }[] = [];
- 
-  tableHeaders: { num: number; day: string }[] = [
-    { num: 17, day: 'mon' },
-    { num: 18, day: 'tue' },
-    { num: 19, day: 'wed' },
-    { num: 20, day: 'thu' },
-    { num: 21, day: 'fri' },
-    { num: 22, day: 'sat' },
-    { num: 23, day: 'sun' },
-  ];
+export class DoctorPageComponent extends BasePageComponent implements OnInit{
 
 
-  unauthorizedMessageShown: boolean = false;
-  messageToDoctor: boolean = false;
-  doctor?: doctorregisteration ;
-  doctorId: number | undefined; 
-  appointmentCount: number = 0;
-  doctorFirstName: string='';
-  doctorIdNumber: string='';
-  text: string = "";
-  clientName: string = "";
-  tooltipBox: boolean = false;
-  clientLastName: string="";
-  clientIdNumber: string="";
-  oldPassword: string="";
-  newPassword: string="";
-  submissionSuccess: boolean = false;
 
 
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService) {}
+
+  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {
+    super();
+  }
   
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -217,15 +195,7 @@ export class DoctorPageComponent implements OnInit{
         }
       );
     };
-    
-
-    for (let i = 1; i <= 9; i++) {
-      const row = { cols: [] as { value: string; activated: boolean }[] };
-      for (let j = 1; j <= 7; j++) {
-        row.cols.push({ value: `${i}-${j}`, activated: false });
-      }
-      this.tableData.push(row);
-    }    
+      
   }
 
     // password changer
@@ -259,17 +229,7 @@ export class DoctorPageComponent implements OnInit{
         }
       );
     }
-  getTimeRange(rowNumber: number): string {
-    const startTime = 9;
-    const endTime = 18;
-    const timeSlot = 1;
-
-    const startHour = startTime + rowNumber * timeSlot;
-    const endHour = startHour + timeSlot;
-
-    return `${startHour}:00 - ${endHour}:00`;
-  }
-
+  
   getStarArray(starNum: number): number[] {
     return Array.from({ length: starNum }, (_, index) => index);
   }
