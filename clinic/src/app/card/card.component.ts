@@ -23,7 +23,7 @@ export class CardComponent implements OnInit {
   constructor(public authservice:AuthserviceService, private route: ActivatedRoute, private router: Router, private messageService: MessageService){}
 
   ngOnInit() {
-    this.authservice.getalldoc().subscribe(
+    this.authservice.getallDoctor().subscribe(
       (data: doctorregisteration[]) => {
         this.alldoctor = data;
       },

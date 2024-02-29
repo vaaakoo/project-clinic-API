@@ -28,7 +28,7 @@ export class AdminPageComponent extends BasePageComponent implements OnInit {
   
   ngOnInit() {
 
-    this.authservice.getalldoc().subscribe(
+    this.authservice.getallDoctor().subscribe(
       (doctors: doctorregisteration[]) => {
         // Pick a random doctor from the list
         const randomIndex = Math.floor(Math.random() * doctors.length);

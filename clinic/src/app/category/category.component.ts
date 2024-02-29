@@ -45,7 +45,7 @@ export class CategoryComponent implements OnInit {
   }
 
   loadDoctorData() {
-    this.authservice.getalldoc().subscribe(
+    this.authservice.getallDoctor().subscribe(
       (data: doctorregisteration[]) => {
         this.alldoctor = data;
         // console.log('Received data:', this.alldoctor);

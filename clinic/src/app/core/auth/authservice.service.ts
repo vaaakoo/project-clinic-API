@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Useregisteration, doctorregisteration } from './useregisteration';
@@ -18,11 +18,11 @@ export class AuthserviceService {
   private bookUrl: string = environment.apiUrl + '/Booking';
   private apiUrl1: string = environment.apiUrl + '/Authentication';
 
-  alldoctor: doctorregisteration[] = [];
   doctor:doctorregisteration=new doctorregisteration();
   logindata:Useregisteration=new Useregisteration();
   loginusername:any="";
   loginUser: any="";
+  
   private authToken: string = '';
 
 
@@ -116,8 +116,6 @@ export class AuthserviceService {
   }
 
 
-  
-
   sendactivationcode(email: string): Observable<any> {
     const apiUrl = `${this.apiUrl}/send-code/${email}`;
     return this.http.get(apiUrl);
@@ -148,7 +146,7 @@ export class AuthserviceService {
     return this.http.post<any>(`${this.apiUrl}/doctor-register`, user);
   }
 
-  getalldoc(): Observable<doctorregisteration[]> {
+  getallDoctor(): Observable<doctorregisteration[]> {
     return this.http.get<doctorregisteration[]>(`${this.apiUrl}/getDoctor`);
   }
 
