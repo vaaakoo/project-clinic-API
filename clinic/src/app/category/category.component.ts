@@ -4,6 +4,7 @@ import { doctorregisteration } from '../core/auth/useregisteration';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../core/auth/category-list.service';
 import { MessageService } from 'primeng/api';
+import { BasePageComponent } from '../pages/base-page/base-page.component';
 
 declare var $: any;
 
@@ -12,20 +13,17 @@ declare var $: any;
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent extends BasePageComponent implements OnInit {
   constructor(public authservice: AuthserviceService, private route: ActivatedRoute, private router: Router, private categoryService: CategoryService, private messageService: MessageService) {
-    
+    super();
   }
 
   alldoctor: doctorregisteration[] = [];
   selectedDoctor: doctorregisteration | null = null;
-  doctor?: doctorregisteration ;
-  submissionSuccess: boolean = false;
+
   doctorfirstName: string = "";
-  doctorLastName: string = "";
   doctorEmail: string = "";
-  doctorCategory: string = "";
-  doctorIdNumber: string ="";
+
   doctorPassword: string = "";
   displayModal: boolean = false;
   categories: string[] | undefined;
