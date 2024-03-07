@@ -4,6 +4,8 @@ import { doctorregisteration } from '../core/auth/useregisteration';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+  
+
 
 @Component({
   selector: 'app-card',

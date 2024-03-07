@@ -1,5 +1,8 @@
 <div class="doctors">
     <div class="square-container" >
+        <div class="loading-spinner-container" *ngIf="alldoctor.length === 0">
+        <p-progressSpinner *ngIf="alldoctor.length === 0"></p-progressSpinner>
+        </div>
         <div *ngFor="let doctor of alldoctor.slice(0, maxVisibleDoctors)" class="user-card">
             <div class="square">
                 <div class="upper">

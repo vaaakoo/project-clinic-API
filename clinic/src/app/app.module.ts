@@ -30,6 +30,7 @@ import { CategoryFieldComponent } from './category-field/category-field.componen
 import { CustomTableComponent } from './custom-table/custom-table.component';
 import { BasePageComponent } from './pages/base-page/base-page.component';
 import { PasswordChangeModalComponent } from './password-change-modal/password-change-modal.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 
@@ -63,7 +64,8 @@ import { PasswordChangeModalComponent } from './password-change-modal/password-c
     ToastModule,
     DialogModule,
     DropdownModule,
-    RatingModule
+    RatingModule,
+    ProgressSpinnerModule
   ],
   providers: [
     AuthserviceService,

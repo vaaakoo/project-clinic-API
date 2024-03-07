@@ -217,3 +217,18 @@
   
   @media (max-width: 1621px) {
   }
+
+
+  .loading-spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Ensure the container takes up the full height */
+    position: absolute; /* Position the container fixed to the viewport */
+    top: 300px;
+    left: 250px;
+    right: 0;
+    bottom: 0;
+    z-index: 999; /* Ensure the spinner is above other content */
+  }
+  
