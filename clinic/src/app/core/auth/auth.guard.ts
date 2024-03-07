@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
     const userId = userInfoForRole?.['UserId'];
   
     if (this.authService.isLoggedIn || this.authService.isAdministrator || this.authService.isDoctor) {
-  debugger
+  // debugger
   // console.log('Current URL:', state.url);
       if ((state.url.startsWith('/admin-page') || state.url.startsWith('/admin-page/category') || state.url.startsWith('/admin-page/registration')) && role !== 'admin') {
         this.router.navigate(['/home']);

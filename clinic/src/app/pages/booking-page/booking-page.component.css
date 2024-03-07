@@ -237,6 +237,10 @@ span .year {
   height: 50px;
   margin-left: auto;
 }
+
+#messageToDoctor {
+  padding: 10px;
+}
 .adding {
   border: none;
   border-radius: 50px;

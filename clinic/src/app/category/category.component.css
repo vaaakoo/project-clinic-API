@@ -109,3 +109,10 @@ tbody tr td {
     display: flex;
     gap: 20px;
 }
+
+/* modal primng */
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+}

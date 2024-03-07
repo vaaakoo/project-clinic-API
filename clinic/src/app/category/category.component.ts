@@ -3,7 +3,7 @@ import { AuthserviceService } from '../core/auth/authservice.service';
 import { doctorregisteration } from '../core/auth/useregisteration';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../core/auth/category-list.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { BasePageComponent } from '../pages/base-page/base-page.component';
 
 declare var $: any;
@@ -14,7 +14,7 @@ declare var $: any;
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent extends BasePageComponent implements OnInit {
-  constructor(public authservice: AuthserviceService, private route: ActivatedRoute, private router: Router, private categoryService: CategoryService, private messageService: MessageService) {
+  constructor(public authservice: AuthserviceService, private route: ActivatedRoute, private router: Router, private categoryService: CategoryService, private messageService: MessageService, private confirmationService: ConfirmationService) {
     super();
   }
 
@@ -68,6 +68,20 @@ export class CategoryComponent extends BasePageComponent implements OnInit {
     }
   }
 
+  confirm2(event: Event) {
+    this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Do you want to delete this record?',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass: 'p-button-danger p-button-sm',
+        accept: () => {
+            this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        }
+    });
+}
 
 
   editDoctor(doctor: doctorregisteration) {
@@ -78,7 +92,7 @@ export class CategoryComponent extends BasePageComponent implements OnInit {
 
 
   changeDoctorData() {
-    debugger;
+    // debugger;
     if (!this.isFormValid()) {
       this.messageService.add({severity:'error', summary:'Error', detail:'Please fill at least one field.'});
       return; // Exit the method early if the form data is invalid

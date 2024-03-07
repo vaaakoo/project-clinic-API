@@ -21,7 +21,7 @@ import { AuthGuard } from './core/auth/auth.guard';
 import { AuthserviceService } from './core/auth/authservice.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CardComponent } from './card/card.component';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -31,6 +31,7 @@ import { CustomTableComponent } from './custom-table/custom-table.component';
 import { BasePageComponent } from './pages/base-page/base-page.component';
 import { PasswordChangeModalComponent } from './password-change-modal/password-change-modal.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 
 
@@ -65,13 +66,15 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     DialogModule,
     DropdownModule,
     RatingModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ConfirmPopupModule
   ],
   providers: [
     AuthserviceService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthGuard,
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
   bootstrap: [AppComponent]
 })
