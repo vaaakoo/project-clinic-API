@@ -31,7 +31,6 @@ import { CustomTableComponent } from './custom-table/custom-table.component';
 import { BasePageComponent } from './pages/base-page/base-page.component';
 import { PasswordChangeModalComponent } from './password-change-modal/password-change-modal.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 
 
@@ -66,8 +65,7 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
     DialogModule,
     DropdownModule,
     RatingModule,
-    ProgressSpinnerModule,
-    ConfirmPopupModule
+    ProgressSpinnerModule
   ],
   providers: [
     AuthserviceService,

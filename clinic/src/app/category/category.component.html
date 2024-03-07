@@ -30,9 +30,8 @@
                     </div>
                 </td>
                     <td class="edit-delete">
-                        <p-confirmPopup></p-confirmPopup>
                         <img class="circle" data-toggle="modal" data-target="#passwordChangeModal" src="../../assets/edit.png" alt="" (click)="editDoctor(doctor)">
-                        <img class="circle1" src="../../assets/delete.png" alt="" (click)="confirm2($event)">
+                        <img class="circle1" src="../../assets/delete.png" alt="" (click)="deleteDoctor(doctor.id)">
                     </td>
                 </tr>
             </tbody>
