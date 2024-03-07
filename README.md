@@ -51,7 +51,7 @@ start
 2. Install dependencies
 
 ```sh
-npm install
+npm init && npm install primeng
 ```
 
 3. Install TypeScript Declaration for jQuery
