@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { AuthserviceService } from '../core/auth/authservice.service';
+import { AuthserviceService } from '../../core/auth/authservice.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 @Component({

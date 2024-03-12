@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { AuthserviceService } from '../core/auth/authservice.service';
+import { AuthserviceService } from '../../core/auth/authservice.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { CategoryService } from '../core/auth/category-list.service';
+import { CategoryService } from '../../core/auth/category-list.service';
 
 @Component({
   selector: 'app-registration',

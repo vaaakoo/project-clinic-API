@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { ClientRegistrationComponent } from './client-registration/client-registration.component';
-import { CategoryComponent } from './category/category.component';
-import { RegistrationComponent } from './registration/registration.component';
+import { ClientRegistrationComponent } from './helpers/client-registration/client-registration.component';
+import { CategoryComponent } from './pages/category/category.component';
+import { RegistrationComponent } from './pages/registration/registration.component';
 import { DoctorPageComponent } from './pages/doctor-page/doctor-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { ClientPageComponent } from './pages/client-page/client-page.component';

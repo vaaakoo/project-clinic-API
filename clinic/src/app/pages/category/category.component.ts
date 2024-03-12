@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthserviceService } from '../core/auth/authservice.service';
-import { doctorregisteration } from '../core/auth/useregisteration';
+import { AuthserviceService } from '../../core/auth/authservice.service';
+import { doctorregisteration } from '../../core/auth/useregisteration';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoryService } from '../core/auth/category-list.service';
+import { CategoryService } from '../../core/auth/category-list.service';
 import { MessageService } from 'primeng/api';
-import { BasePageComponent } from '../pages/base-page/base-page.component';
+import { BasePageComponent } from '../base-page/base-page.component';
 
 declare var $: any;
 

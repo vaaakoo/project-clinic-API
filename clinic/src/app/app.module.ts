@@ -5,12 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HomeComponent } from './pages/home/home.component';
-import { ClientRegistrationComponent } from './client-registration/client-registration.component';
+import { ClientRegistrationComponent } from './helpers/client-registration/client-registration.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CategoryComponent } from './category/category.component';
-import { RegistrationComponent } from './registration/registration.component';
+import { CategoryComponent } from './pages/category/category.component';
+import { RegistrationComponent } from './pages/registration/registration.component';
 import { ClientPageComponent } from './pages/client-page/client-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { DoctorPageComponent } from './pages/doctor-page/doctor-page.component';
@@ -22,14 +22,14 @@ import { AuthserviceService } from './core/auth/authservice.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { CardComponent } from './card/card.component';
+import { CardComponent } from './helpers/card/card.component';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { RatingModule } from 'primeng/rating';
-import { CategoryFieldComponent } from './category-field/category-field.component';
-import { CustomTableComponent } from './custom-table/custom-table.component';
+import { CategoryFieldComponent } from './helpers/category-field/category-field.component';
+import { CustomTableComponent } from './helpers/custom-table/custom-table.component';
 import { BasePageComponent } from './pages/base-page/base-page.component';
-import { PasswordChangeModalComponent } from './password-change-modal/password-change-modal.component';
+import { PasswordChangeModalComponent } from './helpers/password-change-modal/password-change-modal.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
