@@ -7,10 +7,10 @@
             <div class="square">
                 <div class="upper">
                     <div class="viewers">
-                        <img src="../../assets/ic_baseline-remove-red-eye.png" alt="">
+                        <img src="../../../assets/ic_baseline-remove-red-eye.png" alt="">
                         <p>129 371</p>
                     </div>
-                    <img src="../../assets/pin-svgrepo-com1.png" alt="">
+                    <img src="../../../assets/pin-svgrepo-com1.png" alt="">
                 </div>
                 <div class="middle">
                     <img class="picture" [src]="doctor.imageUrl" alt="">
@@ -19,13 +19,13 @@
                    
                     <div class="stars">
                       <ng-container *ngFor="let star of getStarArray(doctor.starNum)">
-                          <img src="../../assets/material-symbols_star-rounded.png" alt="Star">
+                          <img src="../../../assets/material-symbols_star-rounded.png" alt="Star">
                         </ng-container>
                   </div>
                   <button type="button" (click)="onBookingClick(doctor)">
                     <p>მიღებაზე ჩაწერა</p>
                     <div class="buttons-span"></div>
-                    <!-- <img class="material-symbol" src="../../assets/material-symbols_arrow-back-ios-rounded333.png" alt=""> -->
+                    <!-- <img class="material-symbol" src="../../../assets/material-symbols_arrow-back-ios-rounded333.png" alt=""> -->
                 </button>
                 </div>
             </div>
@@ -34,6 +34,6 @@
       </div>
       <div class="read-more"  *ngIf="maxVisibleDoctors < alldoctor.length" (click)="toggleSeeMore()">
           <p>სრულად ნახვა</p>
-          <img src="../../assets/Vector 5.png" alt="vector5">
+          <img src="../../../assets/Vector 5.png" alt="vector5">
       </div>
 </div>

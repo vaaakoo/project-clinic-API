@@ -52,7 +52,7 @@
       align-items: center;
       justify-content: flex-start; /* Align items to the left */
       height: 250px; /* Set a fixed height for the container */
-      background-image: url("../../assets/Rectangle30.png");
+      background-image: url("../../../assets/Rectangle30.png");
       background-size: cover; /* Ensure the background image covers the container */
     }
   }
@@ -164,11 +164,11 @@
       width: 16px;
       height: 16px;
       flex-shrink: 0;
-      background-image: url('../../assets/material-symbols_arrow-back-ios-rounded333.png');
+      background-image: url('../../../assets/material-symbols_arrow-back-ios-rounded333.png');
     }
   
     .middle button:hover .buttons-span {
-      background-image: url('../../assets/material-symbol_white_right_arrow.png');
+      background-image: url('../../../assets/material-symbol_white_right_arrow.png');
     }
   
     .middle button:hover {
