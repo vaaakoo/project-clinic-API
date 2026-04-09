@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AngularAuthYtAPI.Models
+namespace AngularAuthApi.Models
 {
     public class Doctor
     {

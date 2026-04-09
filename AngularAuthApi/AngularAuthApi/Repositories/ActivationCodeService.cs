@@ -1,8 +1,8 @@
-﻿using AngularAuthApi.Repositories.Interfaces;
+using AngularAuthApi.Repositories.Interfaces;
 using System.Net.Mail;
 using System.Net;
 using System.Text;
-using AngularAuthYtAPI.Context;
+using AngularAuthApi.Context;
 using AngularAuthApi.Models;
 
 namespace AngularAuthApi.Repositories

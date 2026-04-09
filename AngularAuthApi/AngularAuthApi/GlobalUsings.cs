@@ -1,0 +1,17 @@
+global using AngularAuthApi.Context;
+global using AngularAuthApi.Models;
+global using AngularAuthApi.Models.DTOs;
+global using AngularAuthApi.Models.Configuration;
+global using AngularAuthApi.Services.Interfaces;
+global using AngularAuthApi.Repositories;
+global using AngularAuthApi.Repositories.Interfaces;
+global using Microsoft.AspNetCore.Http.Features;
+global using Microsoft.Extensions.Options;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.IdentityModel.Tokens;
+global using System.Threading.Tasks;
+global using System.Collections.Generic;
+global using System;
+global using System.Linq;
