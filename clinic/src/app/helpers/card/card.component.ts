@@ -5,6 +5,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FilterService } from '../../core/services/filter.service';
 
 @Component({
   selector: 'app-card',
@@ -14,43 +15,59 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   styleUrl: './card.component.css',
   animations: [
     trigger('fadeInOut', [
-      transition(':enter', [style({ opacity: 0 }), animate('300ms', style({ opacity: 1 }))]),
-      transition(':leave', [animate('300ms', style({ opacity: 0 }))]),
+      transition(':enter', [style({ opacity: 0, transform: 'translateY(10px)' }), animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))]),
+      transition(':leave', [animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(10px)' }))]),
     ]),
   ],
 })
 export class CardComponent implements OnInit {
   private readonly authservice = inject(AuthserviceService);
+  public readonly filterService = inject(FilterService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
-  // Signals for senior-level state management
+  // Raw data from API
   readonly alldoctors = signal<doctorregisteration[]>([]);
   readonly maxVisibleDoctors = signal(6);
 
-  // Computed signal for the slice of doctors being shown
+  // Filter signals from global service
+  private readonly selectedCategory = this.filterService.selectedCategory;
+  private readonly searchTerm = this.filterService.searchTerm;
+
+  // Computed signal for filtered results
+  readonly filteredDoctors = computed(() => {
+    let doctors = this.alldoctors();
+    const category = this.selectedCategory();
+    const term = this.searchTerm().toLowerCase();
+
+    if (category) {
+      doctors = doctors.filter(d => d.category === category);
+    }
+
+    if (term) {
+      doctors = doctors.filter(d => 
+        d.firstName.toLowerCase().includes(term) || 
+        d.lastName.toLowerCase().includes(term) ||
+        d.category?.toLowerCase().includes(term)
+      );
+    }
+
+    return doctors;
+  });
+
+  // Final slice for pagination/see more
   readonly visibleDoctors = computed(() => 
-    this.alldoctors().slice(0, this.maxVisibleDoctors())
+    this.filteredDoctors().slice(0, this.maxVisibleDoctors())
   );
 
   ngOnInit() {
     this.fetchDoctors();
-  
-    this.route.params.subscribe(params => {
-      const doctorId = params['id'];
-    });
   }
 
   private fetchDoctors() {
-    console.log('[CardComponent] Initiating doctors fetch...');
     this.authservice.getallDoctor().subscribe({
-      next: (data) => {
-        console.log(`[CardComponent] Received ${data?.length} doctors`);
-        this.alldoctors.set(data);
-      },
-      error: (err) => {
-        console.error('[CardComponent] Error during doctors fetch:', err);
-      }
+      next: (data) => this.alldoctors.set(data),
+      error: (err) => console.error('[CardComponent] Error:', err)
     });
   }
 
@@ -63,6 +80,6 @@ export class CardComponent implements OnInit {
   }
 
   getStarArray(starNum: number): number[] {
-    return Array.from({ length: starNum }, (_, index) => index);
+    return Array.from({ length: starNum || 0 }, (_, index) => index);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthserviceService } from '../../core/auth/authservice.service';
 import { Useregisteration } from '../../core/auth/useregisteration';
@@ -6,6 +6,7 @@ import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
+import { FilterService } from '../../core/services/filter.service';
 
 @Component({
   selector: 'app-header',
@@ -17,6 +18,7 @@ import { ToastModule } from 'primeng/toast';
 export class HeaderComponent {
   private readonly router = inject(Router);
   private readonly messageService = inject(MessageService);
+  private readonly filterService = inject(FilterService);
   readonly authservice = inject(AuthserviceService);
 
   // Use Signals from Authservice
@@ -25,8 +27,19 @@ export class HeaderComponent {
   readonly isAdministrator = this.authservice.isAdmin;
   readonly authUser = this.authservice.currentUser;
 
+  // Search signal
+  readonly searchTerm = signal('');
+
   loginData: Useregisteration = new Useregisteration();
   submissionSuccess = false;
+
+  onSearchChange(term: string) {
+    this.filterService.setSearchTerm(term);
+    // If not on home page, navigate to home to show results
+    if (this.router.url !== '/home' && this.router.url !== '/') {
+      this.router.navigate(['/home']);
+    }
+  }
 
   onSubmit() {
     if (this.loginData.email && this.loginData.password) {
@@ -38,6 +51,7 @@ export class HeaderComponent {
             detail: 'ავტორიზაცია წარმატებით დასრულდა' 
           });
           this.submissionSuccess = true;
+          // Refresh page or close modal logic usually goes here
         },
         error: (error: any) => {
           const detail = error.status === 401 
