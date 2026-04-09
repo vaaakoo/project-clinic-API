@@ -1,15 +1,16 @@
 <div class="registration-container">
     <div class="registration-form">
         <h2>პაციენტის რეგისტრაცია</h2>
-        
+
         <form (ngSubmit)="onSubmit()" #userForm="ngForm">
             <div class="form-group">
                 <div class="row">
                     <label for="firstName">სახელი</label>
                     <span class="error-text" *ngIf="firstname.touched && user().firstName === ''">სავალდებულო</span>
                 </div>
-                <input type="text" id="firstName" name="firstName" placeholder="სახელი (მინ. 5 სიმბოლო)" 
-                    #firstname="ngModel" [ngModel]="user().firstName" (ngModelChange)="updateUserField('firstName', $event)" required>
+                <input type="text" id="firstName" name="firstName" placeholder="სახელი (მინ. 5 სიმბოლო)"
+                    #firstname="ngModel" [ngModel]="user().firstName"
+                    (ngModelChange)="updateUserField('firstName', $event)" required>
             </div>
 
             <div class="form-group">
@@ -17,18 +18,19 @@
                     <label for="lastName">გვარი</label>
                     <span class="error-text" *ngIf="lastname.touched && user().lastName === ''">სავალდებულო</span>
                 </div>
-                <input type="text" id="lastName" name="lastName" placeholder="გვარი"
-                    #lastname="ngModel" [ngModel]="user().lastName" (ngModelChange)="updateUserField('lastName', $event)" required>
+                <input type="text" id="lastName" name="lastName" placeholder="გვარი" #lastname="ngModel"
+                    [ngModel]="user().lastName" (ngModelChange)="updateUserField('lastName', $event)" required>
             </div>
-      
+
             <div class="form-group email-group">
                 <div class="row">
                     <label for="email">ელ-ფოსტა</label>
                     <span class="error-text" *ngIf="email.touched && user().email === ''">სავალდებულო</span>
                 </div>
-                <input type="email" id="email" name="email" placeholder="email@example.com"
-                    #email="ngModel" [ngModel]="user().email" (ngModelChange)="updateUserField('email', $event)" required>
-                <img (click)="sendactivationcode(user().email)" class="right-arrow-img" src="../../../assets/mail-right-arrow.png" alt="Send Code" title="კოდის გაგზავნა">
+                <input type="email" id="email" name="email" placeholder="email@example.com" #email="ngModel"
+                    [ngModel]="user().email" (ngModelChange)="updateUserField('email', $event)" required>
+                <img (click)="sendactivationcode(user().email)" class="right-arrow-img"
+                    src="../../../assets/mail-right-arrow.png" alt="Send Code" title="კოდის გაგზავნა">
             </div>
 
             <div class="form-group">
@@ -37,33 +39,36 @@
                     <span class="error-text" *ngIf="activationCode.touched && activationCode.invalid">სავალდებულო</span>
                 </div>
                 <input type="text" id="activationCode" name="activationCode" placeholder="შეიყვანეთ კოდი"
-                    #activationCode="ngModel" [ngModel]="user().activationCode" (ngModelChange)="updateUserField('activationCode', $event)" required>
-                
+                    #activationCode="ngModel" [ngModel]="user().ActivationCode"
+                    (ngModelChange)="updateUserField('ActivationCode', $event)" required>
+
                 <div class="activation-status" *ngIf="activationMessage() !== ''">
-                    {{ activationMessage() }} 
+                    {{ activationMessage() }}
                     <span class="resend-link" (click)="resendactivationcode(user().email)">თავიდან გაგზავნა</span>
                 </div>
-                <div class="error-text" style="padding-left: 20px; font-size: 11px;" *ngIf="!timerRunning() && activationCode.touched">
+                <div class="error-text" style="padding-left: 20px; font-size: 11px;"
+                    *ngIf="!timerRunning() && activationCode.touched">
                     *ბმულის მოქმედების ვადა ამოიწურა
                 </div>
             </div>
-            
+
             <div class="form-group">
                 <div class="row">
                     <label for="idNumber">პირადი ნომერი</label>
                     <span class="error-text" *ngIf="idNum.touched && user().idNumber === ''">სავალდებულო</span>
                 </div>
-                <input type="text" id="idNumber" name="idNumber" maxlength="11" placeholder="00000000000" 
-                    #idNum="ngModel" [ngModel]="user().idNumber" (ngModelChange)="updateUserField('idNumber', $event)" required>
+                <input type="text" id="idNumber" name="idNumber" maxlength="11" placeholder="00000000000"
+                    #idNum="ngModel" [ngModel]="user().idNumber" (ngModelChange)="updateUserField('idNumber', $event)"
+                    required>
             </div>
-      
+
             <div class="form-group">
                 <div class="row">
                     <label for="password">პაროლი</label>
                     <span class="error-text" *ngIf="pass.touched && user().password === ''">სავალდებულო</span>
                 </div>
-                <input type="password" id="password" name="password" placeholder="მინ. 8 სიმბოლო (@7,)" 
-                    #pass="ngModel" [ngModel]="user().password" (ngModelChange)="updateUserField('password', $event)" required>
+                <input type="password" id="password" name="password" placeholder="მინ. 8 სიმბოლო (@7,)" #pass="ngModel"
+                    [ngModel]="user().password" (ngModelChange)="updateUserField('password', $event)" required>
             </div>
 
             <div class="button">

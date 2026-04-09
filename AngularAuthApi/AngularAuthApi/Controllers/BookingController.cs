@@ -10,7 +10,7 @@ namespace AngularAuthApi.Controllers
         {
             var data = await bookingService.GetClientAppointmentsAsync(ClientIdNumber);
             if (data == null || data.Count == 0)
-                return NotFound(new { message = "No Data Found" });
+                return Ok(new { data = new List<AppointmentDto>(), Count = 0 });
 
             return Ok(new { data, Count = data.Count });
         }
@@ -20,7 +20,7 @@ namespace AngularAuthApi.Controllers
         {
             var data = await bookingService.GetClientAppointmentsByTdidAsync(ClientIdNumber, tdId);
             if (data == null || data.Count == 0)
-                return NotFound(new { message = "No Data Found" });
+                return Ok(new { data = new List<AppointmentDto>(), Count = 0 });
 
             return Ok(new { data, Count = data.Count });
         }
@@ -46,7 +46,7 @@ namespace AngularAuthApi.Controllers
         {
             var data = await bookingService.GetDoctorAppointmentsAsync(IdNumber);
             if (data == null || data.Count == 0)
-                return NotFound(new { message = "No Data Found" });
+                return Ok(new { data = new List<AppointmentDto>(), Count = 0 });
 
             return Ok(new { data, Count = data.Count });
         }
@@ -56,7 +56,7 @@ namespace AngularAuthApi.Controllers
         {
             var data = await bookingService.GetDoctorAppointmentsByTdidAsync(IdNumber, tdId);
             if (data == null || data.Count == 0)
-                return NotFound(new { message = "No Data Found" });
+                return Ok(new { data = new List<AppointmentDto>(), Count = 0 });
 
             return Ok(new { data, Count = data.Count });
         }

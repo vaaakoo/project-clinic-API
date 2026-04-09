@@ -7,6 +7,7 @@ import { TableDataService, TableCell } from '../../core/auth/table-data-service.
 import { CommonModule } from '@angular/common';
 import { AppCustomTableComponent } from '../../helpers/custom-table/custom-table.component';
 import { CategoryFieldComponent } from '../../helpers/category-field/category-field.component';
+import { NotificationService } from '../../services/notification.service';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -27,7 +28,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthserviceService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly messageService = inject(MessageService);
+  private readonly notificationService = inject(NotificationService);
   public readonly tableDataService = inject(TableDataService);
 
   private destroy$ = new Subject<void>();
@@ -63,7 +64,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         console.error('Error fetching doctor data:', err);
-        this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'ექიმის მონაცემების ჩატვირთვა ვერ მოხერხდა' });
+        this.notificationService.showError('შეცდომა', 'ექიმის მონაცემების ჩატვირთვა ვერ მოხერხდა');
       }
     });
   }
@@ -101,7 +102,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
 
   onCellClick(cell: TableCell) {
     if (cell.status === 'unavailable') {
-      this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'ეს დრო მიუწვდომელია' });
+      this.notificationService.showError('შეცდომა', 'ეს დრო მიუწვდომელია');
       return;
     }
 
@@ -112,7 +113,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
     const patient = this.patient();
     if (!patient) {
       this.unauthorizedMessageShown.set(true);
-      this.messageService.add({ severity: 'warn', summary: 'ავტორიზაცია', detail: 'ვიზიტის დასაჯავშნად საჭიროა ავტორიზაცია' });
+      this.notificationService.showWarning('ავტორიზაცია', 'ვიზიტის დასაჯავშნად საჭიროა ავტორიზაცია');
       return;
     }
 
@@ -139,13 +140,13 @@ export class BookingPageComponent implements OnInit, OnDestroy {
 
     this.authService.clientBookAppointment(formData).subscribe({
       next: (res) => {
-        this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: 'ვიზიტი დაჯავშნილია' });
+        this.notificationService.showSuccess('წარმატება', 'ვიზიტი დაჯავშნილია');
         this.isModalOpen.set(false);
         this.messageToDoctor.set('');
         this.loadAppointments(doc.idNumber);
       },
       error: (err: any) => {
-        this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'დაჯავშნა ვერ მოხერხდა' });
+        this.notificationService.showError('შეცდომა', 'დაჯავშნა ვერ მოხერხდა');
       }
     });
   }
@@ -171,7 +172,7 @@ export class BookingPageComponent implements OnInit, OnDestroy {
 
         this.authService.clientRemoveAppointment(formData).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: 'ჯავშანი წაშლილია' });
+            this.notificationService.showSuccess('წარმატება', 'ჯავშანი წაშლილია');
             this.loadAppointments(doc.idNumber);
           },
           error: (err: any) => console.error('Error removing appointment:', err)

@@ -7,7 +7,7 @@ namespace AngularAuthApi.Models.DTOs
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public required string IdNumber { get; set; }
-        public required string activationcode { get; set; }
+        public required string ActivationCode { get; set; }
     }
 
     public class RegisterDoctorDto

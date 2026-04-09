@@ -1,8 +1,8 @@
 import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 import { AuthserviceService } from '../../core/auth/authservice.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-password-change-modal',
@@ -13,7 +13,7 @@ import { AuthserviceService } from '../../core/auth/authservice.service';
 })
 export class PasswordChangeModalComponent {
   private readonly authService = inject(AuthserviceService);
-  private readonly messageService = inject(MessageService);
+  private readonly notificationService = inject(NotificationService);
 
   readonly oldPassword = signal('');
   readonly newPassword = signal('');
@@ -27,18 +27,17 @@ export class PasswordChangeModalComponent {
     const newPass = this.newPassword();
 
     if (!oldPass || !newPass) {
-      this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'ორივე პაროლი სავალდებულოა' });
+      this.notificationService.showError('შეცდომა', 'ორივე პაროლი სავალდებულოა');
       return;
     }
 
     this.authService.changePassword(user.email, oldPass, newPass).subscribe({
       next: (response) => {
-        this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: response.message });
+        this.notificationService.showSuccess('წარმატება', response.message);
         this.submissionSuccess.set(true);
-        // We could emit an event here to close the modal
       },
       error: (error) => {
-        this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: error.error?.message || 'შეცდომა პაროლის შეცვლისას' });
+        this.notificationService.showError('შეცდომა', error.error?.message || 'შეცდომა პაროლის შეცვლისას');
         this.submissionSuccess.set(false);
       }
     });

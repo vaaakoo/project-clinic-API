@@ -30,7 +30,7 @@ export class ClientRegistrationComponent implements OnDestroy {
     lastName: '',
     email: '',
     idNumber: '',
-    activationCode: '',
+    ActivationCode: '',
     password: '',
   });
 

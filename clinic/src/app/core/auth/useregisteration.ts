@@ -4,7 +4,7 @@ export class Useregisteration {
     lastName: string = '';
     email: string = '';
     idNumber: string = '';
-    activationCode: string = ''; 
+    ActivationCode: string = ''; 
     password: string = '';
   }
 

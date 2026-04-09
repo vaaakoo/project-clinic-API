@@ -30,6 +30,13 @@ namespace AngularAuthApi.Services
         {
             try
             {
+                // Inject common branding placeholders
+                if (!placeholders.ContainsKey("ApplicationName"))
+                    placeholders["ApplicationName"] = _settings.ApplicationName;
+                
+                if (!placeholders.ContainsKey("Year"))
+                    placeholders["Year"] = DateTime.Now.Year.ToString();
+
                 var body = await GetTemplateAsync(templateName, placeholders, ct);
 
                 using var smtpClient = new SmtpClient(_settings.SmtpServer)
@@ -41,7 +48,7 @@ namespace AngularAuthApi.Services
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress(_settings.FromEmail),
+                    From = new MailAddress(_settings.FromEmail, _settings.ApplicationName),
                     Subject = subject,
                     Body = body,
                     IsBodyHtml = true

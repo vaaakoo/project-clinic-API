@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { AppCustomTableComponent } from '../../helpers/custom-table/custom-table.component';
 import { CategoryFieldComponent } from '../../helpers/category-field/category-field.component';
 import { PasswordChangeModalComponent } from '../../helpers/password-change-modal/password-change-modal.component';
+import { NotificationService } from '../../services/notification.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -27,7 +28,7 @@ export class ClientPageComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthserviceService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly messageService = inject(MessageService);
+  private readonly notificationService = inject(NotificationService);
   public readonly tableDataService = inject(TableDataService);
 
   private destroy$ = new Subject<void>();
@@ -100,7 +101,7 @@ export class ClientPageComponent implements OnInit, OnDestroy {
 
   onCellClick(cell: TableCell) {
     if (cell.status === 'unavailable') {
-      this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'ეს დრო მიუწვდომელია' });
+      this.notificationService.showError('შეცდომა', 'ეს დრო მიუწვდომელია');
       return;
     }
 
@@ -147,7 +148,7 @@ export class ClientPageComponent implements OnInit, OnDestroy {
 
         this.authService.clientRemoveAppointment(formData).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: 'ჯავშანი წაიშალა' });
+            this.notificationService.showSuccess('წარმატება', 'ჯავშანი წაიშალა');
             this.loadAppointments(patient.idNumber);
             this.tooltipBox.set(false);
           },

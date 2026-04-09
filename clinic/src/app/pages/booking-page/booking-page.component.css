@@ -1,151 +1,145 @@
 /* home.component.css */
 .home-hero {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-/* category */
+/* category container */
 .categories {
-    display: flex;
-    margin-top: 41px;
-    margin-bottom: 191px;
-    gap: 62px;
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center;
+  margin-top: 41px;
+  margin-bottom: 50px;
+  gap: 30px;
+  width: 100%;
 }
-.custom-table tbody td.activated {
-  background-color: #DAFAEE;
-  border-radius: 5px;
 
-}
-.custom-table tbody td.disactivated {
-  background-color: #FF93A6;
-  border-radius: 5px;
-}
-.tdclick{
-  cursor: pointer;
-}
 .category {
-    width: 350px;
-    height: 800px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 350px;
+  min-height: 600px;
+  height: auto;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  padding-bottom: 30px;
 }
-
-/* category */
-
-
-
-/* doctors */
 
 .doctor-hero {
-    display: flex;
-    flex-direction: column;
-    gap: 67px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  flex: 1;
+  max-width: 1250px; /* Sidebar + Calendar + Gap */
 }
+
+/* doctors section */
 .doctors {
-    width: 1208px;
-    height: 250px;
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-    background: var(--bg-card);
-    box-shadow: var(--shadow); 
-    padding: 45px 48px 45px;
+  width: 100%;
+  max-width: 366px;
+  min-height: 600px;
+  height: auto;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);   
 }
 
 .hero-doctor {
-    width: 100%;
-    display: flex;
-    gap: 36px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+  justify-content: center;
+  padding: 45px 20px 30px;
 }
 
 .hero-doctor .upper {
-    display: flex;
-    align-items: center;
-    gap: 40px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.hero-doctor > img {
+  width: 100%;
+  height: auto;
+  max-height: 2px;
+  object-fit: contain;
+  margin: 10px 0;
+}
+
+.upper-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
 .upper .main-image {
-    width: 157px;
-    height: 157px;    
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-.upper-child {
-    display: flex;
-    flex-direction: column;
-    gap: 17px;
-    min-width: 270px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .upper h4 {
-    color: var(--text-main);
-    font-family: FiraGO;
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    margin-bottom: 0px;
+  color: var(--text-accent);
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 5px;
 }
 
 .upper p {
-    color: var(--text-muted);
-    font-family: FiraGO;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.doctors-stars {
+  display: flex;
+  gap: 4px;
 }
 
 .cv-style {
-    display: flex;
-    flex-direction: column;
-    gap: 17px;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
 }
 
 .cv-style p {
-    color: var(--text-main);
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+  color: var(--text-main);
+  font-size: 14px;
+  line-height: 1.4;
 }
 
-.cv-style .blue-text {
-    color: var(--text-accent);
+.blue-text {
+  color: var(--text-accent);
+  font-weight: 500;
 }
 
-.cv-style :last-child {
-    margin-top: 6px;
-}
-
-
-.time-and-table {
-    display: flex;
-    gap: 51px;
-}
-
-/* calendar */
+/* calendar section */
 .calendar {
   display: flex;
   flex-direction: column;
-  width: 1111px;
-  height: 700px;
-  gap: 30px;
+  width: 100%;
+  max-width: 830.5px;
+  height: auto;
+  min-height: 655px;
+  gap: 31px;
 }
-
 
 .time {
   display: flex;
-  gap: 43px;
+  flex-wrap: wrap;
+  gap: 20px;
   align-items: center;
-  margin-left: 49px;
+  justify-content: center;
 }
 
-.buttons-click{
+.buttons-click {
   display: flex;
   gap: 10px;
 }
@@ -156,27 +150,20 @@
   border-radius: 50%;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  fill: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   filter: var(--shadow);
 }
 
-.arrow-left {
-  display: flex;
-  align-items: center;
-  padding-left: 13px;
-}
-.arrow-right {
-  display: flex;
-  align-items: center;
-  padding-left: 10px;
+.buttons-click .arrow img {
+  filter: var(--icon-filter);
 }
 
-span .year {
+.year {
   color: var(--text-main);
   font-size: 18px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
 }
 
 .action-button {
@@ -187,176 +174,140 @@ span .year {
   border: 1px solid var(--border-color);
   color: var(--text-accent);
   font-size: 18px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
 }
 
+.change-sect {
+  margin-top: 31px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: flex-end;
+}
 
+.redact, .delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: auto;
+  min-width: 170px;
+  height: 50px;
+  border-radius: 50px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0 20px;
+}
 
+.redact { background: var(--bg-secondary); color: var(--text-accent); border: 1px solid var(--border-color); }
+.delete { background: #FF93A6; border: none; color: white; }
+
+/* Booking Modal */
 .booking-message {
-  position: absolute;
-  display: none;
-  margin-left: 589px;
-  margin-top: 278px;
-  width: 420px;
-  height: 263px;
-  flex-shrink: 0;
-  color: var(--text-main);
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow);
-  z-index: 999;  
-  text-align: center;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
 }
 
 .booking-message-box {
+  width: 90%;
+  max-width: 450px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   gap: 15px;
-  padding: 25px 31px 20px 32px;
-  text-align: left;
 }
 
-.booking-message-box:first-child {
-  color: #3ACF99;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+.booking-message-box p:first-child {
+  color: var(--text-main);
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .booking-message-box .last-child {
-  color: var(--text-main);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
-.booking-message-box button {
-  width: 170px;
-  height: 50px;
-  margin-left: auto;
-}
-
-#messageToDoctor {
-  padding: 10px;
-}
-.adding {
-  border: none;
-  border-radius: 50px;
-  background: #3ACF99;
-  color: #FFF;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
 .booking-message-box textarea {
-  width: 357px;
-  height: 90px;
-  flex-shrink: 0;
-  border-radius: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  background: var(--input-bg);
   color: var(--text-main);
   resize: none;
+  font-family: inherit;
+}
+
+.booking-message-box .adding {
+  width: 100%;
+  height: 45px;
+  background: var(--text-accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.booking-message-box .adding:hover { opacity: 0.9; }
+
+.close {
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--text-muted);
 }
 
 .unauthorized-message {
-  position: absolute;
-  margin-left: 256px;
-  margin-top: 552px;
-  padding: 18px 32px;
-  width: 320px;
-  height: 78px;
-  color: var(--text-main);
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow);
-  z-index: 999;  
-  text-align: center;
-}
-
-.unauthorized-message p {
-  color: #FF2C52;
-  text-align: center;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    text-align: center;
+    color: var(--text-main);
+    margin-bottom: 20px;
 }
 
 .unauthorized-message span {
-  color: var(--text-main);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+    color: var(--text-accent);
+    font-weight: 500;
 }
 
-  /* changes buttons */
-
-  .change-sect {
-    display: flex;
+/* Responsive Media Queries */
+@media (max-width: 1350px) {
+  .categories {
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    padding: 0 15px;
   }
-  
-  .redacted-button {
-    display: flex;
+}
+
+@media (max-width: 1200px) {
+  .doctor-hero {
     flex-direction: column;
-  }
-
-  .comment-redact {
-    color: var(--text-muted);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    text-align: center;
-  }
-  
-  .change-sect .redact {
-    display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 230px;
-    height: 50px;
-    border: 1px solid var(--border-color);
-    border-radius: 50px;
-    background: var(--bg-secondary);
-  }
-  
-  .redact p {
-    color: var(--text-accent);
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
+    width: 100%;
   }
 
+  .calendar {
+      max-width: 100%;
+      overflow-x: auto;
+  }
+}
 
-  .change-sect .delete {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 170px;
-    height: 50px;
-    border: none;
-    border-radius: 50px;
-    background: #FF93A6;
-  }
-  
-  .delete p {
-    color: #FFF;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-  }
+@media (max-width: 768px) {
+    .hero-doctor .upper {
+        flex-direction: column;
+        text-align: center;
+    }
+}

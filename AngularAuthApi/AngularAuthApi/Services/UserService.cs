@@ -7,7 +7,10 @@ namespace AngularAuthApi.Services
         public async Task<bool> RegisterUserAsync(RegisterUserDto dto)
         {
             var activationCodeEntity = await context.ActivationCodes
-                .FirstOrDefaultAsync(ac => ac.Email == dto.Email && ac.Code == dto.activationcode && !ac.Used && ac.ExpirationTime > DateTime.Now);
+                .FirstOrDefaultAsync(ac => ac.Email == dto.Email && 
+                                          ac.Code == dto.ActivationCode && 
+                                          !ac.Used && 
+                                          ac.ExpirationTime > DateTime.UtcNow);
 
             if (activationCodeEntity == null) return false;
 
