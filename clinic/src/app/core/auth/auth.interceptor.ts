@@ -1,18 +1,36 @@
-// auth.interceptor.ts
-import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { AuthserviceService } from './authservice.service';
+import { catchError, switchMap, throwError } from 'rxjs';
 
-@Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthserviceService) {}
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthserviceService);
+  const token = authService.accessToken();
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const authToken = this.authService.getToken().token;
-    // console.log('AuthToken:', authToken);
-    const authReq = req.clone({
-      setHeaders: { Authorization: `Bearer ${authToken}` }
+  let authReq = req;
+  if (token) {
+    authReq = req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` }
     });
-    return next.handle(authReq);
   }
-}
+
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401 && !req.url.includes('Token/refresh')) {
+        return authService.refreshUserToken().pipe(
+          switchMap((response) => {
+            const retryReq = req.clone({
+              setHeaders: { Authorization: `Bearer ${response.accessToken}` }
+            });
+            return next(retryReq);
+          }),
+          catchError((refreshError) => {
+            authService.logout();
+            return throwError(() => refreshError);
+          })
+        );
+      }
+      return throwError(() => error);
+    })
+  );
+};

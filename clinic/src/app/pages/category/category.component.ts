@@ -1,128 +1,132 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AuthserviceService } from '../../core/auth/authservice.service';
 import { doctorregisteration } from '../../core/auth/useregisteration';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../../core/auth/category-list.service';
 import { MessageService } from 'primeng/api';
-import { BasePageComponent } from '../base-page/base-page.component';
-
-declare var $: any;
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { RatingModule } from 'primeng/rating';
 
 @Component({
   selector: 'app-category',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    DialogModule,
+    DropdownModule,
+    RatingModule
+  ],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.css']
 })
-export class CategoryComponent extends BasePageComponent implements OnInit {
-  constructor(public authservice: AuthserviceService, private route: ActivatedRoute, private router: Router, private categoryService: CategoryService, private messageService: MessageService) {
-    super();
-  }
+export class CategoryComponent implements OnInit {
+  private readonly authService = inject(AuthserviceService);
+  private readonly categoryService = inject(CategoryService);
+  private readonly messageService = inject(MessageService);
+  private readonly route = inject(ActivatedRoute);
 
-  alldoctor: doctorregisteration[] = [];
-  selectedDoctor: doctorregisteration | null = null;
-
-  doctorfirstName: string = "";
-  doctorEmail: string = "";
-
-  doctorPassword: string = "";
-  displayModal: boolean = false;
-  categories: string[] | undefined;
-  doctorRating: number = 1;
-
-
+  // State Signals
+  readonly alldoctors = signal<doctorregisteration[]>([]);
+  readonly displayModal = signal(false);
+  readonly categories = signal<string[]>([]);
+  
+  // Form Signals
+  readonly selectedDoctor = signal<doctorregisteration | null>(null);
+  readonly formFirstName = signal('');
+  readonly formLastName = signal('');
+  readonly formEmail = signal('');
+  readonly formCategory = signal('');
+  readonly formIdNumber = signal('');
+  readonly formPassword = signal('');
+  readonly formRating = signal(1);
 
   ngOnInit() {
     this.loadDoctorData();
-
-    // Move this part inside ngOnInit
-    this.route.params.subscribe(params => {
-      const doctorId = params['id'];
-      // console.log('Doctor ID from route parameters:', doctorId);
-    });
-    this.categories = this.categoryService.getCategoryList();
+    this.categories.set(this.categoryService.getCategoryList());
   }
 
   loadDoctorData() {
-    this.authservice.getallDoctor().subscribe(
-      (data: doctorregisteration[]) => {
-        this.alldoctor = data;
-        // console.log('Received data:', this.alldoctor);
-      },
-      (error) => {
-        console.error('Error fetching doctor data:', error);
-      }
-    );
+    this.authService.getallDoctor().subscribe({
+      next: (data) => this.alldoctors.set(data),
+      error: (err: any) => console.error('Error fetching doctor data:', err)
+    });
   }
 
   deleteDoctor(doctorId: number) {
-    if (confirm('Are you sure you want to delete this doctor?')) {
-      this.authservice.deleteDoctor(doctorId).subscribe(
-        () => {
-          // Update the list of doctors after deletion
+    if (confirm('ნამდვილად გსურთ ექიმის წაშლა?')) {
+      this.authService.deleteDoctor(doctorId).subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: 'ექიმი წაიშალა' });
           this.loadDoctorData();
         },
-        (error) => {
-          console.error('Error deleting doctor:', error);
-        }
-      );
-    }
-  }
-
-
-
-  editDoctor(doctor: doctorregisteration) {
-    this.selectedDoctor = doctor;
-    this.displayModal = true;
-    console.log(this.selectedDoctor);
-  }
-
-
-  changeDoctorData() {
-    debugger;
-    if (!this.isFormValid()) {
-      this.messageService.add({severity:'error', summary:'Error', detail:'Please fill at least one field.'});
-      return; // Exit the method early if the form data is invalid
-    }
-  
-    if (this.selectedDoctor) {
-      this.selectedDoctor.firstName = this.doctorfirstName;
-      this.selectedDoctor.lastName = this.doctorLastName;
-      this.selectedDoctor.email = this.doctorEmail;
-      this.selectedDoctor.category = this.doctorCategory;
-      this.selectedDoctor.idNumber = this.doctorIdNumber;
-      this.selectedDoctor.password = this.doctorPassword;
-      this.selectedDoctor.starNum = this.doctorRating;
-  
-      this.authservice.updateDoctor(this.selectedDoctor).subscribe({
-        next: (result) => {
-          console.log(result);
-          this.loadDoctorData();
-          this.displayModal = false;
-          this.messageService.add({severity:'success', summary:'Success', detail:'goooooood!'});
-        },
-        error: (error) => {
-          console.error('Error updating doctor:', error);
-          this.messageService.add({severity:'error', summary:'Error', detail:'An error occurred while updating the doctor.'});
+        error: (err: any) => {
+          console.error('Error deleting doctor:', err);
+          this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'წაშლა ვერ მოხერხდა' });
         }
       });
     }
   }
-  
+
+  editDoctor(doctor: doctorregisteration) {
+    this.selectedDoctor.set(doctor);
+    this.formFirstName.set(doctor.firstName);
+    this.formLastName.set(doctor.lastName);
+    this.formEmail.set(doctor.email);
+    this.formCategory.set(doctor.category);
+    this.formIdNumber.set(doctor.idNumber);
+    this.formPassword.set(doctor.password || '');
+    this.formRating.set(doctor.starNum);
+    this.displayModal.set(true);
+  }
+
+  changeDoctorData() {
+    if (!this.isFormValid()) {
+      this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'გთხოვთ შეავსოთ ყველა ველი' });
+      return;
+    }
+
+    const currentDoc = this.selectedDoctor();
+    if (currentDoc) {
+      const updatedDoc: doctorregisteration = {
+        ...currentDoc,
+        firstName: this.formFirstName(),
+        lastName: this.formLastName(),
+        email: this.formEmail(),
+        category: this.formCategory(),
+        idNumber: this.formIdNumber(),
+        password: this.formPassword(),
+        starNum: this.formRating()
+      };
+
+      this.authService.updateDoctor(updatedDoc).subscribe({
+        next: () => {
+          this.loadDoctorData();
+          this.displayModal.set(false);
+          this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: 'მონაცემები განახლდა' });
+        },
+        error: (err: any) => {
+          console.error('Error updating doctor:', err);
+          this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'განახლება ვერ მოხერხდა' });
+        }
+      });
+    }
+  }
+
   isFormValid(): boolean {
     return (
-      this.doctorfirstName.trim() !== '' ||
-      this.doctorLastName.trim() !== '' ||
-      this.doctorEmail.trim() !== '' ||
-      this.doctorCategory.trim() !== '' ||
-      this.doctorIdNumber.trim() !== '' ||
-      this.doctorPassword.trim() !== '' 
+      this.formFirstName().trim() !== '' &&
+      this.formLastName().trim() !== '' &&
+      this.formEmail().trim() !== '' &&
+      this.formCategory().trim() !== '' &&
+      this.formIdNumber().trim() !== ''
     );
   }
-  
-  
 
   getStarArray(starNum: number): number[] {
-    return Array.from({ length: starNum }, (_, index) => index);
+    return Array.from({ length: starNum || 0 }, (_, index) => index);
   }
-
 }

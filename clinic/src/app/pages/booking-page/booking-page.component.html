@@ -1,25 +1,23 @@
 <div class="home-hero">
     <div class="categories">
       <!-- კატეგორიები -->
-      <app-category-field class="category"></app-category-field>
+      <app-category-field class="category" />
 
       <div class="doctor-hero">
           <!-- ექიმები -->
           <div class="doctors">
               <div class="hero-doctor">
                   <div class="upper">
-                      <img class="main-image" [src]="this.doctor?.imageUrl">
+                      <img class="main-image" [src]="doctor()?.imageUrl" alt="Doctor">
                     <div class="upper-child">
-                        <h4>{{this.doctor?.firstName}} {{ this.doctor?.lastName }}</h4>
-                        <p>{{this.doctor?.category}}</p>
+                        <h4>{{ doctor()?.firstName }} {{ doctor()?.lastName }}</h4>
+                        <p>{{ doctor()?.category }}</p>
                         
-                        <div class="doctors-stars" *ngIf="this.doctor">
-                          <ng-container *ngFor="let star of getStarArray(this.doctor?.starNum || 0)">
+                        <div class="doctors-stars" *ngIf="doctor()">
+                          <ng-container *ngFor="let star of getStarArray(doctor()?.starNum || 0)">
                             <img src="../../../assets/material-symbols_star-rounded.png" alt="Star">
                           </ng-container>
                         </div>
-                        
-                        
                     </div>
                   </div>
                   <img src="../../../assets/Vector 7.png" alt="">
@@ -27,7 +25,6 @@
                     <p><span class="blue-text">2017 - დღემდე</span>, ჩვენი კლინიკის გენერალური დირექტორი</p>
                     <p><span class="blue-text">2002 - დღემდე</span>, ჩვენი კომპიუტერული ტომოგრაფიის განყოფილების ხელმძღვანელი</p>
                     <p><span class="blue-text">1995 - დღემდე</span>, კარდიოლოგი / არითმოლოგი</p>
-
                   </div>
               </div> 
           </div>
@@ -36,34 +33,50 @@
               <div class="time">
                 <span class="year">2023</span>
                 <div class="buttons-click">
-                    <span class="arrow arrow-left "><img src="../../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
+                    <span class="arrow arrow-left "><img src="../../../assets/material-symbols_arrow-back-ios-rounded.png" alt="Left"></span>
                     <button class="action-button">აპრილი</button>
-                    <span class="arrow arrow-right"><img src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
+                    <span class="arrow arrow-right"><img src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt="Right"></span>
                 </div>
             </div>
               <div class="time-and-table">
-                <app-custom-table [tableData]="tableDataService.tableData" [tableHeaders]="tableDataService.tableHeaders"></app-custom-table>
+                <!-- Custom Table with Signal Binding -->
+                <app-custom-table 
+                    [tableData]="tableDataService.tableData()" 
+                    [tableHeaders]="tableDataService.tableHeaders()"
+                    (cellClick)="onCellClick($event)"
+                    (deleteClick)="onDeleteClick($event)">
+                </app-custom-table>
 
-                <div *ngIf="unauthorizedMessageShown" class="unauthorized-message">
+                <div *ngIf="unauthorizedMessageShown()" class="unauthorized-message">
                   <p>დასაჯავშნათ გთხოვთ გაიაროთ </p>
                   <span>ავტორიზაცია ან რეგისტრაცია</span>
                 </div>
 
-                <div id="myModal" class="booking-message">
+                <!-- Booking Modal -->
+                <div *ngIf="isModalOpen()" class="booking-message">
                   <div class="booking-message-box modal-content">
-                    <p>გსურთ ვიზიტის დაჯავნშნა ?</p>
-                    <p class="last-child">შეგიძლიათ მიუთუთოთ თქვენი პორბლემა</p>
-                    <textarea id="messageToDoctor" placeholder="აღწერა..." rows="5"></textarea>
-                    <button id="confirmMessage" class="adding">დაჯავშნა</button>
+                    <div class="d-flex justify-content-between">
+                        <p>გსურთ ვიზიტის დაჯავნშნა ?</p>
+                        <span class="close" (click)="isModalOpen.set(false)">&times;</span>
+                    </div>
+                    <p class="last-child">შეგიძლიათ მიუთუთოთ თქვენი პრობლემა</p>
+                    <textarea 
+                        [ngModel]="messageToDoctor()" 
+                        (ngModelChange)="messageToDoctor.set($event)" 
+                        placeholder="აღწერა..." 
+                        rows="5">
+                    </textarea>
+                    <button (click)="confirmBooking()" class="adding">დაჯავშნა</button>
                   </div>
                 </div>
+
               <div class="change-sect">
                   <button class="redact">
-                      <span><img src="../../../assets/edit-svgrepo-com 2.png" alt=""></span>
+                      <span><img src="../../../assets/edit-svgrepo-com 2.png" alt="Edit"></span>
                       <p>რედაქტირება</p>
                   </button>
                 <button class="delete">
-                    <span><img src="../../../assets/delete-file-svgrepo-com 3.png" alt=""></span>
+                    <span><img src="../../../assets/delete-file-svgrepo-com 3.png" alt="Delete"></span>
                     <p>წაშლა</p>
                 </button>
             </div>

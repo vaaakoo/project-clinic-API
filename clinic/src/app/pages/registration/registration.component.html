@@ -1,74 +1,72 @@
-<div class="registration-form" >
-    <h2>რეგისტრაცია</h2>
-    
-    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
-      <div class="form-group">
-        <label for="firstName">სახელი</label>
-        <input type="text" id="firstName" name="firstName" placeholder="( მინიმუმ 5 სიმბოლო )" [(ngModel)]="authserviceService.doctor.firstName" required>
-      </div>
-  
+<div class="registration-container">
+    <div class="registration-form">
+        <h2>ექიმის რეგისტრაცია</h2>
+        
+        <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+            <div class="form-group">
+                <label for="firstName">სახელი</label>
+                <input type="text" id="firstName" name="firstName" placeholder="სახელი (მინ. 5 სიმბოლო)" 
+                    [ngModel]="doctor().firstName" (ngModelChange)="updateDoctorField('firstName', $event)" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">გვარი</label>
+                <input type="text" id="lastName" name="lastName" placeholder="გვარი"
+                    [ngModel]="doctor().lastName" (ngModelChange)="updateDoctorField('lastName', $event)" required>
+            </div>
       
-      <div class="form-group email-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" [(ngModel)]="authserviceService.doctor.email" required class="email-input">
-      </div>
+            <div class="form-group">
+                <label for="email">ელ-ფოსტა</label>
+                <input type="email" id="email" name="email" placeholder="email@example.com"
+                    [ngModel]="doctor().email" (ngModelChange)="updateDoctorField('email', $event)" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="idNumber">პირადი ნომერი</label>
+                <input type="text" id="idNumber" name="idNumber" maxlength="11" placeholder="00000000000" 
+                    [ngModel]="doctor().idNumber" (ngModelChange)="updateDoctorField('idNumber', $event)" required>
+            </div>
       
-      <div class="form-group">
-        <label for="idNumber">პირადი</label>
-        <input type="text" id="idNumber" name="idNumber" maxlength="11" placeholder="00000000000" [(ngModel)]="authserviceService.doctor.idNumber" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="lastName">გვარი</label>
-        <input type="text" id="lastName" name="lastName" [(ngModel)]="authserviceService.doctor.lastName" required>
-      </div>
-  
-      <div class="form-group">
-        <label for="password">პაროლი</label>
-        <input type="password" id="password" name="password" placeholder="( მინიმუმ 8 სიმბოლო : @ 7 , )" [(ngModel)]="authserviceService.doctor.password" required>
-      </div>
+            <div class="form-group">
+                <label for="password">პაროლი</label>
+                <input type="password" id="password" name="password" placeholder="მინ. 8 სიმბოლო (@7,)" 
+                    [ngModel]="doctor().password" (ngModelChange)="updateDoctorField('password', $event)" required>
+            </div>
 
-      <!-- registration.component.html -->
+            <div class="form-group">
+                <label for="selectedCategory">კატეგორია</label>
+                <div class="custom-select-wrapper">
+                    <select id="selectedCategory" name="selectedCategory" [ngModel]="doctor().category" (ngModelChange)="updateDoctorField('category', $event)" required>
+                        <option value="" disabled selected hidden>აირჩიეთ კატეგორია...</option>
+                        <option *ngFor="let category of categoryList()" [value]="category">{{ category }}</option>
+                    </select>
+                    <div class="custom-select-arrow"></div>
+                </div>
+            </div>
 
-      <div class="form-group">
-        <label for="selectedCategory">კატეგორია</label>
-        <div class="custom-select-wrapper">
-          <select class="category-default" id="selectedCategory" name="selectedCategory" [(ngModel)]="authserviceService.doctor.category">
-            <option value="" disabled selected hidden>ანესთეზიოლოგი / თერაპევტი ან სხვა...</option>
-            <option *ngFor="let category of categoryList" [value]="category">{{ category }}</option>
-          </select>
-          <div class="custom-select-arrow"></div>
-        </div>
-      </div>
+            <div class="form-group">
+                <label for="image">ექიმის სურათი</label>
+                <div class="custom-file-upload" (click)="imageInput.click()">
+                    <span class="file-label">{{ userImage() ? 'სურათი შერჩეულია' : 'აირჩიეთ ფაილი' }}</span>
+                    <img src="../../assets/photo-outline.png" alt="Upload" class="file-icon">
+                    <input type="file" #imageInput hidden (change)="onImageChange($event)">
+                </div>
+            </div>
 
-      <!-- image -->
-      <div class="form-group form-group1">
-        <label for="image">სურათი</label>
-        <div class="custom">
-          <input type="file" id="image" name="image"  (change)="onImageChange($event)">
-          <label for="image" class="custom-label">
-            <img src="../../assets/photo-outline.png" alt="Choose file">
-          </label>
-        </div>
-       
-      </div>
+            <div class="form-group">
+                <label for="starNum">შეფასება</label>
+                <div class="custom-select-wrapper">
+                    <select id="starNum" name="starNum" [ngModel]="doctor().starNum" (ngModelChange)="updateDoctorField('starNum', $event)" required>
+                        <option value="" disabled selected hidden>აირჩიეთ შეფასება (1-5)</option>
+                        <option *ngFor="let num of [1, 2, 3, 4, 5]" [value]="num">{{ num }}</option>
+                    </select>
+                    <div class="custom-select-arrow"></div>
+                </div>
+            </div>
 
-      <div class="form-group">
-        <label for="starNum">შეფასება (1-5)</label>
-        <div class="custom-select-wrapper">
-          <select id="starNum" name="starNum" [(ngModel)]="authserviceService.doctor.starNum">
-            <option value="" disabled selected hidden>შეაფასე...</option>
-            <option *ngFor="let num of [1, 2, 3, 4, 5]" [value]="num">{{ num }}</option>
-          </select>
-          <div class="custom-select-arrow"></div>
-        </div>
-      </div>
-
-      <!-- <div class="form-group3"> -->
-        <div class="form-group3">
-          <button [disabled]="isbuttondsiabed" type="submit">რეგისტრაცია</button>
-        </div>
-      <!-- </div> -->
-    </form>
-  </div>
-  
+            <div class="form-group3">
+                <button [disabled]="isButtonDisabled() || !userForm.form.valid" type="submit">{{buttonText()}}</button>
+            </div>
+        </form>
+    </div>
+</div>

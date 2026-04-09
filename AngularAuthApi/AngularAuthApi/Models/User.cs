@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace AngularAuthYtAPI.Models
+namespace AngularAuthApi.Models
 {
     public class User
     {
@@ -9,34 +8,21 @@ namespace AngularAuthYtAPI.Models
         public int Id { get; set; }
 
         [Required]
-        public string? Email { get; set; }
-        [Required]
-        public string? Password { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         public string? PasswordHash { get; set; }
         public string Role { get; set; } = "client";
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? IdNumber { get; set; }
-
         public string? Category { get; set; }
-
         public int starNum { get; set; }
-
-        public string? ImageUrl {  get; set; }
-
+        public string? ImageUrl { get; set; }
         public string? CvUrl { get; set; }
-
         public bool IsAdmin { get; set; } = false;
 
-        [NotMapped]
-        public string? activationcode { get; set; }
-
-        [NotMapped]
-        public string? ResetCode { get; set; }
-
-        [NotMapped]
-        public string? NewPassword { get; set; }
-
+        // Refresh Token Support
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

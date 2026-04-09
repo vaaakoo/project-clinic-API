@@ -8,49 +8,47 @@
                     <span class=" rectangle-3"></span>
                 </div>
                 <div class="headers-p">
-                    <p [class.active]="activeTab === 'registration'" (click)="setActiveTab('registration')">რეგისტრაცია</p>
-                    <p [class.active]="activeTab === 'categories'" (click)="setActiveTab('categories')">კატეგორიები</p>
-                    <p [class.active]="activeTab === 'doctors'" (click)="setActiveTab('doctors')">ექიმები</p>
+                    <p [class.active]="activeTab() === 'registration'" (click)="setActiveTab('registration')">რეგისტრაცია</p>
+                    <p [class.active]="activeTab() === 'categories'" (click)="setActiveTab('categories')">კატეგორიები</p>
+                    <p [class.active]="activeTab() === 'doctors'" (click)="setActiveTab('doctors')">ექიმები</p>
                 </div>
             </div>
             <div class="headers2">
-                <button [class.active]="activeRole === 'doctor'" (click)="setActiveRole('doctor')">ექიმი</button>
-                <button [class.active]="activeRole === 'user'" (click)="setActiveRole('user')">მომხმარებელი</button>
-                <button [class.active]="activeRole === 'admin'" (click)="setActiveRole('admin')">ადმინისტრატორი</button>
+                <button [class.active]="activeRole() === 'doctor'" (click)="setActiveRole('doctor')">ექიმი</button>
+                <button [class.active]="activeRole() === 'user'" (click)="setActiveRole('user')">მომხმარებელი</button>
+                <button [class.active]="activeRole() === 'admin'" (click)="setActiveRole('admin')">ადმინისტრატორი</button>
             </div>
-            
         </div>
-<!-- second-section -->
+
         <div class="second-section">
             <div class="left-section">
                 <div class="user">
                     <div class="card-columns">
                         <div class="middle">
-                            <img class="picture" [src]="this.doctor?.imageUrl" alt="">
-                            <p class="card-name">{{this.doctor?.firstName}} {{ this.doctor?.lastName }}</p>
+                            <img class="picture" [src]="currentDoctor()?.imageUrl" alt="Doctor">
+                            <p class="card-name">{{ currentDoctor()?.firstName }} {{ currentDoctor()?.lastName }}</p>
                             <p class="roll">ექიმი</p>
-                            <p class="card-category">{{this.doctor?.category}}</p>
+                            <p class="card-category">{{ currentDoctor()?.category }}</p>
        
-                            <div class="doctors-stars" *ngIf="this.doctor">
-                                <ng-container *ngFor="let star of getStarArray(this.doctor?.starNum || 0)">
-                                  <img src="../../../assets/material-symbols_star-rounded.png" alt="Star">
+                            <div class="doctors-stars" *ngIf="currentDoctor()">
+                                <ng-container *ngFor="let star of getStarArray(currentDoctor()?.starNum || 0)">
+                                    <img src="../../../assets/material-symbols_star-rounded.png" alt="Star">
                                 </ng-container>
-                              </div>
-
+                            </div>
                         </div>
                         <div class="card-middle">
                             <div class="card-middle-grid">
                                 <span><img src="../../../assets/edit-svgrepo-com2-dark.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>პირადი ნომერი</h3>
-                                    <p>{{this.doctor?.idNumber}}</p>
+                                    <p>{{ currentDoctor()?.idNumber }}</p>
                                 </div>
                             </div>
                             <div class="card-middle-grid">
                                 <span><img src="../../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>Email</h3>
-                                    <p>{{this.doctor?.email}}</p>
+                                    <p>{{ currentDoctor()?.email }}</p>
                                 </div>
                             </div>
                             <div class="card-middle-grid">
@@ -65,16 +63,15 @@
                                 <span><img src="../../../assets/edit-svgrepo-com2-grey.png" alt=""></span>
                                 <div class="write-changes">
                                     <h3>დაჯავშნილია :</h3>
-                                    <p>( {{this.appointmentCount}} )</p>
+                                    <p>( {{ appointmentCount() }} )</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--  ცვლილებების ღილაკები -->
-                
+
                 <div class="change-sect">
-                    <button class="adding" >
+                    <button class="adding">
                         <p>+ დამატება</p>
                     </button>
                     <button class="redact">
@@ -88,22 +85,21 @@
                 </div>
             </div>
 
-                <!-- ცხრილი -->
             <div class="calendar">
                 <div class="time">
                     <span class="year">2023</span>
                     <div class="buttons-click">
-                        <span class="arrow arrow-left "><img src="../../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
+                        <span class="arrow arrow-left"><img src="../../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
                         <button class="action-button">აპრილი</button>
                         <span class="arrow arrow-right"><img src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
                     </div>
                 </div>
                
-                <!-- calendar -->
-                <app-custom-table [tableData]="tableDataService.tableData" [tableHeaders]="tableDataService.tableHeaders"></app-custom-table>
-          
+                <app-custom-table 
+                    [tableData]="tableDataService.tableData()" 
+                    [tableHeaders]="tableDataService.tableHeaders()">
+                </app-custom-table>
             </div>
         </div>
     </div>
 </div>
-

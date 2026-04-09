@@ -1,81 +1,93 @@
-
 <div class="home-hero">
   <div class="categories">
     <!-- კატეგორიები -->
-    <app-category-field class="category"></app-category-field>
+    <app-category-field class="category" />
+    
     <!-- კლიენტი -->
     <div class="doctors">
         <div class="hero-doctor">
             <div class="upper">
-                <img class="main-image" src="../../../assets/default-image.png" alt="">
-                <h4>{{this.client?.firstName}} {{this.client?.lastName}}</h4>
-                <h6>ექიმი</h6>
+                <img class="main-image" src="../../../assets/default-image.png" alt="Client">
+                <h4>{{ client()?.firstName }} {{ client()?.lastName }}</h4>
+                <h6>კლიენტი</h6>
             </div>
             <div class="middle-first">
                 <h4>პირადი ნომერი</h4>
-                <p>{{this.client?.idNumber}}</p>
+                <p>{{ client()?.idNumber }}</p>
             </div>
 
             <div class="middle-second">
                 <div class="middle-first">
                     <h4>Email :</h4>
-                    <p>{{ this.client?.email}}</p>
+                    <p>{{ client()?.email }}</p>
                 </div>
-                <h4 class="change-pass" data-toggle="modal" data-target="#passwordChangeModal" data-whatever="@mdo">პაროლის შეცვლა</h4>
+                <h4 class="change-pass">პაროლის შეცვლა</h4>
               </div>
 
             <div class="middle-first">
                 <h4>დაჯავშნილია :</h4>
-                <p>( {{ this.appointmentCount }} )</p>
+                <p>( {{ appointmentCount() }} )</p>
             </div>
         </div>
-        
     </div>
+
     <!-- ცხრილი -->
     <div class="calendar">
       <div class="my-book">
         <p>ჩემი ჯავშანი</p>
-        <p>( {{ this.appointmentCount }} )</p>
+        <p>( {{ appointmentCount() }} )</p>
       </div>
 
-        <div class="square"  *ngIf="this.tooltipBox">
+      <!-- Doctor Detail Tooltip -->
+      <div class="square" *ngIf="tooltipBox() && selectedDoctor()">
           <div class="middle">
-              <img class="picture" [src]="this.doctroImg" alt="">
+              <img class="picture" [src]="selectedDoctor()?.imageUrl || '../../../assets/default-image.png'" alt="Doctor">
               <div class="middle-column">
-                <p class="card-name"><strong>სახელი:</strong> {{ this.doctorName }}  {{ this.doctorLastName}}</p>
-                <p class="card-category"><strong>სპეციალისტი:</strong> {{ this.doctorCategory }} </p>
-                <p class="card-name"><strong>მიზეზი:</strong> {{ this.text }} </p>
+                <p class="card-name"><strong>სახელი:</strong> {{ selectedDoctor()?.name }} {{ selectedDoctor()?.lastName }}</p>
+                <p class="card-category"><strong>სპეციალისტი:</strong> {{ selectedDoctor()?.category }} </p>
+                <p class="card-name"><strong>მიზეზი:</strong> {{ selectedDoctor()?.message }} </p>
 
-                <button type="button"  (click)="onBookingClick(docId)">
-                  <p>კალენდრის ნახვა</p>
-                  <div class="buttons-span"></div>
-              </button>
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn-view" (click)="onBookingClick(selectedDoctor()!.id)">
+                    <p>კალენდრის ნახვა</p>
+                  </button>
+                  <button type="button" class="btn-close-tooltip" (click)="tooltipBox.set(false)">დახურვა</button>
+                </div>
               </div>
           </div>
       </div>
+
       <div class="time">
         <span class="year">2023</span>
         <div class="buttons-click">
-            <span class="arrow arrow-left "><img src="../../../assets/material-symbols_arrow-back-ios-rounded.png" alt=""></span>
+            <span class="arrow arrow-left"><img src="../../../assets/material-symbols_arrow-back-ios-rounded.png" alt="Left"></span>
             <button class="action-button">აპრილი</button>
-            <span class="arrow arrow-right"><img src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt=""></span>
+            <span class="arrow arrow-right"><img src="../../../assets/material-symbols_arrow-back-ios-rounded (1).png" alt="Right"></span>
         </div>
-    </div>
-      <div class="time-and-table">
-        <app-custom-table [tableData]="tableDataService.tableData" [tableHeaders]="tableDataService.tableHeaders"></app-custom-table>
+      </div>
 
-      <div class="change-sect">
-          <button class="redact">
-              <span><img src="../../../assets/edit-svgrepo-com 2.png" alt=""></span>
-              <p>რედაქტირება</p>
-          </button>
-        <button class="delete">
-            <span><img src="../../../assets/delete-file-svgrepo-com 3.png" alt=""></span>
-            <p>წაშლა</p>
-        </button>
+      <div class="time-and-table">
+        <app-custom-table 
+            [tableData]="tableDataService.tableData()" 
+            [tableHeaders]="tableDataService.tableHeaders()"
+            (cellClick)="onCellClick($event)"
+            (deleteClick)="onDeleteClick($event)">
+        </app-custom-table>
+
+        <div class="change-sect">
+            <button class="redact">
+                <span><img src="../../../assets/edit-svgrepo-com 2.png" alt="Edit"></span>
+                <p>რედაქტირება</p>
+            </button>
+            <button class="delete">
+                <span><img src="../../../assets/delete-file-svgrepo-com 3.png" alt="Delete"></span>
+                <p>წაშლა</p>
+            </button>
+        </div>
+      </div> 
     </div>
-</div> 
   </div>
 </div>
-  <!-- modal -->
-   <app-password-change-modal></app-password-change-modal>
+
+<!-- Modal -->
+<app-password-change-modal />

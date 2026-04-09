@@ -1,66 +1,46 @@
-using AngularAuthApi.Repositories;
-using AngularAuthApi.Repositories.Interfaces;
-using AngularAuthYtAPI.Context;
+using AngularAuthApi.Middleware;
+using AngularAuthApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 using System.Text;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configuration
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.Configure<AdminSettings>(builder.Configuration.GetSection("AdminSettings"));
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
+// Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+
+// .NET 10 Native OpenAPI
+builder.Services.AddOpenApi();
+
+// Dependency Injection
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ICodeGeneratorService, CodeGeneratorService>();
+
+// Authentication
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>() 
+                 ?? throw new InvalidOperationException("JwtSettings not found");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = false, 
-            ValidateAudience = false, 
+            ValidateIssuer = false,
+            ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("YourSuperStrongSecretKeyWithAtLeast256Bits")) 
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret))
         };
     });
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
-
-    // Add a security scheme for Swagger to use JWT with Bearer
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Description = "JWT Authorization header using the Bearer scheme",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer"
-    });
-
-    // Add a global operation filter to add the token to each request in Swagger UI
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
-
-builder.Services.AddScoped<IActivationCodeService, ActivationCodeService>();
-builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
 
 builder.Services.AddCors(options => options.AddPolicy(name: "NgOrigins",
     policy =>
@@ -77,25 +57,43 @@ builder.Services.Configure<FormOptions>(o =>
 
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnStr"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnStr"), 
+        sqlOptions => sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null));
 });
-
-
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionMiddleware>();
+
+// Database Initialization & Seeding
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    var adminSettings = services.GetRequiredService<IOptions<AdminSettings>>();
+    
+    // Auto-create database and apply migrations
+    await context.Database.MigrateAsync();
+    await DataSeeder.SeedAsync(context, adminSettings);
+}
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // Native OpenAPI and Scalar UI
+    app.MapOpenApi();
+    app.MapScalarApiReference(options => {
+        options.WithTitle("Clinic API - .NET 10 Professional");
+        options.WithTheme(ScalarTheme.Moon);
+        options.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+    });
 }
 
 app.UseHttpsRedirection();
 app.UseCors("NgOrigins");
-
-
-
 
 app.UseAuthentication();
 app.UseAuthorization();

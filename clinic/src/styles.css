@@ -1,56 +1,142 @@
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
-
+/* styles.css */
 @font-face {
     font-family: 'FiraGO';
     font-style: normal;
     font-display: swap;
     font-weight: 400;
     src: url(https://cdn.jsdelivr.net/fontsource/fonts/firago@latest/latin-400-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/firago@latest/latin-400-normal.woff) format('woff');
-  }
-  @font-face {
+}
+
+@font-face {
     font-family: 'FiraGO';
     font-style: normal;
     font-display: swap;
     font-weight: 500;
     src: url(https://cdn.jsdelivr.net/fontsource/fonts/firago@latest/latin-500-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/firago@latest/latin-500-normal.woff) format('woff');
-  }
-
-body {
-  /* max-width: 1920px; */
-  margin: 0;
-  padding: 0;
-  font-family: Firago;
-  padding: 0px;
 }
 
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #fdfdfe;
+    --bg-card: #ffffff;
+    --bg-card-elevated: #ffffff;
+    --text-main: #053354;
+    --text-muted: rgba(5, 51, 84, 0.5);
+    --text-accent: #18A4E1;
+    --border-color: #ECF2F8;
+    --shadow: 0px 4px 50px 0px rgba(5, 51, 84, 0.05);
+    --input-bg: #ffffff;
+    --header-btn-bg: #F0FAFF;
+    --sidebar-bg: #ffffff;
+    --footer-bg: #090c12; /* Deep Carbon */
+    --footer-secondary-bg: #05070a; /* Almost Black */
+}
 
+body.dark-mode {
+    --bg-primary: #0a0e17; 
+    --bg-secondary: #0f141f;
+    --bg-card: #161c2b;
+    --bg-card-elevated: #1e293b;
+    --text-main: #f1f5f9;
+    --text-muted: rgba(241, 245, 249, 0.6);
+    --text-accent: #38bdf8;
+    --border-color: #2e3a4e;
+    --shadow: 0px 10px 40px 0px rgba(0, 0, 0, 0.4);
+    --input-bg: #1e293b;
+    --header-btn-bg: #1e293b;
+    --sidebar-bg: #161c2b;
+    --footer-bg: #090c12; 
+    --footer-secondary-bg: #05070a;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'FiraGO', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    -webkit-font-smoothing: antialiased;
+}
 
 .container {
     margin: 0 auto;
     padding: 0px;
-    max-width: 100%; 
-  }
+    max-width: 100%;
+}
 
-p {
-  padding: 0px;
-  margin: 0px;
+p, h1, h2, h3, h4, h5, h6 {
+    padding: 0px;
+    margin: 0px;
 }
 
 body .modal-open {
-  overflow: hidden;
-  padding-right: 0px !important;
+    overflow: hidden;
+    padding-right: 0px !important;
 }
 
-/* Media query for larger screens */
+/* Global Form & Input Polish */
+input, select, textarea {
+    font-family: 'FiraGO', sans-serif !important;
+    background-color: var(--input-bg) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Fix for Chrome/Edge Autofill background colors */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
+    -webkit-text-fill-color: var(--text-main) !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Form Group Spacing */
+.form-group {
+    margin-bottom: 24px;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-main);
+    opacity: 0.9;
+}
+
+/* Modal Dark Mode Tweaks */
+body.dark-mode .modal-content {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+body.dark-mode .modal-header, 
+body.dark-mode .modal-footer {
+    border-color: var(--border-color);
+}
+
+body.dark-mode .form-control {
+    background-color: var(--input-bg);
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+
+/* Global Transition */
+*, *::before, *::after {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
 @media (min-width: 576px) {
-  .container {
-    max-width: 100%; 
-  }
+    .container {
+        max-width: 100%;
+    }
 }
 
 @media (min-width: 1622px) {
-  .container {
-    max-width: 1621px; 
-  }
+    .container {
+        max-width: 1621px;
+    }
 }

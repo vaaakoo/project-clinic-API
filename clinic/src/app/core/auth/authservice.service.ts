@@ -1,124 +1,109 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { Injectable, signal, computed } from '@angular/core';
+import { Observable, tap, catchError, of, throwError } from 'rxjs';
 import { Useregisteration, doctorregisteration } from './useregisteration';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from 'src/environments/environment';
-import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthserviceService {
-  constructor(private http: HttpClient, private messageService: MessageService) {}
+  private readonly apiUrl = `${environment.apiUrl}/User`;
+  private readonly authUrl = `${environment.apiUrl}/Authentication`;
+  private readonly tokenUrl = `${environment.apiUrl}/Token`;
+  private readonly bookUrl = `${environment.apiUrl}/Booking`;
 
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  // Signals for state management (Modern Angular)
+  readonly currentUser = signal<any>(this.getUserFromStorage());
+  readonly accessToken = signal<string | null>(this.getSafeLocalStorage('accessToken'));
+  readonly refreshToken = signal<string | null>(this.getSafeLocalStorage('refreshToken'));
 
-  private apiUrl: string = environment.apiUrl + '/User';
-  private bookUrl: string = environment.apiUrl + '/Booking';
-  private apiUrl1: string = environment.apiUrl + '/Authentication';
-
-  doctor:doctorregisteration=new doctorregisteration();
-  logindata:Useregisteration=new Useregisteration();
-  loginusername:any="";
-  loginUser: any="";
+  private getSafeLocalStorage(key: string): string | null {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      console.warn(`[AuthService] Potentially blocked access to localStorage for key: ${key}`, e);
+      return null;
+    }
+  }
   
-  private authToken: string = '';
+  readonly isAuthenticated = computed(() => !!this.accessToken());
+  readonly userRole = computed(() => this.currentUser()?.role || '');
+  
+  readonly isDoctor = computed(() => this.userRole() === 'doctor');
+  readonly isClient = computed(() => this.userRole() === 'client');
+  readonly isAdmin = computed(() => this.userRole() === 'admin');
 
+  constructor(private http: HttpClient) {}
 
-
-  get isAuthenticated(): Observable<boolean> {
-    return this.isAuthenticatedSubject.asObservable();
-  }
-
-  setAuthenticationToken(token: string): void {
-    this.authToken = token;
-    // console.log(this.authToken);
-    localStorage.setItem('authToken', token);
-    this.isAuthenticatedSubject.next(true);
-  }
-
-  clearAuthenticationToken(): void {
-    this.authToken = '';
-    // console.log(this.authToken);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userInfo');
-    this.isAuthenticatedSubject.next(false);
+  login(credentials: Useregisteration): Observable<any> {
+    console.log(`[AuthService] Attempting login at ${this.authUrl}/login`);
+    return this.http.post<any>(`${this.authUrl}/login`, credentials).pipe(
+      tap(response => {
+        console.log('[AuthService] Login successful', response);
+        this.saveAuthData(response.accessToken, response.refreshToken, response.user);
+      }),
+      catchError((err: any) => {
+        console.error('[AuthService] Login failed', err);
+        return throwError(() => err);
+      })
+    );
   }
 
   logout(): void {
-    this.clearAuthenticationToken();
-    // alert("you can not logout, please login! ")
-    // this.messageService.add({severity:'error', summary:'Error', detail:'you can not logout, please login!'});
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userInfo');
+    this.accessToken.set(null);
+    this.refreshToken.set(null);
+    this.currentUser.set(null);
   }
 
-  getToken(): { token: string, userInfo: any, userInfoForRole: any } {
-    const token = localStorage.getItem('authToken') || '';
-    const userInfoForRole = this.getUserInfoForRole(token);
-    
-    const userInfo = this.getUserInfo();
-    // console.log(userInfo);
-    return { token, userInfo, userInfoForRole };
+  refreshUserToken(): Observable<any> {
+    const data = {
+      accessToken: this.accessToken(),
+      refreshToken: this.refreshToken()
+    };
+
+    return this.http.post<any>(`${this.tokenUrl}/refresh`, data).pipe(
+      tap(response => {
+        this.saveAuthData(response.accessToken, response.refreshToken, response.user);
+      }),
+      catchError((err: any) => {
+        this.logout();
+        return throwError(() => err);
+      })
+    );
   }
 
-  // 
-  setUserInfo(user: any): void {
+  private saveAuthData(accessToken: string, refreshToken: string, user: any) {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('userInfo', JSON.stringify(user));
-  }
-  
-  getUserInfoForRole(token: string): any {
-    let userInfo = {};
-  
-    try {
-      if (token) {
-        userInfo = jwtDecode(token) || {};
-      }
-    } catch (error) {
-      console.error('Error decoding token:', error);
-    }
-  
-    return userInfo;
+    
+    this.accessToken.set(accessToken);
+    this.refreshToken.set(refreshToken);
+    this.currentUser.set(user);
   }
 
-  getUserInfo(): any {
-    // Retrieve user information from localStorage
-    const userInfoString = localStorage.getItem('userInfo');
-    return userInfoString ? JSON.parse(userInfoString) : null;
-  }
-  
-
-  // 
-  login(user: Useregisteration): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl1}/login`, user)
-      .pipe(
-        tap(response => {
-          this.setAuthenticationToken(response.token);
-          const user = response.user;
-          this.setUserInfo(user);
-        })
-      );
-  }
-  
-
-  get isDoctor(): boolean {
-    const { userInfo } = this.getToken();
-    return userInfo && userInfo.role === 'doctor';
+  private getUserFromStorage(): any {
+    const user = localStorage.getItem('userInfo');
+    return user ? JSON.parse(user) : null;
   }
 
-  get isLoggedIn(): boolean {
-    const { userInfo } = this.getToken();
-    return userInfo && userInfo.role === 'client';
+  // Legacy compatibility / Helper methods
+  getToken() {
+    return { 
+      token: this.accessToken() || '', 
+      userInfo: this.currentUser(),
+      userInfoForRole: this.accessToken() ? jwtDecode(this.accessToken()!) : {}
+    };
   }
 
-  get isAdministrator(): boolean {
-    const { userInfo } = this.getToken();
-    return userInfo && userInfo.role === 'admin';
-  }
-
-
+  // --- API Methods ---
   sendactivationcode(email: string): Observable<any> {
-    const apiUrl = `${this.apiUrl}/send-code/${email}`;
-    return this.http.get(apiUrl);
+    return this.http.get(`${this.apiUrl}/send-code/${email}`);
   }
 
   registerUser(user: Useregisteration): Observable<any> {
@@ -126,50 +111,50 @@ export class AuthserviceService {
   }
 
   sendResetCode(email: string): Observable<any> {
-    const apiUrl = `${this.apiUrl}/send-reset-code/${email}`;
-    return this.http.get(apiUrl);
+    return this.http.get(`${this.apiUrl}/send-reset-code/${email}`);
   }
 
   changePassword(email: string, oldPassword: string, newPassword: string): Observable<any> {
-    const url = `${this.apiUrl}/change-password`;
-    const body = {
-      email: email,
-      oldPassword: oldPassword,
-      newPassword: newPassword,
-    };
-
-    return this.http.post(url, body);
+    return this.http.post(`${this.apiUrl}/change-password`, { email, oldPassword, newPassword });
   }
-  
 
   registerdoctor(user: doctorregisteration): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/doctor-register`, user);
   }
 
   getallDoctor(): Observable<doctorregisteration[]> {
-    return this.http.get<doctorregisteration[]>(`${this.apiUrl}/getDoctor`);
+    console.log(`[AuthService] Fetching all doctors from ${this.apiUrl}/getDoctor`);
+    return this.http.get<doctorregisteration[]>(`${this.apiUrl}/getDoctor`).pipe(
+      tap(data => console.log(`[AuthService] Fetched ${data?.length} doctors`)),
+      catchError(err => {
+        console.error('[AuthService] Failed to fetch doctors', err);
+        return throwError(() => err);
+      })
+    );
   }
 
   getDoctorById(id: number): Observable<doctorregisteration> {
     return this.http.get<doctorregisteration>(`${this.apiUrl}/getDoctor/${id}`);
   }
 
-  getDoctorByIdNumber(idNumber: number): Observable<doctorregisteration> {
-    return this.http.get<doctorregisteration>(`${this.apiUrl}/getDoctorByIdNumber?IdNumber=${idNumber}`);
-  }
-
-  getClientByIdNumber(idNumber: number): Observable<Useregisteration> {
-    return this.http.get<Useregisteration>(`${this.apiUrl}/getClientByIdNumber?IdNumber=${idNumber}`);
-  }
-
-
   getUserById(id: number): Observable<Useregisteration> {
     return this.http.get<Useregisteration>(`${this.apiUrl}/getUser/${id}`);
   }
 
+  getDoctorByIdNumber(idNumber: string): Observable<doctorregisteration> {
+    return this.http.get<doctorregisteration>(`${this.apiUrl}/getDoctorByIdNumber?IdNumber=${idNumber}`);
+  }
+
+  getClientByIdNumber(idNumber: string): Observable<Useregisteration> {
+    return this.http.get<Useregisteration>(`${this.apiUrl}/getClientByIdNumber?IdNumber=${idNumber}`);
+  }
+
+  getAppointmentData(idNumber: string): Observable<any> {
+    return this.http.get<any>(`${this.bookUrl}/getclient?IdNumber=${idNumber}`);
+  }
 
   getDoctorDataByIdNumber(idNumber: string): Observable<any> {
-    return this.http.get<any>(`${this.bookUrl}/getclient?IdNumber=${idNumber}`);
+    return this.getAppointmentData(idNumber);
   }
 
   getClientDataByIdNumber(clientidNumber: string): Observable<any> {
@@ -177,20 +162,15 @@ export class AuthserviceService {
   }
 
   getClientDataByIdNumberAndTimeSlot(clientIdNumber: string, tdId: string): Observable<any> {
-    const url = `${this.bookUrl}/getdataBytdid?ClientIdNumber=${clientIdNumber}&tdId=${tdId}`;
-    return this.http.get<any>(url);
-}
-
-getBookDataByDoctorsIdNumberAndTimeSlot(idNumber: string, tdId: string): Observable<any> {
-  const url = `${this.bookUrl}/getDoctordataBytdid?IdNumber=${idNumber}&tdId=${tdId}`;
-  return this.http.get<any>(url);
-}
-  clientBookAppointment(formData: any): Observable<any> {
-    return this.http.post<any>(`${this.bookUrl}/ClientBookAppointment`, formData);
+    return this.http.get<any>(`${this.bookUrl}/getdataBytdid?ClientIdNumber=${clientIdNumber}&tdId=${tdId}`);
   }
 
-  getAppointmentData(idNumber: string): Observable<any> {
-    return this.http.get<any>(`${this.bookUrl}/getclient?IdNumber=${idNumber}`);
+  getBookDataByDoctorsIdNumberAndTimeSlot(idNumber: string, tdId: string): Observable<any> {
+    return this.http.get<any>(`${this.bookUrl}/getDoctordataBytdid?IdNumber=${idNumber}&tdId=${tdId}`);
+  }
+
+  clientBookAppointment(formData: any): Observable<any> {
+    return this.http.post<any>(`${this.bookUrl}/ClientBookAppointment`, formData);
   }
 
   clientRemoveAppointment(formData: any): Observable<any> {
@@ -200,11 +180,8 @@ getBookDataByDoctorsIdNumberAndTimeSlot(idNumber: string, tdId: string): Observa
   updateDoctor(doctor: doctorregisteration): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/updateDoctor/${doctor.id}`, doctor);
   }
+
   deleteDoctor(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/deleteDoctor/${id}`);
   }
-  setAuthenticationStatus(isAuthenticated: boolean): void {
-    this.isAuthenticatedSubject.next(isAuthenticated);
-  }
-
 }

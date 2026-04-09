@@ -1,6 +1,4 @@
-// auth.guard.ts
-
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthserviceService } from './authservice.service';
@@ -10,70 +8,63 @@ import { MessageService } from 'primeng/api';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
+  private readonly authService = inject(AuthserviceService);
+  private readonly router = inject(Router);
+  private readonly messageService = inject(MessageService);
 
-  constructor(private authService: AuthserviceService, private router: Router, private messageService: MessageService) {}
-  
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const { token, userInfoForRole } = this.authService.getToken();
-    const role = userInfoForRole?.['role'];
-    const userId = userInfoForRole?.['UserId'];
-  
-    if (this.authService.isLoggedIn || this.authService.isAdministrator || this.authService.isDoctor) {
-  // debugger
-  // console.log('Current URL:', state.url);
-      if ((state.url.startsWith('/admin-page') || state.url.startsWith('/admin-page/category') || state.url.startsWith('/admin-page/registration')) && role !== 'admin') {
-        this.router.navigate(['/home']);
-        // alert('You do not have permission to access Admins page, please login!');
-        this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
+    
+    // Check authentication and roles using Signals for modern reactivity
+    const isAuthenticated = this.authService.isAuthenticated();
+    const isAdmin = this.authService.isAdmin();
+    const isDoctor = this.authService.isDoctor();
+    const currentUser = this.authService.currentUser();
+    const role = currentUser?.role;
+    const userId = currentUser?.id;
 
-        return false;
-      }
-  
-      if (state.url.startsWith('/client-page') ) {
-        const id = next.params['id'];
-        if (role !== "client") {
-          this.router.navigate(['/home']);
-          // alert('You do not have permission to access this page, please login!');
-          this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
-          return false;
-        }
-
-        if (id !== userId) {
-          this.router.navigate(['/home']);
-          // alert('You do not have permission to access this page, please login!');
-          this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
+    if (isAuthenticated) {
+      // Admin route protection
+      if (state.url.startsWith('/admin-page')) {
+        if (!isAdmin) {
+          this.handleUnauthorized();
           return false;
         }
       }
-  
-      if (state.url.startsWith('/doctor-page') ) {
-        const id = next.params['id'];
-        if (role !== "doctor") {
-          this.router.navigate(['/home']);
-          // alert('You do not have permission to access this page, please login!');
-          this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
-          return false;
-        }
 
-        if (id !== userId) {
-          this.router.navigate(['/home']);
-          // alert('You do not have permission to access this page, please login!');
-          this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
+      // Client route protection
+      if (state.url.startsWith('/client-page')) {
+        const routeId = +next.params['id'];
+        if (role !== 'client' || routeId !== userId) {
+          this.handleUnauthorized();
           return false;
         }
       }
-  
+
+      // Doctor route protection
+      if (state.url.startsWith('/doctor-page')) {
+        const routeId = +next.params['id'];
+        if (role !== 'doctor' || routeId !== userId) {
+          this.handleUnauthorized();
+          return false;
+        }
+      }
+
       return true;
     }
-  
-    // alert('You do not have permission to access this page, please login!');
-    this.messageService.add({severity:'error', summary:'Error', detail:'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'});
-    this.router.navigate(['']);
+
+    this.handleUnauthorized();
     return false;
   }
-  
-  
+
+  private handleUnauthorized() {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'შეცდომა',
+      detail: 'თქვენ არ გაქვთ დაშვება ამ გვერდზე, გთხოვთ გაიაროთ ავტორიზაცია!'
+    });
+    this.router.navigate(['/home']);
   }
+}

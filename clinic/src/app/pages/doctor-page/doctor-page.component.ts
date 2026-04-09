@@ -1,237 +1,181 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { doctorregisteration } from '../../core/auth/useregisteration';
+import { Component, OnInit, signal, inject, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { doctorregisteration, Useregisteration } from '../../core/auth/useregisteration';
 import { AuthserviceService } from '../../core/auth/authservice.service';
-import { data } from 'jquery';
 import { MessageService } from 'primeng/api';
-import { TableDataService } from '../../core/auth/table-data-service.service';
-import { BasePageComponent } from '../base-page/base-page.component';
-declare var $: any;
+import { TableDataService, TableCell } from '../../core/auth/table-data-service.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
+import { AppCustomTableComponent } from '../../helpers/custom-table/custom-table.component';
+import { PasswordChangeModalComponent } from '../../helpers/password-change-modal/password-change-modal.component';
+import { CategoryFieldComponent } from '../../helpers/category-field/category-field.component';
 
 @Component({
   selector: 'app-doctor-page',
+  standalone: true,
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    RouterModule, 
+    AppCustomTableComponent, 
+    PasswordChangeModalComponent,
+    CategoryFieldComponent
+  ],
   templateUrl: './doctor-page.component.html',
   styleUrls: ['./doctor-page.component.css'],
 })
-export class DoctorPageComponent extends BasePageComponent implements OnInit{
-
-
-
-
-
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {
-    super();
-  }
+export class DoctorPageComponent implements OnInit, OnDestroy {
+  private readonly authService = inject(AuthserviceService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly messageService = inject(MessageService);
+  public readonly tableDataService = inject(TableDataService);
   
+  private destroy$ = new Subject<void>();
+
+  // State Signals
+  readonly doctor = signal<doctorregisteration | null>(null);
+  readonly appointmentCount = signal(0);
+  readonly tooltipBox = signal(false);
+  
+  // Tooltip/Selected Patient Data
+  readonly selectedPatient = signal<{
+    name: string;
+    lastName: string;
+    idNumber: string;
+    message: string;
+  } | null>(null);
+
+  // Password Change State
+  oldPassword = '';
+  newPassword = '';
+  submissionSuccess = false;
+
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.doctorId = +params['id'];
-      // console.log('Doctor ID from route parameters:', this.doctorId);
-      
-
-      this.authservice.getDoctorById(this.doctorId).subscribe(
-        (doctor: doctorregisteration) => {
-          this.doctor = doctor;
-          this.doctorFirstName = doctor.firstName;
-          this.doctorIdNumber = doctor.idNumber;
-          loadData();
-        },
-        (error) => {
-          console.error('Error fetching doctor data:', error);
-        }
-      );
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      const doctorId = +params['id'];
+      this.loadDoctorData(doctorId);
     });
+  }
 
-    $(document).ready( () => {
-     
-      $('.tdclick').on('click', (event: any) => {   
-        debugger
-        const clickedTd = $(event.target).closest('td');
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-        const tdId = clickedTd.attr('id');
-        this.clientName;
-        this.text;
-        this.clientLastName;
-        this.clientIdNumber;
-        this.doctorIdNumber;
-
-        if (clickedTd.hasClass('disactivated')) {
-          // Handle the case when the td is disactivated
-          this.messageService.add({severity:'error', summary:'Error', detail:'This time slot is not available.'});
-          return;
-        }
-        if (tdId && this.doctorIdNumber) {
-          debugger;
-          this.tooltipBox = true;
-          this.authservice.getBookDataByDoctorsIdNumberAndTimeSlot(this.doctorIdNumber, tdId).subscribe(
-            (response) => {
-              const appointment = response.data[0];
-              this.clientName = appointment.patientName;
-              // console.log(appointment)
-              this.text = appointment.messageToDoctor;
-              this.clientIdNumber = appointment.clientIdNumber;
-          
-              this.authservice.getClientByIdNumber(appointment.clientIdNumber).subscribe(
-                (clientResponse) => { 
-                  debugger
-                  // console.log(clientResponse)
-                  this.clientLastName = clientResponse.lastName;
-                  this.clientIdNumber = clientResponse.idNumber;
-
-                },
-                (doctorError) => {
-                  console.error('Error fetching doctor data:', doctorError);
-                }
-              );
-            },
-            (error) => {
-              console.error('Error fetching client data:', error);
-            }
-          );
-          
-        }
-
-            });
-            $('.tdclick').on('click', '.deletebutton',  (event: any) => {
-              debugger;
-              var doctorName = this.doctorFirstName;
-              var doctorIdNum = this.doctorIdNumber;
-              const clickedDeleteButton = $(event.target);
-              var tdId = clickedDeleteButton.closest('td').attr('id');
-              var patientName = this.clientName;
-              var patientIdNum = this.clientIdNumber;
-
-              if (tdId && doctorIdNum) {
-                this.authservice.getBookDataByDoctorsIdNumberAndTimeSlot(doctorIdNum, tdId).subscribe(
-                    (response) => {
-                        // console.log('Client Data Response:', response);
-        
-                        const appointment = response.data[0];
-                        patientName = appointment.patientName;
-                        patientIdNum = appointment.clientIdNumber;
-        
-                        const parentTdClick = clickedDeleteButton.closest('.tdclick');
-                        parentTdClick.removeClass('activated');
-                        parentTdClick.empty();
-        
-                        var formData = {
-                            DoctorName: doctorName,
-                            IdNumber: doctorIdNum,
-                            UniqueNumber: tdId,
-                            PatientName: patientName,
-                            ClientIdNumber: patientIdNum,
-                            MessageToDoctor: 'თავის ტკივილი',
-                            Status: 'Booked',
-                        };
-        
-                        this.authservice.clientRemoveAppointment(formData).subscribe(
-                            (response) => {
-                                // alert('Appointment Removed successfully!');
-                                this.messageService.add({severity:'success', summary:'Success', detail: response.message });
-                            },
-                            (error) => {
-                                console.error('Error removing appointment:', error);
-                            }
-                        );
-                    },
-                    (error) => {
-                        console.error('Error fetching client data:', error);
-                    }
-                );
-            }
-      });
-      
+  private loadDoctorData(id: number) {
+    this.authService.getDoctorById(id).subscribe({
+      next: (doctor) => {
+        this.doctor.set(doctor);
+        this.loadAppointments(doctor.idNumber);
+      },
+      error: (err: any) => console.error('Error fetching doctor data:', err)
     });
+  }
 
-    const loadData = () => {
-      debugger;
-      const IdNumber = this.doctor?.idNumber || 'Doctor';
-    
-      this.authservice.getAppointmentData(IdNumber).subscribe(
-        (data: any) => {
-          debugger;
-          this.appointmentCount = data.count || 0;
-          const doctorIdNumber = IdNumber;
-    
-          if (data.data.length > 0) {
-            data.data.forEach((appointment: any) => {
-              
-              const element = $('#' + appointment.uniqueNumber);
-              if (appointment.status === 'Unavailable' || appointment.idNumber !== doctorIdNumber) {
-                element.addClass('disactivated');
-                const htmlContent = `
-                    <span class="activated-text">
-                    <p>Not <br /> Available</p>
-                    </span>
-                `;
-                element.html(htmlContent);
-                $('.tdclick.disactivated').prop('disabled', true);
-              } else if (appointment.idNumber === doctorIdNumber) {
-                element.addClass('activated');
-                const htmlContent = `
-                  <span class="activated-text">
-                    <p style="font-weight: bold;
-                    color: #3ACF99;
-                    text-align: center;
-                    font-size: 12px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
-                    word-wrap: break-word;"> დაჯავშნილია </p>
-                    <span class="deletebutton" style="position: absolute; width: 18px; height: 18px; display: flex;
-                    align-items: center; justify-content: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
-                    <span class="delete-button"><img src="../../assets/Group 3.png" alt=""></span>
-                  </span>
-                `;
-                element.html(htmlContent);
-              }
-            });
-    
-            $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
+  private loadAppointments(doctorIdNumber: string) {
+    this.tableDataService.resetTable();
+    this.authService.getAppointmentData(doctorIdNumber).subscribe({
+      next: (data: any) => {
+        this.appointmentCount.set(data.count || 0);
+        this.updateTableWithAppointments(data.data, doctorIdNumber);
+      },
+      error: (err: any) => console.error('Error fetching appointment data:', err)
+    });
+  }
+
+  private updateTableWithAppointments(appointments: any[], doctorIdNumber: string) {
+    const currentData = this.tableDataService.tableData();
+    const updatedData = currentData.map(row => ({
+      cols: row.cols.map(cell => {
+        const appointment = appointments.find(a => a.uniqueNumber === cell.uniqueNumber);
+        if (appointment) {
+          if (appointment.status === 'Unavailable' || appointment.idNumber !== doctorIdNumber) {
+            return { ...cell, status: 'unavailable' as const };
+          } else {
+            return { ...cell, status: 'booked' as const };
           }
-        },
-        (error) => {
-          console.error('Error fetching appointment data:', error);
         }
-      );
-    };
-      
+        return cell;
+      })
+    }));
+    this.tableDataService.tableData.set(updatedData);
   }
 
-    // password changer
-    onSubmit() {
-      const email = this.authservice.getToken().userInfo.email;
-      this.changePassword(email, this.oldPassword, this.newPassword);
+  onCellClick(cell: TableCell) {
+    if (cell.status === 'unavailable') {
+      this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'ეს დრო მიუწვდომელია' });
+      return;
     }
-    
-    changePassword(email: string, oldPassword: string, newPassword: string) {
-      if (!oldPassword || !newPassword) {
-        // alert('Old and new passwords are required.');
-        this.messageService.add({severity:'error', summary:'Error', detail:'Old and new passwords are required.'});
-        return;
+
+    const doc = this.doctor();
+    if (cell.status === 'booked' && doc) {
+      this.authService.getBookDataByDoctorsIdNumberAndTimeSlot(doc.idNumber, cell.uniqueNumber).subscribe({
+        next: (response: any) => {
+          const app = response.data[0];
+          this.authService.getClientByIdNumber(app.clientIdNumber).subscribe({
+            next: (client: Useregisteration) => {
+              this.selectedPatient.set({
+                name: app.patientName,
+                lastName: client.lastName,
+                idNumber: client.idNumber,
+                message: app.messageToDoctor
+              });
+              this.tooltipBox.set(true);
+            }
+          });
+        }
+      });
+    }
+  }
+
+  onDeleteClick(data: {event: MouseEvent, cell: TableCell}) {
+    const { cell } = data;
+    const doc = this.doctor();
+    if (!doc) return;
+
+    this.authService.getBookDataByDoctorsIdNumberAndTimeSlot(doc.idNumber, cell.uniqueNumber).subscribe({
+      next: (response: any) => {
+        const app = response.data[0];
+        const formData = {
+          DoctorName: doc.firstName,
+          IdNumber: doc.idNumber,
+          UniqueNumber: cell.uniqueNumber,
+          PatientName: app.patientName,
+          ClientIdNumber: app.clientIdNumber,
+          MessageToDoctor: 'Removed by Doctor',
+          Status: 'Booked',
+        };
+
+        this.authService.clientRemoveAppointment(formData).subscribe({
+          next: (res: any) => {
+            this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: res.message });
+            this.loadAppointments(doc.idNumber);
+            this.tooltipBox.set(false);
+          },
+          error: (err: any) => console.error('Error removing appointment:', err)
+        });
       }
-    
-      this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
-        (response) => {
-          // alert('Password changed successfully:');
-          this.messageService.add({severity:'success', summary:'Success', detail: response.message});
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
-          this.submissionSuccess = true;
-  
-        },
-        (error) => {
-          // alert('Error changing password:');
-          this.messageService.add({severity:'error', summary:'Error', detail: error.error.message});
-          this.submissionSuccess = false;
-  
-        }
-      );
-    }
-  
-  getStarArray(starNum: number): number[] {
-    return Array.from({ length: starNum }, (_, index) => index);
+    });
   }
 
+  onPasswordSubmit() {
+    const user = this.authService.currentUser();
+    if (user && this.oldPassword && this.newPassword) {
+      this.authService.changePassword(user.email, this.oldPassword, this.newPassword).subscribe({
+        next: (res: any) => {
+          this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: res.message });
+          this.submissionSuccess = true;
+        },
+        error: (err: any) => {
+          this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: err.error?.message });
+        }
+      });
+    }
+  }
+
+  getStarArray(starNum: number): number[] {
+    return Array.from({ length: starNum || 0 }, (_, index) => index);
+  }
 }
