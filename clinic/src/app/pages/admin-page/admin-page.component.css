@@ -69,8 +69,9 @@
     height: 50px;
     flex-shrink: 0;
     border-radius: 25px;
-    background: #FFF;
-    box-shadow: 0px 4px 30px 0px rgba(5, 51, 84, 0.05);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
     padding: 14px 25px 14px 34px;
 }
 
@@ -83,7 +84,7 @@
 }
 
 .headers-p p {
-    color: #053354;
+    color: var(--text-main);
     font-family: FiraGO;
     font-size: 18px;
     font-style: normal;
@@ -107,9 +108,9 @@
   height: 50px;
   flex-shrink: 0;
   border-radius: 50px;
-  border: 1px solid rgba(24, 164, 225, 0.30);
-  background: #FFF;
-  color: #18A4E1;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-accent);
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -119,7 +120,8 @@
 
 .headers2 button.active,
 .headers2 button:hover {
-  background: #F0FAFF;
+  background: var(--header-btn-bg);
+  border-color: var(--text-accent);
   outline: none;
 }
 
@@ -159,8 +161,9 @@
   gap: 43px;
   padding: 30px 50px 25px 37px;
   border-radius: 10px;
-  background: #FFF;
-  box-shadow: 0px 4px 30px 0px rgba(5, 51, 84, 0.05);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
 }
 .middle {
   display: flex;
@@ -178,7 +181,8 @@
 }
 
 .roll p {
-  color: #053354;
+  color: var(--text-main);
+  opacity: 0.8;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -186,7 +190,7 @@
   margin-bottom: 1px;
 }
 .middle .card-name {
-  color: #18A4E1;
+  color: var(--text-accent);
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
@@ -195,7 +199,7 @@
 }
 
 .middle .card-category {
-  color: rgba(5, 51, 84, 0.30);
+  color: var(--text-muted);
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -294,7 +298,7 @@
 }
 
 .write-changes h3 {
-  color: #053354;
+  color: var(--text-main);
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
@@ -303,7 +307,7 @@
 
 .write-changes p {
   text-align: center;
-  color: rgba(5, 51, 84, 0.30);
+  color: var(--text-muted);
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
@@ -341,9 +345,9 @@
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  background-color: #fff;
-  fill: #FFF;
-  filter: drop-shadow(0px 4px 10px rgba(5, 51, 84, 0.05));
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  filter: var(--shadow);
 }
 
 .arrow-left {
@@ -358,7 +362,7 @@
 }
 
 span .year {
-  color: #053354;
+  color: var(--text-main);
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -368,10 +372,10 @@ span .year {
 .action-button {
   width: 140px;
   height: 35px;
-  background: #FFF;
+  background: var(--bg-card);
   border-radius: 50px;
-  border: 1px solid rgba(24, 164, 225, 0.30);
-  color: #18A4E1;
+  border: 1px solid var(--border-color);
+  color: var(--text-accent);
   font-size: 18px;
   font-style: normal;
   font-weight: 500;

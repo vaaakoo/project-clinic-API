@@ -2,18 +2,19 @@
     width: 830px;
     min-height: 587px;
     border-radius: 10px;
-    background: #FFF;
-    box-shadow: 0px 4px 30px 0px rgba(5, 51, 84, 0.05);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
     }
     
     .header {
       width: 100%;
       height: 48px;
-      background-color: #f2f2f2;
+      background-color: var(--bg-secondary);
+      color: var(--text-main);
       gap: 20px;
-      border-right: #000;
+      border-bottom: 1px solid var(--border-color);
       text-align: center;
-    
     }
     
     .days-botton {
@@ -28,7 +29,8 @@
     width: 21px;
     height: 21px;
     border-radius: 100%;
-    background-color: #FFF;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
     }
     
     .days-botton img {
@@ -49,7 +51,7 @@
     }
     
     .days:last-child {
-    color: #053354;
+    color: var(--text-main);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -57,7 +59,7 @@
     }
     
     .day-number {
-    color: #18A4E1;
+    color: var(--text-accent);
     text-align: center;
     font-size: 14px;
     font-style: normal;
@@ -75,7 +77,8 @@
     }
     
     td {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
     text-align: center;
     padding: 0px;
     height: 60px;
@@ -119,7 +122,8 @@
         position: absolute;
         width: 18px;
         height: 18px;
-        background-color: #FFFFFF;
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
         top: 4px;
         right: 4px;
         border-radius: 50%;
@@ -143,6 +147,7 @@
       /* Set the background color for the last two columns */
       td:nth-last-child(1),
       td:nth-last-child(2) {
-        background: #FFFFF5;
+        background: var(--bg-secondary);
+        opacity: 0.8;
       
       }

@@ -7,8 +7,8 @@ namespace AngularAuthApi.Services
 {
     public class AuthService(
         AppDbContext context,
-        IActivationCodeService activationCodeService,
-        IPasswordResetService passwordResetService,
+        ICodeGeneratorService codeGenerator,
+        IEmailService emailService,
         IOptions<JwtSettings> jwtSettings) : IAuthService
     {
         private readonly JwtSettings _jwtSettings = jwtSettings.Value;
@@ -128,24 +128,26 @@ namespace AngularAuthApi.Services
 
         public async Task<string> SendActivationCodeAsync(string email)
         {
-            var activationCode = await activationCodeService.GenerateActivationCodeAsync();
-            var subject = "აქტივაციის კოდი";
-            var body = $@"
-                <html>
-                    <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333;'>
-                        <div style='max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
-                            <h1 style='color: #3498db;'>{subject}</h1>
-                            <p>ძვირფასო მომხმარებელო,</p>
-                            <p>მადლობას გიხდით ჩვენი კომპანიის სერვისით სარგებლობისთვის</p>
-                            <p>თქვენი აქტივაციის კოდი არის:</p>
-                            <div style='background-color: #3498db; color: #fff; padding: 10px; border-radius: 5px; font-size: 18px; font-weight: bold;'>{activationCode}</div>
-                            <p>გთხოვთ ფრთხილად იყავით, თქვენი კოდი არ გაუზიაროთ სხვას.</p>
-                            <p>წარმატებებს გისურვებთ ვლადიმერი!</p>
-                        </div>
-                    </body>
-                </html>";
+            var activationCode = codeGenerator.GenerateNumericCode(4);
+            
+            // Store in DB for verification later
+            var activationEntity = new ActivationCode
+            {
+                Email = email,
+                Code = activationCode,
+                CreationTime = DateTime.UtcNow,
+                ExpirationTime = DateTime.UtcNow.AddMinutes(10),
+                Used = false
+            };
+            context.ActivationCodes.Add(activationEntity);
+            await context.SaveChangesAsync();
 
-            await activationCodeService.SendActivationCodeAsync(email, activationCode, body, subject);
+            var placeholders = new Dictionary<string, string>
+            {
+                { "Code", activationCode }
+            };
+
+            await emailService.SendEmailAsync(email, "Clinic Activation Code", "ActivationCode", placeholders);
             return activationCode;
         }
 
@@ -155,26 +157,17 @@ namespace AngularAuthApi.Services
             if (user == null || user.Role == "admin")
                 throw new Exception("Unable to reset password for this user.");
 
-            var resetCode = await passwordResetService.GenerateResetCodeAsync();
+            var resetCode = codeGenerator.GenerateAlphaNumericCode(8);
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(resetCode);
             await context.SaveChangesAsync();
 
-            var subject = "პაროლის აღდგენა";
-            var body = $@"
-                <html>
-                    <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333;'>
-                        <div style='max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>
-                            <h1 style='color: #3498db;'>{subject}</h1>
-                            <p>ძვირფასო <strong>{user.FirstName}</strong>,</p>
-                            <p>თქვენი ახალი პაროლი არის:</p>
-                            <div style='background-color: #3498db; color: #fff; padding: 10px; border-radius: 5px; font-size: 18px; font-weight: bold;'>{resetCode}</div>
-                            <p>თქვენი კოდი არ გაუზიაროთ სხვას.</p>
-                            <p>წარმატებებს გისურვებთ ვლადიმერი!</p>
-                        </div>
-                    </body>
-                </html>";
+            var placeholders = new Dictionary<string, string>
+            {
+                { "Name", user.FirstName ?? "User" },
+                { "Password", resetCode }
+            };
 
-            await passwordResetService.SendResetCodeAsync(email, resetCode, body, subject);
+            await emailService.SendEmailAsync(email, "Clinic Password Recovery", "PasswordReset", placeholders);
             return resetCode;
         }
 

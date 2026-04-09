@@ -3,9 +3,9 @@ import { AuthserviceService } from '../../core/auth/authservice.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
 import { CategoryService } from '../../core/auth/category-list.service';
 import { FormsModule, NgForm } from '@angular/forms';
+import { NotificationService } from '../../services/notification.service';
 import { doctorregisteration } from '../../core/auth/useregisteration';
 
 @Component({
@@ -18,7 +18,7 @@ import { doctorregisteration } from '../../core/auth/useregisteration';
 export class RegistrationComponent implements OnInit {
   private readonly authService = inject(AuthserviceService);
   private readonly router = inject(Router);
-  private readonly messageService = inject(MessageService);
+  private readonly notificationService = inject(NotificationService);
   private readonly categoryService = inject(CategoryService);
 
   @ViewChild('userForm') userForm!: NgForm;
@@ -54,17 +54,19 @@ export class RegistrationComponent implements OnInit {
 
     this.authService.registerdoctor(docData).subscribe({
       next: (response) => {
-        this.userForm.resetForm();
-        this.userImage.set(null);
-        this.buttonText.set('რეგისტრაცია');
         this.isButtonDisabled.set(false);
-        this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: 'რეგისტრაცია გავლილია!' });
-        this.router.navigate(['/admin-page/category']);
+        this.notificationService.showSuccess('წარმატება', 'რეგისტრაცია გავლილია!');
+        
+        // Navigate or refresh after success
+        setTimeout(() => {
+          this.router.navigate(['/admin-page/category']);
+          window.location.reload();
+        }, 1500);
       },
       error: (error: HttpErrorResponse) => {
         this.buttonText.set('რეგისტრაცია');
         this.isButtonDisabled.set(false);
-        this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: error.error?.message || 'შეცდომა' });
+        this.notificationService.showError('შეცდომა', error.error?.message || 'შეცდომა');
       }
     });
   }

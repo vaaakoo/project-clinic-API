@@ -19,6 +19,7 @@
     --bg-primary: #ffffff;
     --bg-secondary: #fdfdfe;
     --bg-card: #ffffff;
+    --bg-card-elevated: #ffffff;
     --text-main: #053354;
     --text-muted: rgba(5, 51, 84, 0.5);
     --text-accent: #18A4E1;
@@ -27,20 +28,25 @@
     --input-bg: #ffffff;
     --header-btn-bg: #F0FAFF;
     --sidebar-bg: #ffffff;
+    --footer-bg: #090c12; /* Deep Carbon */
+    --footer-secondary-bg: #05070a; /* Almost Black */
 }
 
 body.dark-mode {
-    --bg-primary: #0a0e17; /* Deeper navy */
+    --bg-primary: #0a0e17; 
     --bg-secondary: #0f141f;
-    --bg-card: #161c2b; /* Darker card */
+    --bg-card: #161c2b;
+    --bg-card-elevated: #1e293b;
     --text-main: #f1f5f9;
-    --text-muted: rgba(241, 245, 249, 0.5);
+    --text-muted: rgba(241, 245, 249, 0.6);
     --text-accent: #38bdf8;
-    --border-color: #1e293b;
-    --shadow: 0px 10px 40px 0px rgba(0, 0, 0, 0.3);
+    --border-color: #2e3a4e;
+    --shadow: 0px 10px 40px 0px rgba(0, 0, 0, 0.4);
     --input-bg: #1e293b;
     --header-btn-bg: #1e293b;
     --sidebar-bg: #161c2b;
+    --footer-bg: #090c12; 
+    --footer-secondary-bg: #05070a;
 }
 
 body {

@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { FilterService } from '../../core/services/filter.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,7 @@ import { ThemeService } from '../../core/services/theme.service';
 })
 export class HeaderComponent {
   private readonly router = inject(Router);
-  private readonly messageService = inject(MessageService);
+  private readonly notificationService = inject(NotificationService);
   private readonly filterService = inject(FilterService);
   public readonly themeService = inject(ThemeService);
   readonly authservice = inject(AuthserviceService);
@@ -48,19 +49,21 @@ export class HeaderComponent {
     if (this.loginData.email && this.loginData.password) {
       this.authservice.login(this.loginData).subscribe({
         next: (response: any) => {
-          this.messageService.add({ 
-            severity: 'success', 
-            summary: 'წარმატება', 
-            detail: 'ავტორიზაცია წარმატებით დასრულდა' 
-          });
+          this.notificationService.showSuccess('წარმატება', 'ავტორიზაცია წარმატებით დასრულდა');
           this.submissionSuccess = true;
-          // Refresh page or close modal logic usually goes here
+
+          // Close modal and refresh after a short delay
+          setTimeout(() => {
+            const closeBtn = document.querySelector('#exampleModal .close') as HTMLElement;
+            closeBtn?.click();
+            window.location.reload();
+          }, 1500);
         },
         error: (error: any) => {
-          const detail = error.status === 401 
-            ? 'მეილი ან პაროლი არასწორია' 
+          const detail = error.status === 401
+            ? 'მეილი ან პაროლი არასწორია'
             : 'მოხდა გაუთვალისწინებელი შეცდომა';
-          this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail });
+          this.notificationService.showError('შეცდომა', detail);
         }
       });
     }
@@ -91,32 +94,23 @@ export class HeaderComponent {
   onLogoutClick(): void {
     this.authservice.logout();
     this.router.navigate(['/home']);
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   }
 
   sendResetCode() {
     if (this.loginData.email) {
       this.authservice.sendResetCode(this.loginData.email).subscribe({
         next: (response: any) => {
-          this.messageService.add({ 
-            severity: 'success', 
-            summary: 'წარმატება', 
-            detail: 'პაროლის აღდგენის კოდი გაიგზავნა: ' + this.loginData.email 
-          });
+          this.notificationService.showSuccess('წარმატება', 'პაროლის აღდგენის კოდი გაიგზავნა: ' + this.loginData.email);
         },
         error: (error: any) => {
-          this.messageService.add({ 
-            severity: 'error', 
-            summary: 'შეცდომა', 
-            detail: error.error?.message || 'შეცდომა კოდის გაგზავნისას' 
-          });
+          this.notificationService.showError('შეცდომა', error.error?.message || 'შეცდომა კოდის გაგზავნისას');
         }
       });
     } else {
-      this.messageService.add({ 
-        severity: 'error', 
-        summary: 'შეცდომა', 
-        detail: 'გთხოვთ მიუთითოთ მეილი' 
-      });
+      this.notificationService.showError('შეცდომა', 'გთხოვთ მიუთითოთ მეილი');
     }
   }
 }

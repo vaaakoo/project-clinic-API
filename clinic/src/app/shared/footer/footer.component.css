@@ -1,7 +1,7 @@
 /* footer.component.css */
 .footer {
   display: flex;
-  background-color: #053354;
+  background-color: var(--footer-bg);
   align-items: center; 
   justify-content: center;
   color: white;
@@ -34,7 +34,7 @@
 
 .main-column {
   position: relative;
-  background-color: #053354;
+  background-color: var(--footer-bg);
   display: flex;
   gap: 136px;
   max-width: 1622px;
@@ -88,7 +88,7 @@
   margin-left: 420px;
   top: 94px;
   stroke-width: 1px;
-  stroke: rgba(236, 242, 248, 0.30);
+  stroke: rgba(255, 255, 255, 0.1);
 }
 
 .vector-line  img {
@@ -141,7 +141,7 @@
 
 .social-media {
   text-align: center;
-  color: #aad0ec;
+  color: rgba(255, 255, 255, 0.7);
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
@@ -151,20 +151,24 @@
 /* second-section */
 
 .second-section {
-  max-width: 1621px;
-  margin: 0 auto;
-  height: 35px;
-  background-color: var(--bg-primary);
-  margin-top: 8px;
-  transition: background-color 0.4s ease;
-}
-.second-section-1 {
+  width: 100%;
+  height: 45px;
+  background-color: var(--footer-secondary-bg);
   display: flex;
-  text-align: left;
-  }
+  align-items: center;
+  transition: all 0.4s ease;
+}
+
+.second-section-1 {
+  max-width: 1621px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  padding: 0 40px;
+}
   
-  .second-section p {
-    color: var(--text-accent);
+.second-section p {
+    color: rgba(255, 255, 255, 0.3);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;

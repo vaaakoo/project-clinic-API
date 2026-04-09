@@ -7,10 +7,12 @@ import { CommonModule } from '@angular/common';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FilterService } from '../../core/services/filter.service';
 
+import { SkeletonModule } from 'primeng/skeleton';
+
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [CommonModule, ProgressSpinnerModule],
+  imports: [CommonModule, ProgressSpinnerModule, SkeletonModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css',
   animations: [
@@ -27,8 +29,11 @@ export class CardComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   // Raw data from API
+  // UI State
+  readonly isLoading = signal(true);
   readonly alldoctors = signal<doctorregisteration[]>([]);
   readonly maxVisibleDoctors = signal(6);
+  readonly skeletonItems = Array(6).fill(0);
 
   // Filter signals from global service
   private readonly selectedCategory = this.filterService.selectedCategory;
@@ -65,9 +70,16 @@ export class CardComponent implements OnInit {
   }
 
   private fetchDoctors() {
+    this.isLoading.set(true);
     this.authservice.getallDoctor().subscribe({
-      next: (data) => this.alldoctors.set(data),
-      error: (err) => console.error('[CardComponent] Error:', err)
+      next: (data) => {
+        this.alldoctors.set(data);
+        this.isLoading.set(false);
+      },
+      error: (err) => {
+        console.error('[CardComponent] Error:', err);
+        this.isLoading.set(false);
+      }
     });
   }
 

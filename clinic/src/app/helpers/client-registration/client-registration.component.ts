@@ -2,8 +2,8 @@ import { Component, ViewChild, signal, computed, inject, OnDestroy } from '@angu
 import { AuthserviceService } from '../../core/auth/authservice.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { MessageService } from 'primeng/api';
 import { FormsModule, NgForm } from '@angular/forms';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-client-registration',
@@ -14,7 +14,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class ClientRegistrationComponent implements OnDestroy {
   private readonly authService = inject(AuthserviceService);
-  private readonly messageService = inject(MessageService);
+  private readonly notificationService = inject(NotificationService);
 
   @ViewChild('userForm') userForm!: NgForm;
 
@@ -35,7 +35,7 @@ export class ClientRegistrationComponent implements OnDestroy {
   });
 
   private intervalId: any;
-  private timerMinutes = 2;
+  private timerMinutes = 10;
   private timerSeconds = 0;
 
   ngOnDestroy() {
@@ -55,19 +55,19 @@ export class ClientRegistrationComponent implements OnDestroy {
     this.activationMessage.set('გთხოვთ დაელოდოთ...');
     this.authService.sendactivationcode(email).subscribe({
       next: (response) => {
-        this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: response.message });
+        this.notificationService.showSuccess('წარმატება', response.message);
         this.resetTimer();
         this.startTimer();
       },
       error: (error) => {
-        this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: error.error?.message || 'შეცდომა' });
+        this.notificationService.showError('შეცდომა', error.error?.message || 'შეცდომა');
         this.activationMessage.set('შეცდომა');
       }
     });
   }
 
   private resetTimer() {
-    this.timerMinutes = 2;
+    this.timerMinutes = 10;
     this.timerSeconds = 0;
   }
 
@@ -121,12 +121,17 @@ export class ClientRegistrationComponent implements OnDestroy {
         this.isButtonDisabled.set(false);
         this.stopTimer();
         this.activationMessage.set('');
-        this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: response.message });
+        this.notificationService.showSuccess('წარმატება', response.message);
+        
+        // Navigate home and refresh
+        setTimeout(() => {
+          window.location.href = '/home';
+        }, 2000);
       },
       error: (error: HttpErrorResponse) => {
         this.buttonText.set('რეგისტრაცია');
         this.isButtonDisabled.set(false);
-        this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: error.error?.message || 'რეგისტრაცია ვერ მოხერხდა' });
+        this.notificationService.showError('შეცდომა', error.error?.message || 'რეგისტრაცია ვერ მოხერხდა');
       }
     });
   }

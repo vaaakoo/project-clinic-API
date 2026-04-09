@@ -19,11 +19,11 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 // Dependency Injection
-builder.Services.AddScoped<IActivationCodeService, ActivationCodeService>();
-builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ICodeGeneratorService, CodeGeneratorService>();
 
 // Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>() 

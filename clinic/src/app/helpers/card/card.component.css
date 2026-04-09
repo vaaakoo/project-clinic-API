@@ -218,3 +218,19 @@
   
   @media (max-width: 1621px) {
   }
+/* Skeleton Styling */
+.skeleton-card .square {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.skeleton-card .middle {
+    margin-top: 10px; /* Adjust for absence of negative margin on skeleton image */
+    width: 100%;
+    padding: 0 40px;
+}
+
+.mb-2 { margin-bottom: 8px; }
+.mb-4 { margin-bottom: 16px; }
+.mt-6 { margin-top: 24px; }
