@@ -1,9 +1,9 @@
 <div class="doctors">
     <div class="square-container" >
-        <div class="loading-spinner-container" *ngIf="alldoctor.length === 0">
-        <p-progressSpinner *ngIf="alldoctor.length === 0"></p-progressSpinner>
+        <div class="loading-spinner-container" *ngIf="alldoctors().length === 0">
+        <p-progressSpinner *ngIf="alldoctors().length === 0"></p-progressSpinner>
         </div>
-        <div *ngFor="let doctor of alldoctor.slice(0, maxVisibleDoctors)" class="user-card">
+        <div *ngFor="let doctor of visibleDoctors()" class="user-card">
             <div class="square">
                 <div class="upper">
                     <div class="viewers">
@@ -32,7 +32,7 @@
     </div>
 
       </div>
-      <div class="read-more"  *ngIf="maxVisibleDoctors < alldoctor.length" (click)="toggleSeeMore()">
+      <div class="read-more"  *ngIf="maxVisibleDoctors() < alldoctors().length" (click)="toggleSeeMore()">
           <p>სრულად ნახვა</p>
           <img src="../../../assets/Vector 5.png" alt="vector5">
       </div>

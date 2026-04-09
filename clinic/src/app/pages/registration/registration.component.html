@@ -4,28 +4,28 @@
     <form (ngSubmit)="onSubmit()" #userForm="ngForm">
       <div class="form-group">
         <label for="firstName">სახელი</label>
-        <input type="text" id="firstName" name="firstName" placeholder="( მინიმუმ 5 სიმბოლო )" [(ngModel)]="authserviceService.doctor.firstName" required>
+        <input type="text" id="firstName" name="firstName" placeholder="( მინიმუმ 5 სიმბოლო )" [ngModel]="doctor().firstName" (ngModelChange)="updateDoctorField('firstName', $event)" required>
       </div>
   
       
       <div class="form-group email-group">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" [(ngModel)]="authserviceService.doctor.email" required class="email-input">
+        <input type="email" id="email" name="email" [ngModel]="doctor().email" (ngModelChange)="updateDoctorField('email', $event)" required class="email-input">
       </div>
       
       <div class="form-group">
         <label for="idNumber">პირადი</label>
-        <input type="text" id="idNumber" name="idNumber" maxlength="11" placeholder="00000000000" [(ngModel)]="authserviceService.doctor.idNumber" required>
+        <input type="text" id="idNumber" name="idNumber" maxlength="11" placeholder="00000000000" [ngModel]="doctor().idNumber" (ngModelChange)="updateDoctorField('idNumber', $event)" required>
       </div>
       
       <div class="form-group">
         <label for="lastName">გვარი</label>
-        <input type="text" id="lastName" name="lastName" [(ngModel)]="authserviceService.doctor.lastName" required>
+        <input type="text" id="lastName" name="lastName" [ngModel]="doctor().lastName" (ngModelChange)="updateDoctorField('lastName', $event)" required>
       </div>
   
       <div class="form-group">
         <label for="password">პაროლი</label>
-        <input type="password" id="password" name="password" placeholder="( მინიმუმ 8 სიმბოლო : @ 7 , )" [(ngModel)]="authserviceService.doctor.password" required>
+        <input type="password" id="password" name="password" placeholder="( მინიმუმ 8 სიმბოლო : @ 7 , )" [ngModel]="doctor().password" (ngModelChange)="updateDoctorField('password', $event)" required>
       </div>
 
       <!-- registration.component.html -->
@@ -33,9 +33,9 @@
       <div class="form-group">
         <label for="selectedCategory">კატეგორია</label>
         <div class="custom-select-wrapper">
-          <select class="category-default" id="selectedCategory" name="selectedCategory" [(ngModel)]="authserviceService.doctor.category">
+          <select class="category-default" id="selectedCategory" name="selectedCategory" [ngModel]="doctor().category" (ngModelChange)="updateDoctorField('category', $event)">
             <option value="" disabled selected hidden>ანესთეზიოლოგი / თერაპევტი ან სხვა...</option>
-            <option *ngFor="let category of categoryList" [value]="category">{{ category }}</option>
+            <option *ngFor="let category of categoryList()" [value]="category">{{ category }}</option>
           </select>
           <div class="custom-select-arrow"></div>
         </div>
@@ -56,7 +56,7 @@
       <div class="form-group">
         <label for="starNum">შეფასება (1-5)</label>
         <div class="custom-select-wrapper">
-          <select id="starNum" name="starNum" [(ngModel)]="authserviceService.doctor.starNum">
+          <select id="starNum" name="starNum" [ngModel]="doctor().starNum" (ngModelChange)="updateDoctorField('starNum', $event)">
             <option value="" disabled selected hidden>შეაფასე...</option>
             <option *ngFor="let num of [1, 2, 3, 4, 5]" [value]="num">{{ num }}</option>
           </select>
@@ -66,9 +66,8 @@
 
       <!-- <div class="form-group3"> -->
         <div class="form-group3">
-          <button [disabled]="isbuttondsiabed" type="submit">რეგისტრაცია</button>
+          <button [disabled]="isButtonDisabled()" type="submit">{{buttonText()}}</button>
         </div>
       <!-- </div> -->
     </form>
   </div>
-  

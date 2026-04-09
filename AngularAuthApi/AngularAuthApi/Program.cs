@@ -56,13 +56,29 @@ builder.Services.Configure<FormOptions>(o =>
 
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnStr"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnStr"), 
+        sqlOptions => sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null));
 });
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
+
+// Database Initialization & Seeding
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    var adminSettings = services.GetRequiredService<IOptions<AdminSettings>>();
+    
+    // Auto-create database and apply migrations
+    await context.Database.MigrateAsync();
+    await DataSeeder.SeedAsync(context, adminSettings);
+}
 
 if (app.Environment.IsDevelopment())
 {
@@ -82,14 +98,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-// Seed Data
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
-    var adminSettings = services.GetRequiredService<IOptions<AdminSettings>>();
-    await DataSeeder.SeedAsync(context, adminSettings);
-}
 
 app.Run();

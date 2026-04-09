@@ -44,22 +44,22 @@
         
 
         <!-- button section -->
-        <div [ngClass]="{'navbar-button': !isLoggedIn, 'navbar-button2': isLoggedIn || isAdministrator}">
-          <button class="button-reg-aut" *ngIf="!isLoggedIn && !isAdministrator && !isDoctor">
+        <div [ngClass]="{'navbar-button': !isLoggedIn(), 'navbar-button2': isLoggedIn() || isAdministrator()}">
+          <button class="button-reg-aut" *ngIf="!isLoggedIn() && !isAdministrator() && !isDoctor()">
             <span class="button-registartion" (click)="navigateToRegistration()">რეგისტრაცია</span>
             <span class="button-aut" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"> / ავტორიზაცია</span>
           </button>
         
-          <button class="button-reg-aut2" (click)="navigateClient()" *ngIf="isLoggedIn && !isAdministrator">
+          <button class="button-reg-aut2" (click)="navigateClient()" *ngIf="isLoggedIn() && !isAdministrator() && !isDoctor()">
             <img src="../../../assets/default-image.png" alt="">
-            <span class="button-registartion">{{ this.authUser.firstName }} {{ this.authUser.lastName }}</span>
+            <span class="button-registartion">{{ authUser()?.firstName }} {{ authUser()?.lastName }}</span>
           </button>
-          <button class="button-reg-aut2" (click)="navigateDoctor()" *ngIf="isDoctor">
-            <img [src]="this.authUser.imageUrl" alt="">
-            <span class="button-registartion">{{ this.authUser.firstName }} {{ this.authUser.lastName }}</span>
+          <button class="button-reg-aut2" (click)="navigateDoctor()" *ngIf="isDoctor()">
+            <img [src]="authUser()?.imageUrl" alt="">
+            <span class="button-registartion">{{ authUser()?.firstName }} {{ authUser()?.lastName }}</span>
           </button>
         
-          <button class="button-reg-aut2" (click)="navigateAdmin()" *ngIf="isAdministrator">
+          <button class="button-reg-aut2" (click)="navigateAdmin()" *ngIf="isAdministrator()">
             <img src="../../../assets/Ellipse-222(1).png" alt="">
             <span class="button-registartion">ადმინისტრატორი</span>
           </button>
@@ -88,22 +88,22 @@
             <li>მედიკამენტები</li>
             <li>კონტაქტი</li>
             <li class="nav-item">
-              <div [ngClass]="{'navbar-button': !isLoggedIn, 'navbar-button2': isLoggedIn || isAdministrator}">
-                <button class="button-reg-aut" *ngIf="!isLoggedIn && !isAdministrator && !isDoctor">
+              <div [ngClass]="{'navbar-button': !isLoggedIn(), 'navbar-button2': isLoggedIn() || isAdministrator()}">
+                <button class="button-reg-aut" *ngIf="!isLoggedIn() && !isAdministrator() && !isDoctor()">
                   <span class="button-registartion" (click)="navigateToRegistration()">რეგისტრაცია</span>
                   <span class="button-aut" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ავტორიზაცია</span>
                 </button>
               
-                <button class="button-reg-aut2" (click)="navigateClient()" *ngIf="isLoggedIn && !isAdministrator">
+                <button class="button-reg-aut2" (click)="navigateClient()" *ngIf="isLoggedIn() && !isAdministrator() && !isDoctor()">
                   <img src="../../../assets/default-image.png" alt="">
-                  <span class="button-registartion">{{ this.authUser.firstName }} {{ this.authUser.lastName }}</span>
+                  <span class="button-registartion">{{ authUser()?.firstName }} {{ authUser()?.lastName }}</span>
                 </button>
-                <button class="button-reg-aut2" (click)="navigateDoctor()" *ngIf="isDoctor">
-                  <img [src]="this.authUser.imageUrl" alt="">
-                  <span class="button-registartion">{{ this.authUser.firstName }} {{ this.authUser.lastName }}</span>
+                <button class="button-reg-aut2" (click)="navigateDoctor()" *ngIf="isDoctor()">
+                  <img [src]="authUser()?.imageUrl" alt="">
+                  <span class="button-registartion">{{ authUser()?.firstName }} {{ authUser()?.lastName }}</span>
                 </button>
               
-                <button class="button-reg-aut2" (click)="navigateAdmin()" *ngIf="isAdministrator">
+                <button class="button-reg-aut2" (click)="navigateAdmin()" *ngIf="isAdministrator()">
                   <img src="../../../assets/Ellipse-222(1).png" alt="">
                   <span class="button-registartion">ადმინისტრატორი</span>
                 </button>
@@ -158,10 +158,10 @@
         <div class="modal-body">
           <form (ngSubmit)="onSubmit()">
             <div class="form-group">
-              <input type="text" class="form-control" [(ngModel)]="authservice.logindata.email" name="email" id="recipient-email" placeholder="ელ.ფოსტა/ ტელეფონის ნომერი" required>
+              <input type="text" class="form-control" [(ngModel)]="loginData.email" name="email" id="recipient-email" placeholder="ელ.ფოსტა/ ტელეფონის ნომერი" required>
             </div>
             <div class="form-group">
-              <input type="password" [(ngModel)]="authservice.logindata.password" name="password" class="form-control form-password" id="recipient-name" placeholder="პაროლი" required>
+              <input type="password" [(ngModel)]="loginData.password" name="password" class="form-control form-password" id="recipient-name" placeholder="პაროლი" required>
               <span class="forget-password" (click)="sendResetCode()"><p>პაროლის აღდგენა</p></span>
             </div>
           

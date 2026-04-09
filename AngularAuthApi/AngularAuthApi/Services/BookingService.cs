@@ -4,18 +4,20 @@ namespace AngularAuthApi.Services
     {
         public async Task<List<AppointmentDto>> GetClientAppointmentsAsync(string clientIdNumber)
         {
-            return await context.tblAppointment
+            var appointments = await context.tblAppointment
                 .Where(x => x.ClientIdNumber == clientIdNumber)
-                .Select(x => MapToDto(x))
                 .ToListAsync();
+
+            return appointments.Select(MapToDto).ToList();
         }
 
         public async Task<List<AppointmentDto>> GetClientAppointmentsByTdidAsync(string clientIdNumber, string tdId)
         {
-            return await context.tblAppointment
+            var appointments = await context.tblAppointment
                 .Where(x => x.ClientIdNumber == clientIdNumber && x.UniqueNumber == tdId)
-                .Select(x => MapToDto(x))
                 .ToListAsync();
+
+            return appointments.Select(MapToDto).ToList();
         }
 
         public async Task<bool> BookAppointmentAsync(AppointmentDto dto)
@@ -52,21 +54,23 @@ namespace AngularAuthApi.Services
 
         public async Task<List<AppointmentDto>> GetDoctorAppointmentsAsync(string idNumber)
         {
-            return await context.tblAppointment
+            var appointments = await context.tblAppointment
                 .Where(x => x.IdNumber == idNumber)
-                .Select(x => MapToDto(x))
                 .ToListAsync();
+
+            return appointments.Select(MapToDto).ToList();
         }
 
         public async Task<List<AppointmentDto>> GetDoctorAppointmentsByTdidAsync(string idNumber, string tdId)
         {
-            return await context.tblAppointment
+            var appointments = await context.tblAppointment
                 .Where(x => x.IdNumber == idNumber && x.UniqueNumber == tdId)
-                .Select(x => MapToDto(x))
                 .ToListAsync();
+
+            return appointments.Select(MapToDto).ToList();
         }
 
-        private AppointmentDto MapToDto(Appointment appointment)
+        private static AppointmentDto MapToDto(Appointment appointment)
         {
             return new AppointmentDto
             {

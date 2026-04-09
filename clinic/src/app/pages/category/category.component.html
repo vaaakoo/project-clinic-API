@@ -1,4 +1,3 @@
-
 <div class="hero">
     <div class="category">
         <h1>კატეგორიები</h1>
@@ -8,16 +7,15 @@
                 <tr>
                     <th scope="col">სახელი</th>
                     <th scope="col">კატეგორია</th>
-                    <th scope="col">ფოტოსურათი</th>
+                    <th scope="col">ဖოტოსურათი</th>
                     <th scope="col">რეიტინგი</th>
                     <th scope="col"> </th>
                 </tr>
             </thead>
-            <tbody *ngFor="let doctor of alldoctor">
-                <!-- Add your dynamic data rows here -->
-                <tr>
-                    <td>{{doctor.firstName}} {{doctor.lastName}}</td>
-                    <td>{{doctor.category}}</td>
+            <tbody>
+                <tr *ngFor="let doctor of alldoctors()">
+                    <td>{{ doctor.firstName }} {{ doctor.lastName }}</td>
+                    <td>{{ doctor.category }}</td>
                     <td>
                         <img class="picture" [src]="doctor.imageUrl" alt="Doctor Photo" width="50">
                     </td>
@@ -30,8 +28,8 @@
                     </div>
                 </td>
                     <td class="edit-delete">
-                        <img class="circle" data-toggle="modal" data-target="#passwordChangeModal" src="../../assets/edit.png" alt="" (click)="editDoctor(doctor)">
-                        <img class="circle1" src="../../assets/delete.png" alt="" (click)="deleteDoctor(doctor.id)">
+                        <img class="circle" src="../../assets/edit.png" alt="Edit" (click)="editDoctor(doctor)">
+                        <img class="circle1" src="../../assets/delete.png" alt="Delete" (click)="deleteDoctor(doctor.id)">
                     </td>
                 </tr>
             </tbody>
@@ -40,32 +38,32 @@
     </div>
 </div>
 
-<p-dialog header="ექიმის რედაქტირება" [(visible)]="displayModal" [modal]="true" [responsive]="true" [style]="{width: '30%'}">
+<p-dialog header="ექიმის რედაქტირება" [visible]="displayModal()" (visibleChange)="displayModal.set($event)" [modal]="true" [responsive]="true" [style]="{width: '30%'}">
     <form (ngSubmit)="changeDoctorData()">
         <div class="form-group">
-            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="სახელი" [(ngModel)]="doctorfirstName" required >
+            <input type="text" class="form-control" name="firstName" id="firstName" placeholder="სახელი" [ngModel]="formFirstName()" (ngModelChange)="formFirstName.set($event)" required >
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="გვარი" [(ngModel)]="doctorLastName" required>
+            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="გვარი" [ngModel]="formLastName()" (ngModelChange)="formLastName.set($event)" required>
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" name="email" id="email" placeholder="მეილი" [(ngModel)]="doctorEmail" required >
+            <input type="text" class="form-control" name="email" id="email" placeholder="მეილი" [ngModel]="formEmail()" (ngModelChange)="formEmail.set($event)" required >
         </div>
         <div class="form-group">
-            <p-dropdown name="category" id="category" [options]="categories" [(ngModel)]="doctorCategory" [showClear]="true" placeholder="აირჩიე სპეციალობა"></p-dropdown>
+            <p-dropdown name="category" id="category" [options]="categories()" [ngModel]="formCategory()" (ngModelChange)="formCategory.set($event)" [showClear]="true" placeholder="აირჩიე სპეციალობა"></p-dropdown>
         </div>
         <div class="form-group">
-            <p-rating name="rating" [(ngModel)]="doctorRating" [cancel]="false" [readonly]="false"></p-rating>
+            <p-rating name="rating" [ngModel]="formRating()" (ngModelChange)="formRating.set($event)"></p-rating>
         </div>
         <div class="form-group">
-            <input type="text" class="form-control" name="idNumber" id="idNumber" placeholder="პირადი ნომერი" maxlength="11" [(ngModel)]="doctorIdNumber" required>
+            <input type="text" class="form-control" name="idNumber" id="idNumber" placeholder="პირადი ნომერი" maxlength="11" [ngModel]="formIdNumber()" (ngModelChange)="formIdNumber.set($event)" required>
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" name="password" id="password" placeholder="პაროლი" [(ngModel)]="doctorPassword" required>
+            <input type="password" class="form-control" name="password" id="password" placeholder="პაროლი" [ngModel]="formPassword()" (ngModelChange)="formPassword.set($event)" required>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="displayModal = false">Close</button>
-            <button type="submit" class="btn btn-primary"  >Save changes</button>
+            <button type="button" class="btn btn-secondary" (click)="displayModal.set(false)">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
         </div>
     </form>
 </p-dialog>

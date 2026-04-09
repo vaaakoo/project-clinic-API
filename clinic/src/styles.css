@@ -1,5 +1,4 @@
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
+/* PrimeNG 19 uses providePrimeNG and Aura theme in app.config.ts */
 
 @font-face {
     font-family: 'FiraGO';

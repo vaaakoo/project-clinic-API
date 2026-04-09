@@ -178,7 +178,7 @@ namespace AngularAuthApi.Services
             return resetCode;
         }
 
-        private UserResponseDto MapToResponseDto(User user)
+        private static UserResponseDto MapToResponseDto(User user)
         {
             return new UserResponseDto
             {

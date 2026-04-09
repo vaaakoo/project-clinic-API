@@ -1,46 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { AuthserviceService } from '../../core/auth/authservice.service';
-import { BasePageComponent } from '../../pages/base-page/base-page.component';
 
 @Component({
   selector: 'app-password-change-modal',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './password-change-modal.component.html',
   styleUrls: ['./password-change-modal.component.css']
 })
-export class PasswordChangeModalComponent extends BasePageComponent implements OnInit {
+export class PasswordChangeModalComponent {
+  private readonly authService = inject(AuthserviceService);
+  private readonly messageService = inject(MessageService);
 
-
-  constructor(public authservice:AuthserviceService, private messageService: MessageService) {
-    super();
-  }
-
-  ngOnInit(): void {
-  }
+  readonly oldPassword = signal('');
+  readonly newPassword = signal('');
+  readonly submissionSuccess = signal(false);
 
   onSubmit() {
-    const email = this.authservice.getToken().userInfo.email;
-    this.changePassword(email, this.oldPassword, this.newPassword);
-  }
+    const user = this.authService.currentUser();
+    if (!user) return;
 
-  changePassword(email: string, oldPassword: string, newPassword: string) {
-    if (!oldPassword || !newPassword) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Old and new passwords are required.' });
+    const oldPass = this.oldPassword();
+    const newPass = this.newPassword();
+
+    if (!oldPass || !newPass) {
+      this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'ორივე პაროლი სავალდებულოა' });
       return;
     }
 
-    this.authservice.changePassword(email, oldPassword, newPassword).subscribe(
-      (response) => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: response.message });
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-        this.submissionSuccess = true;
+    this.authService.changePassword(user.email, oldPass, newPass).subscribe({
+      next: (response) => {
+        this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: response.message });
+        this.submissionSuccess.set(true);
+        // We could emit an event here to close the modal
       },
-      (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.message });
-        this.submissionSuccess = false;
+      error: (error) => {
+        this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: error.error?.message || 'შეცდომა პაროლის შეცვლისას' });
+        this.submissionSuccess.set(false);
       }
-    );
+    });
   }
 }

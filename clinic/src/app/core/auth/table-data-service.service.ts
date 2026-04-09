@@ -1,11 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
+
+export interface TableCell {
+  uniqueNumber: string; // td_0_0 etc.
+  value: string;
+  status: 'available' | 'booked' | 'unavailable';
+  patientName?: string;
+  message?: string;
+}
+
+export interface TableRow {
+  cols: TableCell[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TableDataService {
-  tableData: { cols: { value: string; activated: boolean }[] }[] = [];
-  tableHeaders: { num: number; day: string }[] = [
+  readonly tableHeaders = signal([
     { num: 17, day: 'ორშ' },
     { num: 18, day: 'სამ' },
     { num: 19, day: 'ოთხ' },
@@ -13,19 +24,27 @@ export class TableDataService {
     { num: 21, day: 'პარ' },
     { num: 22, day: 'შაბ' },
     { num: 23, day: 'კვი' },
-  ];
+  ]);
 
-  constructor() {
-    this.initializeTableData();
+  readonly tableData = signal<TableRow[]>(this.createInitialData());
+
+  private createInitialData(): TableRow[] {
+    const rows: TableRow[] = [];
+    for (let i = 0; i < 9; i++) {
+      const row: TableRow = { cols: [] };
+      for (let j = 0; j < 7; j++) {
+        row.cols.push({
+          uniqueNumber: `td_${i}_${j}`,
+          value: `${i}-${j}`,
+          status: 'available'
+        });
+      }
+      rows.push(row);
+    }
+    return rows;
   }
 
-  private initializeTableData() {
-    for (let i = 1; i <= 9; i++) {
-      const row = { cols: [] as { value: string; activated: boolean }[] };
-      for (let j = 1; j <= 7; j++) {
-        row.cols.push({ value: `${i}-${j}`, activated: false });
-      }
-      this.tableData.push(row);
-    }
+  resetTable() {
+    this.tableData.set(this.createInitialData());
   }
 }

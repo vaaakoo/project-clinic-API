@@ -3,41 +3,46 @@
       <thead class="header">
         <tr>
           <th class="days-botton">
-            <span class="img-2"
-              ><img
-                src="../../../assets/right-arrow_271228.png"
-                style="width: 12px; height: 12px"
-                alt=""
-            /></span>
-            <span
-              ><img
-                src="../../../assets/right-arrow_271228.png"
-                style="width: 12px; height: 12px"
-                alt=""
-            /></span>
+            <span class="img-2"><img src="../../../assets/right-arrow_271228.png" style="width: 12px; height: 12px" alt=""></span>
+            <span><img src="../../../assets/right-arrow_271228.png" style="width: 12px; height: 12px" alt=""></span>
           </th>
-          <th *ngFor="let num of tableHeaders; let i = index">
+          <th *ngFor="let header of tableHeaders">
             <div class="days">
-              <p class="day-number">{{ num.num }}</p>
-              <p>({{ num.day }})</p>
+              <p class="day-number">{{ header.num }}</p>
+              <p>({{ header.day }})</p>
             </div>
           </th>
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let row of tableData; let i = index">
-          <tr>
-            <td class="rowhead">{{ getTimeRange(i) }}</td>
-            <!-- Display time range in the first column -->
-            <ng-container *ngFor="let col of row.cols; let j = index">
-              <td class="tdclick" [id]="'td_' + i + '_' + j">
-                <!-- <span *ngIf="!col.activated && j < 5">დაჯავშნა</span> -->
-              </td>
-              
-              
+        <tr *ngFor="let row of tableData; let i = index">
+          <td class="rowhead">{{ getTimeRange(i) }}</td>
+          <td *ngFor="let cell of row.cols" 
+              class="tdclick" 
+              [ngClass]="{
+                'activated': cell.status === 'booked',
+                'disactivated': cell.status === 'unavailable'
+              }"
+              (click)="onCellClick(cell)">
+            
+            <!-- Booked Content -->
+            <ng-container *ngIf="cell.status === 'booked'">
+              <span class="activated-text">
+                <p class="booked-label">დაჯავშნილია</p>
+                <span class="deletebutton" (click)="onDeleteClick($event, cell)">
+                  <span class="delete-button"><img src="../../assets/Group 3.png" alt=""></span>
+                </span>
+              </span>
             </ng-container>
-          </tr>
-        </ng-container>                      
+
+            <!-- Unavailable Content -->
+            <ng-container *ngIf="cell.status === 'unavailable'">
+              <span class="activated-text">
+                <p>Not <br /> Available</p>
+              </span>
+            </ng-container>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

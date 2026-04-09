@@ -50,10 +50,11 @@ namespace AngularAuthApi.Services
 
         public async Task<List<UserResponseDto>> GetAllDoctorsAsync()
         {
-            return await context.Users
+            var doctors = await context.Users
                 .Where(u => u.Category != null)
-                .Select(u => MapToResponseDto(u))
                 .ToListAsync();
+
+            return doctors.Select(MapToResponseDto).ToList();
         }
 
         public async Task<UserResponseDto?> GetDoctorByIdAsync(int id)
@@ -128,7 +129,7 @@ namespace AngularAuthApi.Services
             return await context.Users.AnyAsync(x => x.IdNumber == idNumber);
         }
 
-        private UserResponseDto MapToResponseDto(User user)
+        private static UserResponseDto MapToResponseDto(User user)
         {
             return new UserResponseDto
             {

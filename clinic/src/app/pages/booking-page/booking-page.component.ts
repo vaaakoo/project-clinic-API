@@ -1,235 +1,186 @@
-import { Component , OnInit} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, signal, inject, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthserviceService } from '../../core/auth/authservice.service';
 import { Useregisteration, doctorregisteration } from '../../core/auth/useregisteration';
-import { data } from 'jquery';
 import { MessageService } from 'primeng/api';
-import { TableDataService } from '../../core/auth/table-data-service.service';
-import { BasePageComponent } from '../base-page/base-page.component';
-declare var $: any;
+import { TableDataService, TableCell } from '../../core/auth/table-data-service.service';
+import { CommonModule } from '@angular/common';
+import { AppCustomTableComponent } from '../../helpers/custom-table/custom-table.component';
+import { CategoryFieldComponent } from '../../helpers/category-field/category-field.component';
+import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-booking-page',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    AppCustomTableComponent,
+    CategoryFieldComponent
+  ],
   templateUrl: './booking-page.component.html',
   styleUrls: ['./booking-page.component.css']
 })
-export class BookingPageComponent extends BasePageComponent implements OnInit{
+export class BookingPageComponent implements OnInit, OnDestroy {
+  private readonly authService = inject(AuthserviceService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly messageService = inject(MessageService);
+  public readonly tableDataService = inject(TableDataService);
 
-  visitConfirmation: string = '';
-  textToDoctor: string='';
+  private destroy$ = new Subject<void>();
 
-  patient?: Useregisteration;
-  patientIdNum?: string='';
+  // State Signals
+  readonly doctor = signal<doctorregisteration | null>(null);
+  readonly patient = signal<Useregisteration | null>(null);
+  readonly unauthorizedMessageShown = signal(false);
+  readonly isModalOpen = signal(false);
+  readonly messageToDoctor = signal('');
   
-
-  constructor(private router: Router,public authservice:AuthserviceService, private route: ActivatedRoute, private messageService: MessageService, public tableDataService: TableDataService) {
-    super();
-  }
-  
-  submitForm() {
-    // console.log('Form submitted with:', this.visitConfirmation);
-  }
+  private selectedCard: TableCell | null = null;
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.doctorId = +params['id'];
-   
-      this.authservice.getDoctorById(this.doctorId).subscribe(
-        (doctor: doctorregisteration) => {
-          this.doctor = doctor;
-          this.patient = this.authservice.getToken().userInfo;
-          this.patientFirstName = this.authservice.getToken().userInfo.firstName;
-          this.patientIdNum = this.authservice.getToken().userInfo.idNumber
-          loadData();
-        },
-        (error) => {
-          console.error('Error fetching doctor data:', error);
-          this.messageService.add({severity:'error', summary:'Error', detail:'Error fetching appointment data:' + error });
-        }
-      );
+    this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      const doctorId = +params['id'];
+      this.loadDoctorData(doctorId);
     });
-
-    $(document).ready( () => {
-      let modalConfirmCallback: ((textToDoctor: string) => void) | undefined;
-      $('.tdclick').on('click', (event: any) => {
-
-        var clickedTd = $(event.target);
-
-        if (clickedTd.hasClass('disactivated')) {
-          // alert('This time slot is not available.');
-          this.messageService.add({severity:'error', summary:'Error', detail:'This time slot is not available.' });
-          return;
-        }
-
-        debugger;
-        $('#myModal').css('display', 'block');
-
-        var tdId = clickedTd.attr('id');
-        var patientName=this.patientFirstName;
-        var patientIdNum = this.patientIdNum;
-       
-
-        modalConfirmCallback = (textToDoctor) => {
-          console.log('Message to Doctor:', textToDoctor);
-        if(patientIdNum!="" && patientName !=""){
-          debugger;
-          this.unauthorizedMessageShown = false;
-          // this.messageToDoctor = true;
-          clickedTd.addClass('activated');
-          const htmlContent = `
-          <span class="activated-text" style="font-weight: bold;
-          color: #3ACF99;
-          text-align: center;
-          font-size: 12px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: normal;
-          word-wrap: break-word;">
-            <p>ჩემი <br />ჯავშანი </p>
-            <span class="deletebutton" style="position: absolute; width: 18px; height: 18px; display: flex;
-            align-items: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
-            <span class="delete-button" style="padding: 5px;"><img src="../../assets/Group 3.png" alt=""></span>
-          </span>
-            `;
-          clickedTd.html(htmlContent);
-          var formData = {
-            DoctorName: this.doctor?.firstName,
-            IdNumber: this.doctor?.idNumber ||'Doctor',
-            UniqueNumber: tdId,
-            PatientName:patientName,
-            ClientIdNumber: patientIdNum,
-            MessageToDoctor: textToDoctor,
-            Status: 'available',
-          };
-  
-          this.authservice.clientBookAppointment(formData).subscribe(
-            () => {
-              // alert('Appointment Booked successfully!');
-              this.messageService.add({severity:'success', summary:'Success', detail:'Appointment Booked successfully!'});
-              this.messageToDoctor = false;
-            },
-            (error) => {
-              // console.error('Error booking appointment:', error);
-              this.messageService.add({severity:'error', summary:'Error', detail:'Error booking appointment:' + error });
-            }
-          );
-            debugger;
-            $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
-            }else{
-              // alert("First Login Yourself To Book Appointment");
-              this.messageService.add({severity:'error', summary:'Error', detail:'First Login Yourself To Book Appointment!' });
-              this.unauthorizedMessageShown = true;
-            }
-          };
-            // Handle the confirm button click
-            $('#confirmMessage').on('click', () => {
-              const messageToDoctor = $('#messageToDoctor').val() as string;
-              $('#myModal').css('display', 'none');
-              modalConfirmCallback?.(messageToDoctor);
-            });
-        
-            $('.close').on('click', () => {
-              modalConfirmCallback = undefined;
-              $('#myModal').css('display', 'none');
-            });
-            });
-            
-      $('.tdclick').on('click', '.deletebutton',  (event: any) => {
-              debugger;
-              const clickedDeleteButton = $(event.target);
-              var tdId = clickedDeleteButton.closest('td').attr('id');
-              var patientName=this.patientFirstName;
-              var patientIdNum = this.patientIdNum;
-              var doctorName = this.doctor?.firstName;
-              var doctorIdNum = this.doctor?.idNumber;
-              var tdId = tdId;
-
-              const parentTdClick = clickedDeleteButton.closest('.tdclick');
-              parentTdClick.removeClass('activated');
-              parentTdClick.empty();
-
-              var formData = {
-                DoctorName: doctorName,
-                IdNumber: doctorIdNum,
-                UniqueNumber: tdId,
-                PatientName:patientName,
-                ClientIdNumber: patientIdNum,
-                MessageToDoctor: "თავის ტკივილი",
-                Status: 'Booked',
-              };      
-
-          this.authservice.clientRemoveAppointment(formData).subscribe(
-          () => {
-            alert('Appointment Removed successfully!');
-            this.messageService.add({severity:'success', summary:'Success', detail:'Appointment Removed successfully!'});
-          },
-          (error) => {
-            console.error('Error removing appointment:', error);
-            this.messageService.add({severity:'error', summary:'Error', detail:'Error removing appointment'});
-          }
-        );
-      });
-      
-    });
-
-    const loadData = () => {
-      debugger;
-      const IdNumber = this.doctor?.idNumber || 'Doctor';
-      const clientIdNumber = this.patient?.idNumber || 'DefaultClientId';
-    
-      this.authservice.getAppointmentData(IdNumber).subscribe(
-        (data: any) => {
-          debugger;
-          const patientIdNumber = clientIdNumber;
-    
-          if (data.data.length > 0) {
-            data.data.forEach((appointment: any) => {
-              const element = $('#' + appointment.uniqueNumber);
-    
-              if (appointment.status === 'Unavailable' || appointment.clientIdNumber !== patientIdNumber) {
-                element.addClass('disactivated');
-                const htmlContent = `
-                    <span class="activated-text">
-                    
-                    </span>
-                `;
-                element.html(htmlContent);
-                $('.tdclick.disactivated').prop('disabled', true);
-              } else if (appointment.clientIdNumber === patientIdNumber) {
-                element.addClass('activated');
-                const htmlContent = `
-                <span class="activated-text" style="font-weight: bold;
-                  color: #3ACF99;
-                  text-align: center;
-                  font-size: 12px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: normal;
-                  word-wrap: break-word;">
-                    <p>ჩემი <br />ჯავშანი </p>
-                    <span class="deletebutton" style="position: absolute; width: 18px; height: 18px; display: flex;
-                    align-items: center; top: 4px; right: 5px; background-color: white; border: none; border-radius: 50%;">
-                    <span class="delete-button" style="padding: 5px;"><img src="../../assets/Group 3.png" alt=""></span>
-                  </span>
-                `;
-                element.html(htmlContent);
-              }
-            });
-    
-            $('.tdclick:not(:has(.deletebutton))').prop('disabled', true);
-          }
-        },
-        (error) => {
-          console.error('Error fetching appointment data:', error);
-        }
-      );
-    };
-    
   }
 
-  
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private loadDoctorData(id: number) {
+    this.authService.getDoctorById(id).subscribe({
+      next: (doctor) => {
+        this.doctor.set(doctor);
+        const currentUser = this.authService.currentUser();
+        this.patient.set(currentUser);
+        this.loadAppointments(doctor.idNumber);
+      },
+      error: (err: any) => {
+        console.error('Error fetching doctor data:', err);
+        this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'ექიმის მონაცემების ჩატვირთვა ვერ მოხერხდა' });
+      }
+    });
+  }
+
+  private loadAppointments(doctorIdNumber: string) {
+    this.tableDataService.resetTable();
+    const patient = this.patient();
+    const patientIdNumber = patient?.idNumber || '';
+
+    this.authService.getAppointmentData(doctorIdNumber).subscribe({
+      next: (data: any) => {
+        this.updateTableWithAppointments(data.data, patientIdNumber);
+      },
+      error: (err: any) => console.error('Error fetching appointment data:', err)
+    });
+  }
+
+  private updateTableWithAppointments(appointments: any[], patientIdNumber: string) {
+    const currentData = this.tableDataService.tableData();
+    const updatedData = currentData.map(row => ({
+      cols: row.cols.map(cell => {
+        const appointment = appointments.find(a => a.uniqueNumber === cell.uniqueNumber);
+        if (appointment) {
+          if (appointment.status === 'Unavailable' || (patientIdNumber && appointment.clientIdNumber !== patientIdNumber)) {
+            return { ...cell, status: 'unavailable' as const };
+          } else if (patientIdNumber && appointment.clientIdNumber === patientIdNumber) {
+            return { ...cell, status: 'booked' as const };
+          }
+        }
+        return cell;
+      })
+    }));
+    this.tableDataService.tableData.set(updatedData);
+  }
+
+  onCellClick(cell: TableCell) {
+    if (cell.status === 'unavailable') {
+      this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'ეს დრო მიუწვდომელია' });
+      return;
+    }
+
+    if (cell.status === 'booked') {
+      return; // Already booked by current user (handled by updateTableWithAppointments)
+    }
+
+    const patient = this.patient();
+    if (!patient) {
+      this.unauthorizedMessageShown.set(true);
+      this.messageService.add({ severity: 'warn', summary: 'ავტორიზაცია', detail: 'ვიზიტის დასაჯავშნად საჭიროა ავტორიზაცია' });
+      return;
+    }
+
+    this.selectedCard = cell;
+    this.isModalOpen.set(true);
+  }
+
+  confirmBooking() {
+    const doc = this.doctor();
+    const pat = this.patient();
+    const cell = this.selectedCard;
+
+    if (!doc || !pat || !cell) return;
+
+    const formData = {
+      DoctorName: doc.firstName,
+      IdNumber: doc.idNumber,
+      UniqueNumber: cell.uniqueNumber,
+      PatientName: pat.firstName,
+      ClientIdNumber: pat.idNumber,
+      MessageToDoctor: this.messageToDoctor(),
+      Status: 'available', // available means "I want to book this available slot" in backend logic
+    };
+
+    this.authService.clientBookAppointment(formData).subscribe({
+      next: (res) => {
+        this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: 'ვიზიტი დაჯავშნილია' });
+        this.isModalOpen.set(false);
+        this.messageToDoctor.set('');
+        this.loadAppointments(doc.idNumber);
+      },
+      error: (err: any) => {
+        this.messageService.add({ severity: 'error', summary: 'შეცდომა', detail: 'დაჯავშნა ვერ მოხერხდა' });
+      }
+    });
+  }
+
+  onDeleteClick(data: {event: MouseEvent, cell: TableCell}) {
+    const { cell } = data;
+    const doc = this.doctor();
+    const pat = this.patient();
+    if (!doc || !pat) return;
+
+    this.authService.getClientDataByIdNumberAndTimeSlot(pat.idNumber, cell.uniqueNumber).subscribe({
+      next: (response: any) => {
+        const app = response.data[0];
+        const formData = {
+          DoctorName: doc.firstName,
+          IdNumber: doc.idNumber,
+          UniqueNumber: cell.uniqueNumber,
+          PatientName: pat.firstName,
+          ClientIdNumber: pat.idNumber,
+          MessageToDoctor: app.messageToDoctor,
+          Status: 'Booked', // status used by backend remove logic
+        };
+
+        this.authService.clientRemoveAppointment(formData).subscribe({
+          next: () => {
+            this.messageService.add({ severity: 'success', summary: 'წარმატება', detail: 'ჯავშანი წაშლილია' });
+            this.loadAppointments(doc.idNumber);
+          },
+          error: (err: any) => console.error('Error removing appointment:', err)
+        });
+      }
+    });
+  }
 
   getStarArray(starNum: number): number[] {
-    return Array.from({ length: starNum }, (_, index) => index);
+    return Array.from({ length: starNum || 0 }, (_, index) => index);
   }
 }
