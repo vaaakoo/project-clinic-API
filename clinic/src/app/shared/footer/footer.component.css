@@ -154,8 +154,9 @@
   max-width: 1621px;
   margin: 0 auto;
   height: 35px;
-  background-color: white;
+  background-color: var(--bg-primary);
   margin-top: 8px;
+  transition: background-color 0.4s ease;
 }
 .second-section-1 {
   display: flex;
@@ -163,7 +164,7 @@
   }
   
   .second-section p {
-    color: #2b79b1;
+    color: var(--text-accent);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;

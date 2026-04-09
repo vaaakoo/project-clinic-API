@@ -1,3 +1,5 @@
+using AngularAuthApi.Constants;
+
 namespace AngularAuthApi.Services
 {
     public class UserService(AppDbContext context) : IUserService
@@ -16,7 +18,7 @@ namespace AngularAuthApi.Services
                 LastName = dto.LastName,
                 IdNumber = dto.IdNumber,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Role = "client"
+                Role = UserRoles.Client
             };
 
             activationCodeEntity.Used = true;
@@ -40,7 +42,7 @@ namespace AngularAuthApi.Services
                 CvUrl = dto.CvUrl,
                 starNum = dto.starNum ?? 0,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Role = "doctor"
+                Role = UserRoles.Doctor
             };
 
             await context.Users.AddAsync(user);

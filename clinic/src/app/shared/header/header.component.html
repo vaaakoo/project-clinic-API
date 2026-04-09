@@ -11,31 +11,31 @@
 
         <div class="nav-bar-flex-col">
           <ul class="nav-bar">
-            <li>
+            <li routerLink="/home" style="cursor: pointer;">
               ექიმები
               <div class="vector-line-hover"></div>
             </li>
-            <li>
+            <li routerLink="/clinics" style="cursor: pointer;">
               კლინიკები
               <div class="vector-line-hover"></div>
             </li>
-            <li>
+            <li routerLink="/annotations" style="cursor: pointer;">
               ანოტაციები
               <div class="vector-line-hover"></div>
             </li>
-            <li>
+            <li routerLink="/offers" style="cursor: pointer;">
               აქციები
               <div class="vector-line-hover"></div>
             </li>
-            <li>
+            <li routerLink="/services" style="cursor: pointer;">
               სერვისები
               <div class="vector-line-hover"></div>
             </li>
-            <li>
+            <li routerLink="/medications" style="cursor: pointer;">
               მედიკამენტები
               <div class="vector-line-hover"></div>
             </li>
-            <li>
+            <li routerLink="/contact" style="cursor: pointer;">
               კონტაქტი
               <div class="vector-line-hover"></div>
             </li>
@@ -45,6 +45,12 @@
 
         <!-- button section -->
         <div [ngClass]="{'navbar-button': !isLoggedIn(), 'navbar-button2': isLoggedIn() || isAdministrator()}">
+          
+          <!-- Theme Toggle -->
+          <button class="button-eng" (click)="themeService.toggleTheme()" style="margin-right: 10px;">
+            <i [class]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'" [style.color]="isDarkMode() ? '#FFD700' : '#053354'"></i>
+          </button>
+
           <button class="button-reg-aut" *ngIf="!isLoggedIn() && !isAdministrator() && !isDoctor()">
             <span class="button-registartion" (click)="navigateToRegistration()">რეგისტრაცია</span>
             <span class="button-aut" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"> / ავტორიზაცია</span>
@@ -77,16 +83,22 @@
           <img src="../../../assets/logo1.png" alt="Logo">
           <span class="logo-text">კლინიკა</span>
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="true" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        
+        <div class="d-flex align-items-center">
+          <button class="button-eng mr-2" (click)="themeService.toggleTheme()">
+            <i [class]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"></i>
+          </button>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="true" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
   
         <div class="navbar-collapse collapse" id="navbarsExample01">
           <ul class="navbar-nav mr-auto">
-            <li>ექიმები</li>
-            <li>კლინიკები</li>
-            <li>მედიკამენტები</li>
-            <li>კონტაქტი</li>
+            <li routerLink="/home">ექიმები</li>
+            <li routerLink="/clinics">კლინიკები</li>
+            <li routerLink="/medications">მედიკამენტები</li>
+            <li routerLink="/contact">კონტაქტი</li>
             <li class="nav-item">
               <div [ngClass]="{'navbar-button': !isLoggedIn(), 'navbar-button2': isLoggedIn() || isAdministrator()}">
                 <button class="button-reg-aut" *ngIf="!isLoggedIn() && !isAdministrator() && !isDoctor()">
@@ -149,25 +161,33 @@
 
 
   <!-- modal -->
-  <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">ავტორიზაცია</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="border: none; background: transparent; font-size: 24px; color: var(--text-muted);">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
           <form (ngSubmit)="onSubmit()">
-            <div class="form-group">
-              <input type="text" class="form-control" [(ngModel)]="loginData.email" name="email" id="recipient-email" placeholder="ელ.ფოსტა/ ტელეფონის ნომერი" required>
+            <div class="form-group mb-4">
+              <label for="recipient-email" style="margin-left: 20px; font-weight: 600; font-size: 13px; color: var(--text-muted);">ელ.ფოსტა / ტელეფონი</label>
+              <input type="text" class="form-control" [(ngModel)]="loginData.email" name="email" id="recipient-email" placeholder="email@example.com" required>
             </div>
-            <div class="form-group">
-              <input type="password" [(ngModel)]="loginData.password" name="password" class="form-control form-password" id="recipient-name" placeholder="პაროლი" required>
-              <span class="forget-password" (click)="sendResetCode()"><p>პაროლის აღდგენა</p></span>
+            <div class="form-group mb-2">
+              <label for="recipient-name" style="margin-left: 20px; font-weight: 600; font-size: 13px; color: var(--text-muted);">პაროლი</label>
+              <input type="password" [(ngModel)]="loginData.password" name="password" class="form-control form-password" id="recipient-name" placeholder="********" required>
+            </div>
+            <div class="text-right mb-4">
+              <span class="forget-password" (click)="sendResetCode()" style="color: var(--text-accent); font-weight: 700; cursor: pointer; font-size: 13px;">პაროლის აღდგენა</span>
             </div>
           
-            <div class="modal-footer">
-              <button type="submit" *ngIf="submissionSuccess" data-dismiss="modal">close</button>
-              <button type="submit" *ngIf="!submissionSuccess">შესვლა</button>
+            <div class="modal-footer" style="padding-top: 20px; border-top: 1px solid var(--border-color);">
+              <button type="submit" class="btn btn-primary w-100" style="height: 50px; border-radius: 50px; background-color: var(--text-main); color: white; border: none; font-weight: 700;">
+                {{ submissionSuccess ? 'დახურვა' : 'შესვლა' }}
+              </button>
             </div>
           </form>
         </div>

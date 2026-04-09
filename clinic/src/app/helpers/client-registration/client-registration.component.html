@@ -1,103 +1,74 @@
-<div class="registration-form">
-    <h2>რეგისტრაცია</h2>
-    
-    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
-
-      <div class="form-group">
-       <div class="row">
-        <div class="col-6">
-          <label for="firstName">სახელი</label>
-        </div>
-        <div class="col-6">
-          <div *ngIf="firstname.touched && user().firstName === ''">
-            <span style="color: red;">სავალდებულო ველი</span>
-          </div>
-        </div>
-       </div>
-        <input type="text" id="firstName" name="firstName" placeholder="( მინიმუმ 5 სიმბოლო )" #firstname="ngModel" [ngModel]="user().firstName" (ngModelChange)="updateUserField('firstName', $event)" required>
-      </div>
-
-      <div class="form-group email-group">
-        <div class="row">
-          <div class="col-6">
-            <label for="email">Email</label>
-          </div>
-          <div class="col-6">
-            <div *ngIf="email.touched && user().email === ''">
-              <span style="color: red;">სავალდებულო ველი</span>
+<div class="registration-container">
+    <div class="registration-form">
+        <h2>პაციენტის რეგისტრაცია</h2>
+        
+        <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+            <div class="form-group">
+                <div class="row">
+                    <label for="firstName">სახელი</label>
+                    <span class="error-text" *ngIf="firstname.touched && user().firstName === ''">სავალდებულო</span>
+                </div>
+                <input type="text" id="firstName" name="firstName" placeholder="სახელი (მინ. 5 სიმბოლო)" 
+                    #firstname="ngModel" [ngModel]="user().firstName" (ngModelChange)="updateUserField('firstName', $event)" required>
             </div>
-          </div>
-         </div>
-        <input type="email" id="email" name="email" #email="ngModel" [ngModel]="user().email" (ngModelChange)="updateUserField('email', $event)" required class="email-input">
-        <img (click)="sendactivationcode(user().email)" class="right-arrow-img" src="../../../assets/mail-right-arrow.png" alt="Right Arrow">
-      </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <label for="lastName">გვარი</label>
+                    <span class="error-text" *ngIf="lastname.touched && user().lastName === ''">სავალდებულო</span>
+                </div>
+                <input type="text" id="lastName" name="lastName" placeholder="გვარი"
+                    #lastname="ngModel" [ngModel]="user().lastName" (ngModelChange)="updateUserField('lastName', $event)" required>
+            </div>
       
-      <div class="form-group">
-        <div class="row">
-          <div class="col-6">
-            <label for="idNumber">პირადი</label>
-          </div>
-          <div class="col-6">
-            <div *ngIf="idNumber.touched && user().idNumber === ''">
-              <span style="color: red;">სავალდებულო ველი</span>
+            <div class="form-group email-group">
+                <div class="row">
+                    <label for="email">ელ-ფოსტა</label>
+                    <span class="error-text" *ngIf="email.touched && user().email === ''">სავალდებულო</span>
+                </div>
+                <input type="email" id="email" name="email" placeholder="email@example.com"
+                    #email="ngModel" [ngModel]="user().email" (ngModelChange)="updateUserField('email', $event)" required>
+                <img (click)="sendactivationcode(user().email)" class="right-arrow-img" src="../../../assets/mail-right-arrow.png" alt="Send Code" title="კოდის გაგზავნა">
             </div>
-          </div>
-         </div>
-        <input type="text" id="idNumber" name="idNumber" #idNumber="ngModel" placeholder="00000000000" maxlength="11" [ngModel]="user().idNumber" (ngModelChange)="updateUserField('idNumber', $event)" required>
-      </div>
-      
-      <div class="form-group">
-        <div class="row">
-          <div class="col-6">
-            <label for="lastName">გვარი</label>
-          </div>
-          <div class="col-6">
-            <div *ngIf="lastName.touched && user().lastName === ''">
-              <span style="color: red;">სავალდებულო ველი</span>
-            </div>
-          </div>
-         </div>
-        <input type="text" id="lastName" #lastName="ngModel" name="lastName" [ngModel]="user().lastName" (ngModelChange)="updateUserField('lastName', $event)" required>
-      </div>
 
-      <div class="form-group">
-        <div class="row">
-          <div class="col-6 activeMesStyle" style="flex: 0 0 100%; max-width: 100%;">
-            <div class="labels">
-              <label for="activationCode">აქტივაციის კოდი</label>
+            <div class="form-group">
+                <div class="row">
+                    <label for="activationCode">აქტივაციის კოდი</label>
+                    <span class="error-text" *ngIf="activationCode.touched && activationCode.invalid">სავალდებულო</span>
+                </div>
+                <input type="text" id="activationCode" name="activationCode" placeholder="შეიყვანეთ კოდი"
+                    #activationCode="ngModel" [ngModel]="user().activationCode" (ngModelChange)="updateUserField('activationCode', $event)" required>
+                
+                <div class="activation-status" *ngIf="activationMessage() !== ''">
+                    {{ activationMessage() }} 
+                    <span class="resend-link" (click)="resendactivationcode(user().email)">თავიდან გაგზავნა</span>
+                </div>
+                <div class="error-text" style="padding-left: 20px; font-size: 11px;" *ngIf="!timerRunning() && activationCode.touched">
+                    *ბმულის მოქმედების ვადა ამოიწურა
+                </div>
             </div>
-            <div *ngIf="activationMessage() != ''" class="labels">
-            <label (click)="resendactivationcode(user().email)" class="vada" for="">{{activationMessage()}}</label>
-          </div>
-            <div *ngIf="activationCode.touched && activationMessage() === ''">
-              <span style="color: red;">სავალდებულო ველი</span>
+            
+            <div class="form-group">
+                <div class="row">
+                    <label for="idNumber">პირადი ნომერი</label>
+                    <span class="error-text" *ngIf="idNum.touched && user().idNumber === ''">სავალდებულო</span>
+                </div>
+                <input type="text" id="idNumber" name="idNumber" maxlength="11" placeholder="00000000000" 
+                    #idNum="ngModel" [ngModel]="user().idNumber" (ngModelChange)="updateUserField('idNumber', $event)" required>
             </div>
-          </div>
-         </div>
-        <div class="activation">
-          <input type="text" id="activationCode" #activationCode="ngModel" name="activationCode" [ngModel]="user().activationCode" (ngModelChange)="updateUserField('activationCode', $event)" required>
-          <div *ngIf="!timerRunning() && activationCode.touched">
-            <span>*ბმულის მოქმედების ვადა ამოიწურა</span>
-          </div>
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <div class="row">
-          <div class="col-6">
-            <label for="password">პაროლი</label>
-          </div>
-          <div class="col-6">
-            <div *ngIf="password.touched && user().password === ''">
-              <span style="color: red;">სავალდებულო ველი</span>
+      
+            <div class="form-group">
+                <div class="row">
+                    <label for="password">პაროლი</label>
+                    <span class="error-text" *ngIf="pass.touched && user().password === ''">სავალდებულო</span>
+                </div>
+                <input type="password" id="password" name="password" placeholder="მინ. 8 სიმბოლო (@7,)" 
+                    #pass="ngModel" [ngModel]="user().password" (ngModelChange)="updateUserField('password', $event)" required>
             </div>
-          </div>
-         </div>
-        <input type="password" #password="ngModel" id="password" name="password" placeholder="( მინიმუმ 8 სიმბოლო : @ 7 , )" [ngModel]="user().password" (ngModelChange)="updateUserField('password', $event)" required>
-      </div>
-      <div class="button">
-        <button [disabled]="isButtonDisabled()" type="submit">{{buttonText()}}</button>
-      </div>
-    </form>
-  </div>
-  
+
+            <div class="button">
+                <button [disabled]="isButtonDisabled() || !userForm.form.valid" type="submit">{{buttonText()}}</button>
+            </div>
+        </form>
+    </div>
+</div>

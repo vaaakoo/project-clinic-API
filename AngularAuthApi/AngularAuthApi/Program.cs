@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Configuration
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.Configure<AdminSettings>(builder.Configuration.GetSection("AdminSettings"));
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 // Add services to the container.
 builder.Services.AddControllers();

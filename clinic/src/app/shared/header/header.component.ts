@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { FilterService } from '../../core/services/filter.service';
+import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,9 @@ export class HeaderComponent {
   private readonly router = inject(Router);
   private readonly messageService = inject(MessageService);
   private readonly filterService = inject(FilterService);
+  public readonly themeService = inject(ThemeService);
   readonly authservice = inject(AuthserviceService);
+  readonly isDarkMode = this.themeService.isDarkMode;
 
   // Use Signals from Authservice
   readonly isLoggedIn = this.authservice.isAuthenticated;

@@ -10,16 +10,19 @@ namespace AngularAuthApi.Repositories
     public class ActivationCodeService : IActivationCodeService
     {
         private readonly AppDbContext _dbContext;
+        private readonly EmailSettings _emailSettings;
 
-        public ActivationCodeService(AppDbContext dbContext)
+        public ActivationCodeService(AppDbContext dbContext, IOptions<EmailSettings> emailSettings)
         {
             _dbContext = dbContext;
+            _emailSettings = emailSettings.Value;
         }
+
         public Task<string> GenerateActivationCodeAsync()
-        {
-            Random rnd=new Random();
-            StringBuilder code=new StringBuilder();
-            for(int i=0; i<4; i++)
+        { 
+            Random rnd = new Random();
+            StringBuilder code = new StringBuilder();
+            for (int i = 0; i < 4; i++)
             {
                 code.Append(rnd.Next(10));
             }
@@ -28,41 +31,37 @@ namespace AngularAuthApi.Repositories
 
         public async Task SendActivationCodeAsync(string email, string activationCode, string body, string subject)
         {
-
             try
             {
-                // Store the activation code in the database
                 var activationCodeEntity = new ActivationCode
                 {
                     Email = email,
                     Code = activationCode,
                     CreationTime = DateTime.Now,
-                    ExpirationTime = DateTime.Now.AddMinutes(2), // Set expiration time
+                    ExpirationTime = DateTime.Now.AddMinutes(10), // Increased from 2 to 10 minutes
                     Used = false
                 };
 
                 _dbContext.ActivationCodes.Add(activationCodeEntity);
                 await _dbContext.SaveChangesAsync();
 
-                // Send activation code via email
-                var smtpClient = new SmtpClient("smtp.gmail.com")
+                using (var smtpClient = new SmtpClient(_emailSettings.SmtpServer))
                 {
-                    Port = 587,
-                    Credentials = new NetworkCredential("vaktonik@gmail.com", "gwponglvmipzhaja"),
-                    EnableSsl = true,
-                };
+                    smtpClient.Port = _emailSettings.Port;
+                    smtpClient.Credentials = new NetworkCredential(_emailSettings.Username, _emailSettings.Password);
+                    smtpClient.EnableSsl = _emailSettings.EnableSsl;
 
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress("vaktonik@gmail.com"),
-                    Subject = subject,
-                    Body = body,
-                    IsBodyHtml = true,
-                };
+                    var mailMessage = new MailMessage
+                    {
+                        From = new MailAddress(_emailSettings.FromEmail),
+                        Subject = subject,
+                        Body = body,
+                        IsBodyHtml = true,
+                    };
+                    mailMessage.To.Add(email);
 
-                mailMessage.To.Add(email);
-
-                await smtpClient.SendMailAsync(mailMessage);
+                    await smtpClient.SendMailAsync(mailMessage);
+                }
             }
             catch (Exception ex)
             {

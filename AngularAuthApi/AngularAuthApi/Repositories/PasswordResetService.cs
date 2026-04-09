@@ -1,4 +1,4 @@
-﻿using AngularAuthApi.Repositories.Interfaces;
+using AngularAuthApi.Repositories.Interfaces;
 using System;
 using System.Net;
 using System.Net.Mail;
@@ -9,6 +9,13 @@ namespace AngularAuthApi.Repositories
 {
     public class PasswordResetService : IPasswordResetService
     {
+        private readonly EmailSettings _emailSettings;
+
+        public PasswordResetService(IOptions<EmailSettings> emailSettings)
+        {
+            _emailSettings = emailSettings.Value;
+        }
+
         public Task<string> GenerateResetCodeAsync()
         {
             // Generate a random password for the reset code
@@ -18,24 +25,24 @@ namespace AngularAuthApi.Repositories
 
         public async Task SendResetCodeAsync(string email, string resetCode, string body, string subject)
         {
-            var smtpClient = new SmtpClient("smtp.gmail.com")
+            using (var smtpClient = new SmtpClient(_emailSettings.SmtpServer))
             {
-                Port = 587,
-                Credentials = new NetworkCredential("vaktonik@gmail.com", "gwponglvmipzhaja"),
-                EnableSsl = true,
-            };
+                smtpClient.Port = _emailSettings.Port;
+                smtpClient.Credentials = new NetworkCredential(_emailSettings.Username, _emailSettings.Password);
+                smtpClient.EnableSsl = _emailSettings.EnableSsl;
 
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress("vaktonik@gmail.com"),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true,
-            };
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(_emailSettings.FromEmail),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true,
+                };
 
-            mailMessage.To.Add(email);
+                mailMessage.To.Add(email);
 
-            await smtpClient.SendMailAsync(mailMessage);
+                await smtpClient.SendMailAsync(mailMessage);
+            }
         }
     }
 }
