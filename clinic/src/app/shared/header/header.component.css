@@ -178,7 +178,11 @@
 }
 
 .button-eng i {
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button-eng img {
@@ -277,13 +281,24 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: var(--text-main);
+  background-color: var(--text-accent);
   border: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--bg-primary); /* Invert color for icon */
+  transition: all 0.3s ease;
+}
+
+.img-back:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(24, 164, 225, 0.3);
+}
+
+.img-back img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1); /* Ensure it's white/light */
 }
 
 
