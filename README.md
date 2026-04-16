@@ -27,6 +27,35 @@ A high-performance, modern Clinic Management System designed for efficiency, sca
 
 ---
 
+## 🏗️ System Architecture
+
+**ClinicApp_2026** follows a decoupled, layered architecture to ensure maximum security and maintainability.
+
+```mermaid
+flowchart LR
+    Client([Angular 19 App])
+    API[ClinicApp.Api]
+    Id[Identity.Identity]
+    EF[EF Core 10]
+    SQL[(SQL Server)]
+
+    Client -->|Bearer JWT| API
+    API -->|Auth Check| Id
+    API -->|DB Context| EF
+    EF -->|Query| SQL
+    SQL -->|Result| EF
+    EF -->|DTO| API
+    API -->|JSON| Client
+```
+
+### 🌉 Data Flow Overview
+1.  **Frontend**: The standalone Angular 19 client initiates requests with a JWT token in the header.
+2.  **Middleware**: The .NET 10 backend validates the token signature and enforces role-based access (RBAC).
+3.  **Application**: Specialized controllers process logic and communicate with the database via EF Core 10.
+4.  **Database**: MS SQL Server provides relational persistence for users, medical profiles, and scheduling data.
+
+---
+
 ## 🛠️ Technology Stack
 
 ### Backend
